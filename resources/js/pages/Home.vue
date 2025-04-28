@@ -8,6 +8,7 @@
         <img src="../../../public/assets/img/chocolate.png" class="img-oval oval-choco" alt="Chocolate" />
         <img src="../../../public/assets/img/star.png" class="star star-bottom" alt="star" />
       </div>
+      
       <!-- Arrow between ovals -->
       <img src="../../../public/assets/img/nextstep.png" class="next-arrow" alt="التالي" />
       <!-- Right oval -->
