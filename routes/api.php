@@ -42,7 +42,7 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
-Route::prefix('admin')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(function () {
     Route::apiResource('categories', AdminCategoriesController::class);
 });
 
