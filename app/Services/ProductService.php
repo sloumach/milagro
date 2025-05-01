@@ -47,12 +47,12 @@ class ProductService
 
         if (!empty($data['images'])) {
             // Supprimer anciennes images (fichiers + DB)
-            foreach ($product->images as $img) {
+            /* foreach ($product->images as $img) {
                 if ($img->image_path && file_exists(public_path($img->image_path))) {
                     unlink(public_path($img->image_path));
                 }
                 $img->delete();
-            }
+            } */
 
             foreach ($data['images'] as $imageFile) {
                 $path = $imageFile->store('product-images', 'public');
