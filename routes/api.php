@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\AdminCategoriesController;
+use App\Http\Controllers\Admin\AdminProductsController;
+
 
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -44,5 +46,6 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
 Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(function () {
     Route::apiResource('categories', AdminCategoriesController::class);
+    Route::apiResource('products', AdminProductsController::class);
 });
 
