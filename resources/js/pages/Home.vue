@@ -1,65 +1,210 @@
 <template>
-  <div class="hero-figma-small">
-    <!-- Top star -->
-    <img src="../../../public/assets/img/star.png" class="star star-top" alt="star" />
-    <div class="ovals-row">
-      <!-- Left oval and bottom star -->
-      <div class="oval-container">
-        <img src="../../../public/assets/img/chocolate.png" class="img-oval oval-choco" alt="Chocolate" />
-        <img src="../../../public/assets/img/star.png" class="star star-bottom" alt="star" />
+  <div class="home-container">
+    <div :class="['hero-figma-small-row', currentLang === 'en' ? 'ltr' : 'rtl']">
+      <!-- Left/Right: Ovals and stars -->
+      <div class="hero-figma-small">
+        <!-- Top star -->
+        <img src="../../../public/assets/img/star.png" class="star star-top" alt="star" />
+
+        <div class="ovals-row">
+          <!-- Bottom star (moved outside oval containers) -->
+          <img src="../../../public/assets/img/star.png" class="star star-bottom" alt="star" />
+
+          <!-- Conditional Oval Order -->
+          <template v-if="!swapped">
+            <!-- Left oval -->
+            <div class="oval-container"
+              :style="{ transform: currentLang === 'en' ? 'translateX(0)' : 'translateX(0)' }">
+              <img src="../../../public/assets/img/chocolate.png" class="img-oval oval-choco" alt="Chocolate" />
+            </div>
+            <!-- Right oval -->
+            <div class="oval-container"
+              :style="{ transform: currentLang === 'en' ? 'translateX(0)' : 'translateX(0)' }">
+              <img src="../../../public/assets/img/sale.png" class="img-oval oval-sale" alt="Sale" />
+            </div>
+          </template>
+          <template v-else>
+            <!-- Left oval (swapped) -->
+            <div class="oval-container"
+              :style="{ transform: currentLang === 'en' ? 'translateX(-255px)' : 'translateX(255px)' }">
+              <img src="../../../public/assets/img/chocolate.png" class="img-oval oval-sale" alt="Sale" />
+            </div>
+            <!-- Right oval (swapped) -->
+            <div class="oval-container"
+              :style="{ transform: currentLang === 'en' ? 'translateX(255px)' : 'translateX(-255px)' }">
+              <img src="../../../public/assets/img/sale.png" class="img-oval oval-choco" alt="Chocolate" />
+            </div>
+          </template>
+
+          <!-- Arrow between ovals -->
+          <img v-if="currentLang === 'ar'" src="../../../public/assets/img/nextstep.png" class="next-arrow" alt="التالي"
+            @click="swapOvals" />
+          <img v-if="currentLang === 'en'" src="../../../public/assets/img/nextanglais.png"
+            class="next-arrow next-arrow-en" alt="next" @click="swapOvals" />
+        </div>
       </div>
-      <!-- Arrow between ovals -->
-      <img src="../../../public/assets/img/nextstep.png" class="next-arrow" alt="التالي" />
-      <!-- Right oval -->
-      <div class="oval-container">
-        <img src="../../../public/assets/img/sale.png" class="img-oval oval-sale" alt="Sale" />
+
+      <!-- Right/Left: MILAGRO content -->
+      <div class="milagro-content">
+        <h1 class="milagro-title">MILAGRO</h1>
+        <div class="milagro-desc-row">
+          <span class="milagro-desc-line"></span>
+          <span class="milagro-desc">
+            {{ translations.description[currentLang] }}
+          </span>
+        </div>
+        <button class="shop-btn">{{ translations.shopButton[currentLang] }}</button>
       </div>
     </div>
+
+    <!-- Features Section -->
+    <section class="features-section" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
+      <div class="features-container">
+        <!-- Best Quality -->
+        <div class="feature-item">
+          <div class="title-row">
+            <img src="../../../public/assets/img/quality.png" class="feature-icon" alt="quality" />
+            <h3 class="feature-title">{{ translations.features.quality.title[currentLang] }}</h3>
+          </div>
+          <p class="feature-description">{{ translations.features.quality.description[currentLang] }}</p>
+        </div>
+
+        <!-- Fast Delivery -->
+        <div class="feature-item">
+          <div class="title-row">
+            <img src="../../../public/assets/img/delivery.png" class="feature-icon" alt="delivery" />
+            <h3 class="feature-title">{{ translations.features.delivery.title[currentLang] }}</h3>
+          </div>
+          <p class="feature-description">{{ translations.features.delivery.description[currentLang] }}</p>
+        </div>
+
+        <!-- Big Selection -->
+        <div class="feature-item">
+          <div class="title-row">
+            <img src="../../../public/assets/img/selection.png" class="feature-icon" alt="selection" />
+            <h3 class="feature-title">{{ translations.features.selection.title[currentLang] }}</h3>
+          </div>
+          <p class="feature-description">{{ translations.features.selection.description[currentLang] }}</p>
+        </div>
+      </div>
+    </section>
+
+    <best-seller :current-lang="currentLang" />
+    <chocolate-diffuser :current-lang="currentLang" />
+    <luxury-moments :current-lang="currentLang" />
+    <product-grid :current-lang="currentLang" />
   </div>
 </template>
 
+
 <script>
+import BestSeller from './sous-home/BestSeller.vue';
+import ChocolateDiffuser from './sous-home/ChocolateDiffuser.vue';
+import LuxuryMoments from './sous-home/LuxuryMoments.vue';
+import ProductGrid from './sous-home/ProductGrid.vue';
+
 export default {
   name: "Home",
+  data() {
+    return {
+      currentLang: 'ar',
+      swapped: false,
+      translations: {
+        description: {
+          ar: 'شوكولاتة راقية تُضفي لمسة سحرية على لحظاتك الخاصة',
+          en: 'Premium Chocolate for Every Special Occasion'
+        },
+        shopButton: {
+          ar: 'تسوق الآن',
+          en: 'Shop Now'
+        },
+        features: {
+          quality: {
+            title: {
+              ar: 'مجموعة كبيرة',
+              en: 'Best Quality'
+            },
+            description: {
+              ar: 'الهدف من هذا النص هو عرض الشكل النهائي للتصميم دون استخدام محتوى حقيقي.',
+              en: 'Lorem ipsum dolor sit amet, tempor incididunt ut labore'
+            }
+          },
+          delivery: {
+            title: {
+              ar: 'توصيل سريع',
+              en: 'Fast Delivery'
+            },
+            description: {
+              ar: 'الهدف من هذا النص هو عرض الشكل النهائي للتصميم دون استخدام محتوى حقيقي.',
+              en: 'Lorem ipsum dolor sit amet, tempor incididunt ut labore'
+            }
+          },
+          selection: {
+            title: {
+              ar: 'أفضل جودة',
+              en: 'Big Selection'
+            },
+            description: {
+              ar: 'الهدف من هذا النص هو عرض الشكل النهائي للتصميم دون استخدام محتوى حقيقي.',
+              en: 'Lorem ipsum dolor sit amet, tempor incididunt ut labore'
+            }
+          }
+        }
+      }
+    };
+  },
+  methods: {
+    swapOvals() {
+      this.swapped = !this.swapped;
+    }
+  },
+  created() {
+    this.$root.$on('languageChanged', (lang) => {
+      this.currentLang = lang;
+    });
+  },
+  beforeDestroy() {
+    this.$root.$off('languageChanged');
+  },
+  components: {
+    BestSeller,
+    ChocolateDiffuser,
+    LuxuryMoments,
+    ProductGrid,
+  }
 };
 </script>
 
 <style scoped>
+.home-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #212A1E;
+  display: flex;
+  flex-direction: column;
+}
+
 .home {
-  background: #23291c;
+  background: #212A1E;
   color: #aa8b7a;
   min-height: 100vh;
   font-family: 'TheSansArabic', sans-serif;
   text-align: center;
   padding: 40px 0;
 }
-.img-oval {
-  border-radius: 50% / 40%;
-  width: 180px;
-  height: 240px;
-  margin: 0 16px;
-  border: 3px solid #aa8b7a;
-}
+
 .home__content h1 {
   font-size: 48px;
   margin: 24px 0 12px;
 }
-.shop-btn {
-  background: #aa8b7a;
-  color: #fff;
-  border: none;
-  padding: 16px 48px;
-  font-size: 20px;
-  border-radius: 6px;
-  margin-top: 16px;
-  cursor: pointer;
-}
+
 .home__features {
   display: flex;
   justify-content: center;
   margin-top: 48px;
 }
-.home__features > div {
+
+.home__features>div {
   margin: 0 32px;
   text-align: center;
 }
@@ -69,7 +214,7 @@ export default {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #23291c;
+  background: #212A1E;
   padding: 0 5vw;
 }
 
@@ -87,18 +232,17 @@ export default {
   position: relative;
 }
 
-.img-oval {
-  border-radius: 50% / 40%;
-  width: 220px;
-  height: 320px;
-  margin: 0 16px 0 0;
-  border: 3px solid #aa8b7a;
-  background: #23291c;
-  object-fit: cover;
+.img-oval+.img-oval {
+  margin-top: 24px;
 }
 
-.img-oval + .img-oval {
-  margin-top: 24px;
+.img-oval {
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.oval-container {
+  transition: all 0.6s ease-in-out;
+  will-change: transform, opacity;
 }
 
 .star {
@@ -116,20 +260,6 @@ export default {
   margin-top: 24px;
 }
 
-.next-arrow {
-  width: 40px;
-  align-self: flex-end;
-  margin-bottom: 20px;
-  margin-left: 8px;
-  margin-right: 8px;
-}
-
-.next-text {
-  color: #aa8b7a;
-  font-size: 18px;
-  font-family: 'TheSansArabic', sans-serif;
-}
-
 .hero-text-col {
   display: flex;
   flex-direction: column;
@@ -140,46 +270,11 @@ export default {
   padding-right: 40px;
 }
 
-.milagro-title {
-  font-family: 'Philosopher', serif;
-  font-size: 70px;
-  color: #AA8B7A;
-  margin-bottom: 24px;
-  letter-spacing: 0;
-}
-
-.milagro-desc {
-  color: #fff;
-  font-size: 26px;
-  margin-bottom: 32px;
-  font-family: 'TheSansArabic', sans-serif;
-}
-
-.shop-btn {
-  background: #aa8b7a;
-  color: #fff;
-  border: none;
-  padding: 16px 48px;
-  font-size: 28px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  align-self: flex-end;
-}
-
 .image-grid {
   position: relative;
   width: fit-content;
   margin: 60px auto 0 auto;
   min-width: 600px;
-}
-
-.ovals-row {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  gap: 32px;
-  position: relative;
 }
 
 .oval-container {
@@ -190,22 +285,22 @@ export default {
 }
 
 .img-oval {
-  border-radius: 50% / 40%;
+  border-radius: 50% / 30%;
   width: 220px;
   height: 320px;
   border: 4px solid #aa8b7a;
-  background: #23291c;
+  background: #212A1E;
   object-fit: cover;
-  z-index: 2;
-}
-
-.star.star-top {
-  position: absolute;
-  top: -60px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 56px;
   z-index: 3;
+  display: block;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+  transform-origin: center;
+  transition: all 0.6s ease-in-out;
+  will-change: transform, opacity;
 }
 
 .bottom-decor {
@@ -217,22 +312,25 @@ export default {
   z-index: 4;
 }
 
-.star.star-bottom {
-  position: absolute;
-  left: -30px;
-  bottom: 20px;
-  width: 36px;
-  z-index: 3;
-}
-
-.next-row {
-  display: flex;
-  align-items: center;
-}
-
 .next-arrow {
-  width: 40px;
-  margin-left: 8px;
+  position: absolute;
+  width: 77px;
+  height: 30px;
+  left: 170px;
+  top: 387px;
+  z-index: 4;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.next-arrow:hover {
+  transform: scale(1.1);
+}
+
+/* Position for English arrow */
+.next-arrow-en {
+  right: 170px;
+  left: auto;
 }
 
 .next-text {
@@ -245,142 +343,341 @@ export default {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: #23291c;
+  background: #212A1E;
   overflow: hidden;
-}
-
-/* Top star */
-.star.star-top {
-  position: absolute;
-  width: 66px;
-  height: 66px;
-  left: 483px;
-  top: 245px;
-  z-index: 3;
-}
-
-/* Ovals row */
-.ovals-row {
-  position: absolute;
-  left: 367px; /* aligns left oval */
-  top: 330px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  gap: 40px;
-}
-
-/* Left oval */
-.oval-choco {
-  width: 215.91px;
-  height: 349.35px;
-  border-radius: 50% / 40%;
-  border: 4px solid #aa8b7a;
-  object-fit: cover;
-  background: #23291c;
-  z-index: 2;
 }
 
 /* Right oval */
 .oval-sale {
-  width: 292px;
-  height: 449px;
-  border-radius: 50% / 40%;
-  border: 4px solid #aa8b7a;
+  width: 231px;
+  height: 376px;
+  border-radius: 50% / 30%;
+  border: 3px solid #aa8b7a;
   object-fit: cover;
-  background: #23291c;
+  background: #212A1E;
   z-index: 2;
+  position: relative;
+  top: 33px;
+  padding: 5px;
+  transition: all 0.6s ease-in-out;
+  will-change: transform, opacity;
 }
 
 /* Bottom star */
 .star.star-bottom {
   position: absolute;
-  width: 35px;
-  height: 35px;
-  left: -178px; /* 189px (star) - 367px (oval left) = -178px */
-  top: 335px;   /* 665px (star) - 330px (oval row top) = 335px */
-  z-index: 3;
-}
-
-/* Arrow */
-.next-arrow {
-  position: absolute;
-  width: 92px;
-  height: 40.9px;
-  left: 54px;   /* 421px (arrow) - 367px (oval left) = 54px */
-  top: 347px;   /* 677px (arrow) - 330px (oval row top) = 347px */
-  z-index: 3;
-}
-
-.hero-figma-small {
-  position: relative;
-  width: 100vw;
-  height: 70vh;
-  background: #23291c;
-  overflow: hidden;
+  width: 33px;
+  height: 33px;
+  left: 19px;
+  top: 383px;
+  z-index: 2;
 }
 
 /* Top star */
 .star.star-top {
   position: absolute;
-  width: 40px;
-  height: 40px;
-  left: 300px;
-  top: 80px;
-  z-index: 3;
+  width: 46px;
+  height: 46px;
+  left: 450px;
+  top: 78px;
+  z-index: 2;
 }
 
 /* Ovals row */
 .ovals-row {
   position: absolute;
-  left: 220px; /* aligns left oval */
-  top: 150px;
+  left: 189px;
+  top: 85px;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   gap: 24px;
 }
 
+/* Reverse ovals row for English */
+.ltr .ovals-row {
+  flex-direction: row-reverse;
+  left: auto;
+  right: 182px;
+}
+
 /* Left oval */
 .oval-choco {
-  width: 130px;
-  height: 210px;
-  border-radius: 50% / 40%;
+  width: 184px;
+  height: 303px;
+  border-radius: 50% / 30%;
   border: 3px solid #aa8b7a;
   object-fit: cover;
-  background: #23291c;
+  background: #212A1E;
   z-index: 2;
+  padding: 5px;
+  transition: all 0.6s ease-in-out;
+  will-change: transform, opacity;
 }
 
-/* Right oval */
-.oval-sale {
-  width: 175px;
-  height: 270px;
-  border-radius: 50% / 40%;
-  border: 3px solid #aa8b7a;
-  object-fit: cover;
-  background: #23291c;
-  z-index: 2;
+.hero-figma-small-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 99vw;
+  height: 70vh;
+  background: #212A1E;
+  overflow: hidden;
 }
 
-/* Bottom star */
-.star.star-bottom {
+/* RTL (Arabic) layout */
+.hero-figma-small-row.rtl {
+  flex-direction: row;
+}
+
+/* LTR (English) layout */
+.hero-figma-small-row.ltr {
+  flex-direction: row-reverse;
+}
+
+.hero-figma-small {
+  position: relative;
+  width: 46vw;
+  height: 100%;
+  background: #212A1E;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.milagro-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding-left: 0px;
+  padding-right: 11vw;
+  text-align: right;
+}
+
+/* Adjust content alignment for English */
+.ltr .milagro-content {
+  align-items: flex-start;
+  padding-right: 0px;
+  padding-left: 11vw;
+  text-align: left;
+}
+
+.milagro-title {
+  font-family: Philosopher, serif;
+  font-size: 54px;
+  color: #aa8b7a;
+  margin-bottom: 24px;
+  letter-spacing: 3px;
+  font-weight: normal;
+}
+
+.milagro-desc-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 32px;
+  gap: 3px;
+  direction: rtl;
+}
+
+/* Adjust description row for English */
+.ltr .milagro-desc-row {
+  flex-direction: row;
+  justify-content: flex-start;
+  direction: ltr;
+}
+
+.milagro-desc-line {
+  display: inline-block;
+  width: 60px;
+  height: 2px;
+  background: #aa8b7a;
+  border-radius: 2px;
+  margin-left: 7px;
+  margin-right: 0;
+  margin-top: -29px;
+}
+
+
+.ltr .milagro-desc-line {
+  margin-left: 0;
+  margin-right: 7px;
+  order: -1;
+  margin-top: 0px;
+}
+
+.milagro-desc {
+  color: #fff;
+  font-size: 26px;
+  font-family: 'TheSansArabic', sans-serif;
+}
+
+.shop-btn {
+  background: #aa8b7a;
+  color: #fff;
+  border: none;
+  padding: 13px 169px;
+  font-size: 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  align-self: flex-end;
+  font-family: 'TheSansArabic', sans-serif;
+}
+
+/* Adjust shop button alignment for English */
+.ltr .shop-btn {
+  align-self: flex-start;
+  font-family: 'Philosopher', serif;
+}
+
+/* Reverse arrow for English */
+.ltr .next-arrow {
+  left: auto;
+  right: 170px;
+
+}
+
+/* Adjust top star position for English */
+.ltr .star.star-top {
+  left: auto;
+  right: 435px;
+}
+
+/* Adjust bottom star position for English */
+.ltr .star.star-bottom {
+  left: auto;
+  right: 19px;
+}
+
+/* Add transform animations for swapped state */
+.swapped .oval-container {
+  transform: translateX(0);
+}
+
+/* Features Section Styles */
+.features-section {
+  background: #212A1E;
+  padding: 60px 0;
+  color: #fff;
+  width: 100%;
+  min-height: 255px;
+  display: block;
+  position: relative;
+  margin-top: 30px;
+}
+
+.features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: relative;
+  gap: 40px;
+}
+
+.feature-item {
+  flex: 1;
+  position: relative;
+  padding: 20px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.feature-icon {
+  width: 25px;
+  height: 25px;
+  opacity: 0.8;
+}
+
+.feature-title {
+  color: #aa8b7a;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+  font-family: 'TheSansArabic', sans-serif;
+}
+
+.feature-description {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.9;
+  font-family: 'TheSansArabic', sans-serif;
+}
+
+/* Vertical lines between items */
+.feature-item:not(:last-child)::after {
+  content: '';
   position: absolute;
-  width: 22px;
-  height: 22px;
-  left: -100px;
-  top: 200px;
-  z-index: 3;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 80%;
+  background-color: rgba(170, 139, 122, 0.3);
 }
 
-/* Arrow */
-.next-arrow {
-  position: absolute;
-    width: 66px;
-    height: 27px;
-    left: 117px;
-    top: 250px;
-    z-index: 3;
+/* RTL (Arabic) specific styles */
+.rtl .title-row {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+.rtl .feature-title,
+.rtl .feature-description {
+  text-align: right;
+  font-family: 'TheSansArabic', sans-serif;
+}
+
+.rtl .feature-title {
+  color: #FFFFFF;
+}
+
+.rtl .feature-description {
+  line-height: 1.8;
+}
+
+.rtl .feature-item:not(:last-child)::after {
+  right: -20px;
+
+}
+
+/* LTR (English) specific styles */
+.ltr .title-row {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.ltr .feature-title {
+  text-align: left;
+  font-family: 'Cairo', sans-serif;
+  font-size: 23px;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+
+.ltr .feature-description {
+  text-align: left;
+  font-family: 'Cairo', sans-serif;
+  margin-left: 33px;
+  line-height: auto;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.ltr .feature-item:not(:last-child)::after {
+  right: 0;
+
 }
 </style>
-  
