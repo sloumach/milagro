@@ -82,22 +82,13 @@ export default {
     name: 'Profile',
     data() {
         return {
-            currentLang: localStorage.getItem('currentLang') || 'ar',
+            currentLang: localStorage.getItem('currentLang') || 'en',
             activeTab: 'info',
             form: {
                 firstName: '',
                 lastName: '',
                 email: '',
                 phone: ''
-            }
-        }
-    },
-    watch: {
-        currentLang: {
-            immediate: true,
-            handler(newLang) {
-                document.documentElement.dir = newLang === 'en' ? 'ltr' : 'rtl';
-                document.documentElement.lang = newLang;
             }
         }
     },
@@ -109,7 +100,6 @@ export default {
     created() {
         this.$root.$on('languageChanged', (lang) => {
             this.currentLang = lang;
-            localStorage.setItem('currentLang', lang);
         });
     },
     beforeDestroy() {

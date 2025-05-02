@@ -31,46 +31,11 @@
 
                 <!-- Orders Content -->
                 <div class="profile-content">
-                    <div v-if="!orders || orders.length === 0" class="empty-orders">
+                    <div v-if="orders.length === 0" class="empty-orders">
                         <img src="../../../../public/assets/img/orders-icon.png" alt="Empty Orders" class="empty-orders-icon" />
                         <p class="empty-orders-text">
                             {{ currentLang === 'en' ? 'Your order list is empty' : 'قائمة طلباتك فارغة' }}
                         </p>
-                    </div>
-                    <div v-else class="orders-list">
-                        <div v-for="order in orders" :key="order.id" class="order-card">
-                            <div class="order-header">
-                                <div class="order-id">
-                                    {{ order.id }}
-                                    <img src="../../../../public/assets/img/Cart.png" alt="Cart" class="cart-icon" />
-                                </div>
-                                <div class="order-status">
-                                    {{ currentLang === 'en' ? 'Complete' : 'مكتمل' }}
-                                </div>
-                            </div>
-                            <div class="order-items">
-                                <div v-for="item in order.items" :key="item.id" class="order-item">
-                                    <div class="item-image">
-                                        <img :src="item.image" :alt="currentLang === 'en' ? item.nameEn : item.nameAr" />
-                                    </div>
-                                    <div class="item-details">
-                                        <div class="item-name">{{ currentLang === 'en' ? item.nameEn : item.nameAr }}</div>
-                                        <div class="item-specs">{{ item.specs }} حبة</div>
-                                        <div class="item-quantity">الكمية: {{ item.quantity }}</div>
-                                        <div class="item-price">KD {{ item.price }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="order-footer">
-                                <div class="order-total">
-                                    <span>الإجمالي:</span>
-                                    <span>KD {{ order.total }}</span>
-                                </div>
-                                <router-link :to="'/account/orders/' + order.id.replace('#', '')" class="details-btn">
-                                    {{ currentLang === 'en' ? 'Details' : 'التفاصيل' }}
-                                </router-link>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -83,74 +48,13 @@ export default {
     name: 'Orders',
     data() {
         return {
-            currentLang: localStorage.getItem('currentLang') || 'ar',
-            orders: [
-                {
-                    id: '#CTH-198203',
-                    status: 'complete',
-                    items: [
-                        {
-                            id: 1,
-                            nameEn: 'Luxury Macaron Box',
-                            nameAr: 'الماكرون | مكس',
-                            quantity: 1,
-                            specs: '38',
-                            price: '27.000',
-                            image: '/assets/img/macaron1.png'
-                        },
-                        {
-                            id: 2,
-                            nameEn: 'Milagro Diffuser',
-                            nameAr: 'دفيوزر ميلاغرو',
-                            quantity: 1,
-                            specs: '30',
-                            price: '11.000',
-                            image: '/assets/img/diffuser1.png'
-                        }
-                    ],
-                    total: '38.000'
-                },
-                {
-                    id: '#CTH-671892',
-                    status: 'complete',
-                    items: [
-                        {
-                            id: 3,
-                            nameEn: 'Luxury Macaron Box',
-                            nameAr: 'الماكرون | مكس',
-                            quantity: 1,
-                            specs: '38',
-                            price: '27.000',
-                            image: '/assets/img/macaron1.png'
-                        },
-                        {
-                            id: 4,
-                            nameEn: 'Milagro Diffuser',
-                            nameAr: 'دفيوزر ميلاغرو',
-                            quantity: 1,
-                            specs: '30',
-                            price: '14.000',
-                            image: '/assets/img/diffuser1.png'
-                        }
-                    ],
-                    total: '41.000'
-                }
-            ]
-        }
-    },
-    watch: {
-        currentLang: {
-            immediate: true,
-            handler(newLang) {
-                document.documentElement.dir = newLang === 'en' ? 'ltr' : 'rtl';
-                document.documentElement.lang = newLang;
-            }
+            currentLang: localStorage.getItem('currentLang') || 'en',
+            orders: []
         }
     },
     created() {
         this.$root.$on('languageChanged', (lang) => {
             this.currentLang = lang;
-            localStorage.setItem('currentLang', lang);
         });
     },
     beforeDestroy() {
@@ -324,179 +228,5 @@ export default {
     .profile-sidebar {
         width: 100%;
     }
-}
-
-.orders-list {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.order-card {
-    background: rgba(33, 42, 30, 0.95);
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid rgba(170, 139, 122, 0.2);
-}
-
-.order-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    background: rgba(33, 42, 30, 0.95);
-    border-bottom: 1px solid rgba(170, 139, 122, 0.2);
-}
-
-.order-id {
-    color: #FFFFFF;
-    font-size: 18px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.cart-icon {
-    width: 20px;
-    height: 20px;
-    opacity: 0.8;
-}
-
-.order-status {
-    color: #CCB3A5;
-    font-size: 16px;
-}
-
-.order-items {
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.order-item {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-}
-
-.item-image {
-    width: 64px;
-    height: 64px;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #FFFFFF;
-    flex-shrink: 0;
-}
-
-.item-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.item-details {
-    flex: 1;
-    text-align: right;
-}
-
-.item-name {
-    color: #FFFFFF;
-    font-size: 18px;
-    margin-bottom: 8px;
-}
-
-.item-specs {
-    color: #CCB3A5;
-    font-size: 16px;
-    margin-bottom: 4px;
-}
-
-.item-quantity {
-    color: #CCB3A5;
-    font-size: 16px;
-    margin-bottom: 4px;
-}
-
-.item-price {
-    color: #FFFFFF;
-    font-size: 16px;
-    font-weight: 500;
-    margin-top: 8px;
-}
-
-.order-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    border-top: 1px solid rgba(170, 139, 122, 0.2);
-}
-
-.order-total {
-    color: #FFFFFF;
-    font-size: 18px;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.details-btn {
-    background: none;
-    border: none;
-    color: #CCB3A5;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 4px 8px;
-    text-decoration: underline;
-}
-
-/* RTL specific styles for orders */
-.rtl .order-card {
-    text-align: right;
-}
-
-.rtl .item-details {
-    text-align: right;
-}
-
-.rtl .order-id,
-.rtl .order-status,
-.rtl .item-name,
-.rtl .item-specs,
-.rtl .item-quantity,
-.rtl .item-price,
-.rtl .order-total,
-.rtl .details-btn {
-    font-family: 'TheSansArabic', sans-serif;
-}
-
-/* LTR specific styles for orders */
-.ltr .order-card {
-    text-align: left;
-}
-
-.ltr .item-details {
-    text-align: left;
-}
-
-.ltr .order-id,
-.ltr .order-status,
-.ltr .item-name,
-.ltr .item-specs,
-.ltr .item-quantity,
-.ltr .item-price,
-.ltr .order-total,
-.ltr .details-btn {
-    font-family: 'Cairo', sans-serif;
-}
-
-.profile-content {
-    padding: 0;
-    min-height: auto;
-    justify-content: flex-start;
-    align-items: flex-start;
 }
 </style>

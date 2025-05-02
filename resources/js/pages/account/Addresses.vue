@@ -11,7 +11,7 @@
                 <div class="profile-sidebar">
                     <div class="sidebar-item" >
                         <router-link to="/account/profile" class="sidebar-link">
-                        {{ currentLang === 'en' ? 'My Information' : 'معلوماتي' }}
+                            {{ currentLang === 'en' ? 'My Information' : 'معلوماتي' }}
                         </router-link>
                     </div>
                     <div class="sidebar-item" :class="{ active: activeTab === 'info' }">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="sidebar-item">
                         <router-link to="/account/orders" class="sidebar-link">
-                        {{ currentLang === 'en' ? 'My Orders' : 'طلباتي' }}
+                            {{ currentLang === 'en' ? 'My Orders' : 'طلباتي' }}
                         </router-link>
                     </div>
                     <div class="sidebar-item">
@@ -131,7 +131,7 @@ export default {
     name: 'Addresses',
     data() {
         return {
-            currentLang: localStorage.getItem('currentLang') || 'ar',
+            currentLang: localStorage.getItem('currentLang') || 'en',
             activeTab: 'info',
             showAddAddressModal: false,
             activeAddressIndex: null,
@@ -162,15 +162,6 @@ export default {
             }
         }
     },
-    watch: {
-        currentLang: {
-            immediate: true,
-            handler(newLang) {
-                document.documentElement.dir = newLang === 'en' ? 'ltr' : 'rtl';
-                document.documentElement.lang = newLang;
-            }
-        }
-    },
     computed: {
         addresses() {
             return this.rawAddresses.map(address => ({
@@ -189,17 +180,21 @@ export default {
             }
         },
         editAddress(index) {
+            // Implement edit functionality
             console.log('Edit address:', this.addresses[index]);
         },
         deleteAddress(index) {
+            // Implement delete functionality
             this.rawAddresses.splice(index, 1);
         },
         handleAddAddress() {
+            // Add new address to the list
             this.rawAddresses.push({
                 block: this.newAddress.block,
                 street: this.newAddress.street,
                 buildingNumber: this.newAddress.buildingNumber
             });
+            // Reset form and close modal
             this.newAddress = {
                 governorate: '',
                 area: '',
@@ -217,7 +212,6 @@ export default {
     created() {
         this.$root.$on('languageChanged', (lang) => {
             this.currentLang = lang;
-            localStorage.setItem('currentLang', lang);
         });
     },
     beforeDestroy() {

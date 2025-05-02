@@ -69,13 +69,13 @@ export default {
   methods: {
     switchLanguage(lang) {
       this.currentLang = lang;
+      // Save to localStorage
       localStorage.setItem('currentLang', lang);
+      // Emit language change event to root
       this.$root.$emit('languageChanged', lang);
+      // Refresh the page
+      window.location.reload();
     }
-  },
-  created() {
-    // Emit initial language on component creation
-    this.$root.$emit('languageChanged', this.currentLang);
   },
   computed: {
     orderedLinks() {
@@ -83,6 +83,14 @@ export default {
         return [...this.links].reverse();
       }
       return this.links;
+    }
+  },
+  created() {
+    // Set initial language from localStorage if exists
+    const savedLang = localStorage.getItem('currentLang');
+    if (savedLang) {
+      this.currentLang = savedLang;
+      this.$root.$emit('languageChanged', savedLang);
     }
   }
 };

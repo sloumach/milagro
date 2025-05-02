@@ -62,7 +62,7 @@ export default {
     name: 'CreateAccount',
     data() {
         return {
-            currentLang: 'ar', // Default language
+            currentLang: localStorage.getItem('currentLang') || 'en',
             form: {
                 firstName: '',
                 lastName: '',

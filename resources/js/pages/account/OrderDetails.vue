@@ -118,7 +118,7 @@ export default {
     name: 'OrderDetails',
     data() {
         return {
-            currentLang: localStorage.getItem('currentLang') || 'ar'
+            currentLang: localStorage.getItem('currentLang') || 'en',
         }
     },
     watch: {

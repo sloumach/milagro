@@ -54,7 +54,7 @@ export default {
     name: 'Welcome',
     data() {
         return {
-            currentLang: 'ar',
+            currentLang: localStorage.getItem('currentLang') || 'en',
             phoneNumber: ''
         }
     },
