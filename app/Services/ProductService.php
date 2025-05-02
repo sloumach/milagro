@@ -67,8 +67,20 @@ class ProductService
     public function delete(int $id): void
     {
         $product = Product::findOrFail($id);
-        $product->images()->delete();
+
+        // Supprimer les fichiers images du disque
+        foreach ($product->images as $img) {
+            if ($img->image_path && file_exists(public_path($img->image_path))) {
+                unlink(public_path($img->image_path));
+            }
+            $img->delete(); // Supprimer la ligne de la table product_images
+        }
+
+        // Détacher les tags
         $product->tags()->detach();
+
+        // Supprimer le produit lui-même
         $product->delete();
     }
+
 }
