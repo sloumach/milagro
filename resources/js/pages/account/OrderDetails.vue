@@ -6,6 +6,23 @@
                 {{ currentLang === 'en' ? 'My Profile' : 'ملفي الشخصي' }}
             </h1>
 
+            <!-- Navigation link with arrow -->
+            <div class="orders-navigation">
+                <router-link to="/account/orders" class="nav-link">
+                    <span v-if="currentLang === 'en'">
+                        <span class="white-text">My Orders</span> <span class="slash-text">/</span> <span class="highlight-text">Order Details</span>
+                    </span>
+                    <span v-else>
+                        <span class="white-text">طلباتي</span> <span class="slash-text">/</span> <span class="highlight-text">تفاصيل الطلب</span>
+                    </span>
+                    <img 
+                        src="../../../../public/assets/img/arrow-right.png" 
+                        alt="Arrow" 
+                        class="arrow-icon"
+                    />
+                </router-link>
+            </div>
+
             <div class="profile-layout">
                 <!-- Sidebar -->
                 <div class="profile-sidebar">
@@ -157,6 +174,7 @@ export default {
 .profile-title {
     color: #AA8B7A;
     font-size: 42px;
+
     position: relative;
     top: -45px;
 }
@@ -181,15 +199,6 @@ export default {
     position: relative;
 }
 
-/* RTL Sidebar Styles */
-.rtl .sidebar-item {
-    font-family: 'TheSansArabic', sans-serif;
-    font-size: 20px;
-    text-align: right;
-    padding-bottom: 0;
-    margin-bottom: 16px;
-}
-
 .rtl .sidebar-item.active::after {
     content: "";
     position: absolute;
@@ -198,16 +207,7 @@ export default {
     right: -159px;
     height: 2px;
     background: #AA8B7A;
-    width: 114%;
-}
-
-/* LTR Sidebar Styles */
-.ltr .sidebar-item {
-    font-family: 'Cairo', sans-serif;
-    font-size: 20px;
-    text-align: left;
-    padding-bottom: 0;
-    margin-bottom: 16px;
+    width: 123%;
 }
 
 .ltr .sidebar-item.active::after {
@@ -218,7 +218,24 @@ export default {
     right: 0;
     height: 2px;
     background: #AA8B7A;
-    width: 138%;
+    width: 145%;
+}
+
+.ltr .sidebar-item {
+    font-family: 'Philosopher', serif !important;
+    font-size: 20px;
+    padding-bottom: 0px;
+    margin-bottom: 16px;
+}
+
+.rtl .sidebar-item {
+    font-size: 20px;
+    padding-bottom: 0px;
+    margin-bottom: 16px;
+}
+
+.sidebar-item:last-child {
+    margin-bottom: 0;
 }
 
 .sidebar-item:hover {
@@ -229,8 +246,20 @@ export default {
     color: #AA8B7A;
 }
 
+.sidebar-item.logout {
+    color: #AA8B7A;
+    margin-top: 20px;
+}
+
 .profile-content {
     flex: 1;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 460px;
 }
 
 .order-details {
@@ -423,5 +452,71 @@ export default {
     .profile-sidebar {
         width: 100%;
     }
+}
+
+/* Orders Navigation Link Styles */
+.orders-navigation {
+    position: relative;
+    top: -40px;
+    margin-bottom: 10px;
+    background-color: #212A1E;
+    padding: 15px 0px;
+    
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    color: #AA8B7A;
+    text-decoration: none;
+    font-size: 20px;
+    transition: color 0.3s;
+    width: 100%;
+    gap: 29px;
+    
+}
+
+.white-text {
+    color: #FFFFFF;
+}
+
+.highlight-text {
+    color: #CCB3A5;
+}
+
+.slash-text {
+    color: #AA8B7A;
+    margin: 0 4px;
+}
+
+.rtl .nav-link {
+    font-family: 'TheSansArabic', sans-serif;
+    justify-content: start;
+    flex-direction: row-reverse;
+}
+
+.ltr .nav-link {
+    font-family: Philosopher, serif !important;
+    justify-content: start;
+    flex-direction: row-reverse;
+}
+
+.nav-link:hover {
+    color: #CCB3A5;
+}
+
+.arrow-icon {
+    width: 112px;
+    height: 15px;
+    opacity: 0.8;
+}
+
+.rtl .arrow-icon {
+    margin-right: 10px;
+}
+
+.ltr .arrow-icon {
+    margin-left: 0px;
+    transform: scaleX(-1);
 }
 </style>
