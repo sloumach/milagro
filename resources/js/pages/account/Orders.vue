@@ -63,7 +63,7 @@
                             </div>
                             <div class="order-footer">
                                 <div class="order-total">
-                                    <span>الإجمالي:</span>
+                                    <span>{{ currentLang === 'en' ? 'Total:' : 'الإجمالي:' }}</span>
                                     <span>KD {{ order.total }}</span>
                                 </div>
                                 <router-link :to="'/account/orders/' + order.id.replace('#', '')" class="details-btn">
@@ -138,19 +138,9 @@ export default {
             ]
         }
     },
-    watch: {
-        currentLang: {
-            immediate: true,
-            handler(newLang) {
-                document.documentElement.dir = newLang === 'en' ? 'ltr' : 'rtl';
-                document.documentElement.lang = newLang;
-            }
-        }
-    },
     created() {
         this.$root.$on('languageChanged', (lang) => {
             this.currentLang = lang;
-            localStorage.setItem('currentLang', lang);
         });
     },
     beforeDestroy() {
@@ -233,6 +223,10 @@ export default {
     margin-bottom: 16px;
 }
 
+.sidebar-item:last-child {
+    margin-bottom: 0;
+}
+
 .sidebar-item:hover {
     color: #AA8B7A;
 }
@@ -241,12 +235,13 @@ export default {
     color: #AA8B7A;
 }
 
+.sidebar-item.logout {
+    color: #AA8B7A;
+    margin-top: 20px;
+}
+
 .profile-content {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 232px;
 }
 
 .empty-orders {
@@ -254,12 +249,12 @@ export default {
     flex-direction: column;
     align-items: center;
     gap: 24px;
+    margin-top: 40px;
 }
 
 .empty-orders-icon {
     width: 139px;
     height: 139px;
-
     opacity: 0.8;
 }
 
@@ -274,8 +269,7 @@ export default {
     direction: rtl;
 }
 
-.rtl .profile-title,
-.rtl .empty-orders-text {
+.rtl .profile-title {
     font-family: 'TheSansArabic', sans-serif;
 }
 
@@ -284,21 +278,26 @@ export default {
     text-align: right;
 }
 
+.rtl .empty-orders-text {
+    font-family: 'TheSansArabic', sans-serif;
+}
+
 /* LTR (English) Styles */
 .ltr {
     direction: ltr;
 }
 
-.ltr .profile-title,
-.ltr .empty-orders-text {
+.ltr .profile-title {
     font-family: 'Philosopher', serif;
 }
-.ltr .empty-orders-text {
-    font-family: 'Cairo', sans-serif !important;
-}
+
 .ltr .sidebar-item {
     font-family: 'Cairo', sans-serif;
     text-align: left;
+}
+
+.ltr .empty-orders-text {
+    font-family: 'Cairo', sans-serif;
 }
 
 .sidebar-link {
@@ -326,6 +325,7 @@ export default {
     }
 }
 
+/* Orders List Styles */
 .orders-list {
     width: 100%;
     display: flex;
@@ -399,7 +399,14 @@ export default {
 
 .item-details {
     flex: 1;
+}
+
+.rtl .item-details {
     text-align: right;
+}
+
+.ltr .item-details {
+    text-align: left;
 }
 
 .item-name {
@@ -458,10 +465,6 @@ export default {
     text-align: right;
 }
 
-.rtl .item-details {
-    text-align: right;
-}
-
 .rtl .order-id,
 .rtl .order-status,
 .rtl .item-name,
@@ -478,10 +481,6 @@ export default {
     text-align: left;
 }
 
-.ltr .item-details {
-    text-align: left;
-}
-
 .ltr .order-id,
 .ltr .order-status,
 .ltr .item-name,
@@ -491,12 +490,5 @@ export default {
 .ltr .order-total,
 .ltr .details-btn {
     font-family: 'Cairo', sans-serif;
-}
-
-.profile-content {
-    padding: 0;
-    min-height: auto;
-    justify-content: flex-start;
-    align-items: flex-start;
 }
 </style>

@@ -22,24 +22,39 @@
       </div>
 
       <div class="navbar__center">
-        <router-link v-for="link in orderedLinks" :key="link.path" :to="link.path" exact-active-class="active">
+        <a v-for="link in orderedLinks" :key="link.path" 
+           @click="handleNavClick(link)" 
+           :class="{ active: isActive(link.path) }">
           {{ translations[link.key][currentLang] }}
-        </router-link>
+        </a>
       </div>
 
       <div class="navbar__right">
         <img src="../../../public/assets/img/logo.png" alt="Logo" class="logo" />
       </div>
     </nav>
+
+    <!-- Contact Modal -->
+    <ContactModal 
+      :show="showContactModal" 
+      :currentLang="currentLang"
+      @close="showContactModal = false" 
+    />
   </div>
 </template>
 
 <script>
+import ContactModal from './ContactModal.vue';
+
 export default {
   name: "Navbar",
+  components: {
+    ContactModal
+  },
   data() {
     return {
       currentLang: localStorage.getItem('currentLang') || 'ar',
+      showContactModal: false,
       translations: {
         contact: {
           ar: 'تواصل معنا',
@@ -71,11 +86,18 @@ export default {
       this.currentLang = lang;
       localStorage.setItem('currentLang', lang);
       this.$root.$emit('languageChanged', lang);
+      window.location.reload();
+    },
+    handleNavClick(link) {
+      if (link.key === 'contact') {
+        this.showContactModal = true;
+      } else {
+        this.$router.push(link.path);
+      }
+    },
+    isActive(path) {
+      return this.$route.path === path;
     }
-  },
-  created() {
-    // Emit initial language on component creation
-    this.$root.$emit('languageChanged', this.currentLang);
   },
   computed: {
     orderedLinks() {
@@ -83,6 +105,13 @@ export default {
         return [...this.links].reverse();
       }
       return this.links;
+    }
+  },
+  created() {
+    const savedLang = localStorage.getItem('currentLang');
+    if (savedLang) {
+      this.currentLang = savedLang;
+      this.$root.$emit('languageChanged', savedLang);
     }
   }
 };
@@ -158,6 +187,7 @@ export default {
   display: flex;
   align-items: flex-end;
   height: 48px;
+  cursor: pointer;
 }
 
 /* Fix links margin when LTR */

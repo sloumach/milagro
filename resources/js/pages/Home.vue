@@ -107,7 +107,7 @@ export default {
   name: "Home",
   data() {
     return {
-      currentLang: 'ar',
+      currentLang: localStorage.getItem('currentLang') || 'en',
       swapped: false,
       translations: {
         description: {
