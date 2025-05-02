@@ -53,7 +53,6 @@ const routes = [
         name: 'OrderDetails',
         component: OrderDetails
     }
-    // You can add more routes here later
 ];
 
 const router = new VueRouter({
