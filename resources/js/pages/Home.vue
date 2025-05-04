@@ -5,42 +5,31 @@
       <div class="hero-figma-small">
         <!-- Top star -->
         <img src="../../../public/assets/img/star.png" class="star star-top" alt="star" />
-
+        <img src="../../../public/assets/img/star.png" class="star star-bottom" alt="star" />
+        <img v-if="currentLang === 'ar'" src="../../../public/assets/img/nextstep.png" class="next-arrow" alt="التالي"
+          @click="swapOvals" />
+        <img v-if="currentLang === 'en'" src="../../../public/assets/img/nextanglais.png"
+          class="next-arrow next-arrow-en" alt="next" @click="swapOvals" />
         <div class="ovals-row">
-          <!-- Bottom star (moved outside oval containers) -->
-          <img src="../../../public/assets/img/star.png" class="star star-bottom" alt="star" />
-
-          <!-- Conditional Oval Order -->
-          <template v-if="!swapped">
-            <!-- Left oval -->
-            <div class="oval-container"
-              :style="{ transform: currentLang === 'en' ? 'translateX(0)' : 'translateX(0)' }">
-              <img src="../../../public/assets/img/chocolate.png" class="img-oval oval-choco" alt="Chocolate" />
+          <!-- Images section -->
+          <div class="slides-container" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
+            <div class="slides-wrapper" :style="{ transform: `translateX(-${currentSlide * 25}%)` }">
+              <!-- All images in a single row with different sizes based on position -->
+              <div class="oval-container" :class="{ 'primary': currentSlide === 0, 'secondary': currentSlide === 3 }">
+                <img src="../../../public/assets/img/homeslider/Group76.png" class="img-oval" alt="Pastries" />
+              </div>
+              <div class="oval-container" :class="{ 'primary': currentSlide === 1, 'secondary': currentSlide === 0 }">
+                <img src="../../../public/assets/img/homeslider/Group77.png" class="img-oval" alt="Chocolate Box" />
+              </div>
+              <div class="oval-container" :class="{ 'primary': currentSlide === 2, 'secondary': currentSlide === 1 }">
+                <img src="../../../public/assets/img/homeslider/Group78.png" class="img-oval"
+                  alt="Flowers & Chocolate" />
+              </div>
+              <div class="oval-container" :class="{ 'primary': currentSlide === 3, 'secondary': currentSlide === 2 }">
+                <img src="../../../public/assets/img/homeslider/Group79.png" class="img-oval" alt="Chocolate Display" />
+              </div>
             </div>
-            <!-- Right oval -->
-            <div class="oval-container"
-              :style="{ transform: currentLang === 'en' ? 'translateX(0)' : 'translateX(0)' }">
-              <img src="../../../public/assets/img/sale.png" class="img-oval oval-sale" alt="Sale" />
-            </div>
-          </template>
-          <template v-else>
-            <!-- Left oval (swapped) -->
-            <div class="oval-container"
-              :style="{ transform: currentLang === 'en' ? 'translateX(-255px)' : 'translateX(255px)' }">
-              <img src="../../../public/assets/img/chocolate.png" class="img-oval oval-sale" alt="Sale" />
-            </div>
-            <!-- Right oval (swapped) -->
-            <div class="oval-container"
-              :style="{ transform: currentLang === 'en' ? 'translateX(255px)' : 'translateX(-255px)' }">
-              <img src="../../../public/assets/img/sale.png" class="img-oval oval-choco" alt="Chocolate" />
-            </div>
-          </template>
-
-          <!-- Arrow between ovals -->
-          <img v-if="currentLang === 'ar'" src="../../../public/assets/img/nextstep.png" class="next-arrow" alt="التالي"
-            @click="swapOvals" />
-          <img v-if="currentLang === 'en'" src="../../../public/assets/img/nextanglais.png"
-            class="next-arrow next-arrow-en" alt="next" @click="swapOvals" />
+          </div>
         </div>
       </div>
 
@@ -108,6 +97,7 @@ export default {
   data() {
     return {
       currentLang: localStorage.getItem('currentLang') || 'en',
+      currentSlide: 0,
       swapped: false,
       translations: {
         description: {
@@ -155,7 +145,7 @@ export default {
   },
   methods: {
     swapOvals() {
-      this.swapped = !this.swapped;
+      this.currentSlide = (this.currentSlide + 1) % 4; // 4 images total
     }
   },
   created() {
@@ -284,25 +274,6 @@ export default {
   align-items: center;
 }
 
-.img-oval {
-  border-radius: 50% / 30%;
-  width: 220px;
-  height: 320px;
-  border: 4px solid #aa8b7a;
-  background: #212A1E;
-  object-fit: cover;
-  z-index: 3;
-  display: block;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  transition: all 0.6s ease-in-out;
-  transform-origin: center;
-  transition: all 0.6s ease-in-out;
-  will-change: transform, opacity;
-}
-
 .bottom-decor {
   position: absolute;
   left: -50px;
@@ -314,12 +285,12 @@ export default {
 
 .next-arrow {
   position: absolute;
-  width: 77px;
-  height: 30px;
-  left: 170px;
-  top: 387px;
+  width: 88px;
+  height: 34px;
+  left: 48vh;
+  top: 62vh;
   z-index: 4;
-  transition: transform 0.3s ease;
+  transition: transform .3s ease;
   cursor: pointer;
 }
 
@@ -368,8 +339,8 @@ export default {
   position: absolute;
   width: 33px;
   height: 33px;
-  left: 19px;
-  top: 383px;
+  left: 25vh;
+  top: 58vh;
   z-index: 2;
 }
 
@@ -379,26 +350,27 @@ export default {
   width: 46px;
   height: 46px;
   left: 450px;
-  top: 78px;
+  top: 14px;
   z-index: 2;
 }
 
 /* Ovals row */
 .ovals-row {
-  position: absolute;
-  left: 189px;
-  top: 85px;
+  position: relative;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
-  gap: 24px;
+  align-items: center;
+  width: 91%;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 /* Reverse ovals row for English */
 .ltr .ovals-row {
   flex-direction: row-reverse;
-  left: auto;
-  right: 182px;
+  left: 0;
+  right: 0;
 }
 
 /* Left oval */
@@ -419,8 +391,8 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  width: 99vw;
+  justify-content: center;
+  width: 100%;
   height: 70vh;
   background: #212A1E;
   overflow: hidden;
@@ -438,21 +410,24 @@ export default {
 
 .hero-figma-small {
   position: relative;
-  width: 46vw;
+  width: 50%;
   height: 100%;
   background: #212A1E;
   overflow: hidden;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .milagro-content {
-  flex: 1;
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
   padding-left: 0px;
-  padding-right: 11vw;
+  padding-right: 8%;
   text-align: right;
 }
 
@@ -460,7 +435,7 @@ export default {
 .ltr .milagro-content {
   align-items: flex-start;
   padding-right: 0px;
-  padding-left: 11vw;
+  padding-left: 8%;
   text-align: left;
 }
 
@@ -537,20 +512,21 @@ export default {
 /* Reverse arrow for English */
 .ltr .next-arrow {
   left: auto;
-  right: 170px;
+  right: 36vh;
+
 
 }
 
 /* Adjust top star position for English */
 .ltr .star.star-top {
   left: auto;
-  right: 435px;
+  right: 42vh;
 }
 
 /* Adjust bottom star position for English */
 .ltr .star.star-bottom {
   left: auto;
-  right: 19px;
+  right: 5vh;
 }
 
 /* Add transform animations for swapped state */
@@ -679,5 +655,67 @@ export default {
 .ltr .feature-item:not(:last-child)::after {
   right: 0;
 
+}
+
+.slides-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.slides-wrapper {
+  display: flex;
+  transition: transform 0.8s ease;
+  width: 175%;
+}
+
+.oval-container {
+  position: relative;
+  flex: 0 0 23%;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.6s ease;
+}
+
+/* Primary image (first visible - large) */
+.primary .img-oval {
+  width: 40vh;
+  height: 65vh;
+  transform: scale(1);
+  z-index: 3;
+}
+
+/* Secondary image (second visible - smaller) */
+.secondary .img-oval {
+  width: 38vh;
+  height: 61vh;
+  transform: scale(0.9);
+  opacity: 0.9;
+  z-index: 2;
+}
+
+/* Hidden images */
+.oval-container:not(.primary):not(.secondary) .img-oval {
+  transform: scale(0.8);
+  opacity: 0.5;
+}
+
+.img-oval {
+  border-radius: 50% / 30%;
+
+  object-fit: cover;
+  background: #212A1E;
+  z-index: 2;
+  padding: 0;
+  transition: all 0.6s ease-in-out;
+}
+
+/* Remove the different size classes */
+.oval-choco,
+.oval-sale {
+  width: 231px;
+  height: 376px;
 }
 </style>
