@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -52,5 +53,13 @@ Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(functio
 Route::middleware(['auth:sanctum', 'role:user'])->prefix('user')->group(function () {
     Route::apiResource('orders', UserOrderController::class)->only(['index', 'store', 'show']);
 });
+Route::middleware(['auth:sanctum', 'role:user'])->prefix('user/cart')->group(function () {
+    Route::get('/', [UserCartController::class, 'index']);
+    Route::post('/', [UserCartController::class, 'store']);
+    Route::put('/', [UserCartController::class, 'update']);
+    Route::delete('/', [UserCartController::class, 'destroy']);
+    Route::delete('/clear', [UserCartController::class, 'clear']);
+});
+
 
 
