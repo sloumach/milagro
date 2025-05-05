@@ -2,14 +2,16 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\User\UserCartController;
+use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\Admin\AdminCategoriesController;
 use App\Http\Controllers\Admin\AdminProductsController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Admin\AdminCategoriesController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
 
 
@@ -48,4 +50,16 @@ Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(functio
     Route::apiResource('categories', AdminCategoriesController::class);
     Route::apiResource('products', AdminProductsController::class);
 });
+Route::middleware(['auth:sanctum', 'role:user'])->prefix('user')->group(function () {
+    Route::apiResource('orders', UserOrderController::class)->only(['index', 'store', 'show']);
+});
+Route::middleware(['auth:sanctum', 'role:user'])->prefix('user/cart')->group(function () {
+    Route::get('/', [UserCartController::class, 'index']);
+    Route::post('/', [UserCartController::class, 'store']);
+    Route::put('/', [UserCartController::class, 'update']);
+    Route::delete('/', [UserCartController::class, 'destroy']);
+    Route::delete('/clear', [UserCartController::class, 'clear']);
+});
+
+
 
