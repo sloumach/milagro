@@ -4,8 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserOrderController;
+use App\Http\Controllers\Admin\AdminStatsController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\AdminClientController;
+use App\Http\Controllers\Admin\AdminCouponController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\AdminCategoriesController;
@@ -18,7 +21,7 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
-
+//Auth routes
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest')
     ->name('register');
@@ -46,10 +49,8 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
-Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(function () {
-    Route::apiResource('categories', AdminCategoriesController::class);
-    Route::apiResource('products', AdminProductsController::class);
-});
+
+//user routes
 Route::middleware(['auth:sanctum', 'role:user'])->prefix('user')->group(function () {
     Route::apiResource('orders', UserOrderController::class)->only(['index', 'store', 'show']);
 });
@@ -60,6 +61,27 @@ Route::middleware(['auth:sanctum', 'role:user'])->prefix('user/cart')->group(fun
     Route::delete('/', [UserCartController::class, 'destroy']);
     Route::delete('/clear', [UserCartController::class, 'clear']);
 });
+
+//admin routes
+Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(function () {
+    Route::apiResource('categories', AdminCategoriesController::class);
+    Route::apiResource('products', AdminProductsController::class);
+    Route::apiResource('coupons', AdminCouponController::class);
+    Route::get('/clients', [AdminClientController::class, 'index']);
+    Route::get('/clients/{id}', [AdminClientController::class, 'show']);
+    Route::get('/orders', [AdminOrderController::class, 'index']);
+    Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
+
+});
+Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin/stats')->group(function () {
+    Route::get('/daily-sales', [AdminStatsController::class, 'daily']);
+    Route::get('/monthly-sales', [AdminStatsController::class, 'monthly']);
+    Route::get('/top-products', [AdminStatsController::class, 'topProducts']);
+    Route::get('/export-orders', [AdminStatsController::class, 'export']);
+
+
+});
+
 
 
 
