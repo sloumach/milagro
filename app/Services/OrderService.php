@@ -14,14 +14,24 @@ class OrderService
         return DB::transaction(function () use ($data, $user) {
             $total = 0;
 
-            // Calcul des totaux
             foreach ($data['items'] as $item) {
                 $product = Product::findOrFail($item['product_id']);
                 $total += $product->price * $item['quantity'];
             }
 
-            $discount = $data['discount_amount'] ?? 0;
-            $final = $total - $discount;
+            // 🔁 Vérification du coupon
+            $coupon = $this->validateCoupon($data['coupon_code'] ?? null);
+            $discount = 0;
+
+            if ($coupon) {
+                $discount = $coupon->type === 'percentage'
+                    ? ($total * $coupon->discount_value / 100)
+                    : $coupon->discount_value;
+
+                $coupon->increment('used_count');
+            }
+
+            $final = max(0, $total - $discount);
 
             // Création de la commande
             $order = Order::create([
@@ -36,7 +46,6 @@ class OrderService
                 'status' => 'new',
             ]);
 
-            // Création des order_items
             foreach ($data['items'] as $item) {
                 $product = Product::findOrFail($item['product_id']);
 
@@ -52,5 +61,27 @@ class OrderService
 
             return $order->load('orderItems');
         });
+    }
+
+
+    private function validateCoupon(?string $code): ?Coupon
+    {
+        if (!$code) return null;
+
+        $coupon = Coupon::where('code', $code)
+            ->where('status', 'active')
+            ->where(function ($q) {
+                $q->whereNull('valid_from')->orWhere('valid_from', '<=', now());
+            })
+            ->where(function ($q) {
+                $q->whereNull('valid_to')->orWhere('valid_to', '>=', now());
+            })
+            ->first();
+
+        if (!$coupon || ($coupon->usage_limit && $coupon->used_count >= $coupon->usage_limit)) {
+            throw new \Exception(__('Invalid or expired coupon code.'));
+        }
+
+        return $coupon;
     }
 }

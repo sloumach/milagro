@@ -69,6 +69,9 @@ Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(functio
     Route::apiResource('coupons', AdminCouponController::class);
     Route::get('/clients', [AdminClientController::class, 'index']);
     Route::get('/clients/{id}', [AdminClientController::class, 'show']);
+    Route::get('/orders', [AdminOrderController::class, 'index']);
+    Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
+
 });
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin/stats')->group(function () {
     Route::get('/daily-sales', [AdminStatsController::class, 'daily']);
