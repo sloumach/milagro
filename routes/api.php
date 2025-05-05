@@ -19,7 +19,7 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
-
+//Auth routes
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest')
     ->name('register');
@@ -48,12 +48,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(function () {
-    Route::apiResource('categories', AdminCategoriesController::class);
-    Route::apiResource('products', AdminProductsController::class);
-    Route::apiResource('coupons', AdminCouponController::class);
-});
-
+//user routes
 Route::middleware(['auth:sanctum', 'role:user'])->prefix('user')->group(function () {
     Route::apiResource('orders', UserOrderController::class)->only(['index', 'store', 'show']);
 });
@@ -63,6 +58,15 @@ Route::middleware(['auth:sanctum', 'role:user'])->prefix('user/cart')->group(fun
     Route::put('/', [UserCartController::class, 'update']);
     Route::delete('/', [UserCartController::class, 'destroy']);
     Route::delete('/clear', [UserCartController::class, 'clear']);
+});
+
+//admin routes
+Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(function () {
+    Route::apiResource('categories', AdminCategoriesController::class);
+    Route::apiResource('products', AdminProductsController::class);
+    Route::apiResource('coupons', AdminCouponController::class);
+    Route::get('/clients', [\App\Http\Controllers\Admin\ClientController::class, 'index']);
+    Route::get('/clients/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'show']);
 });
 
 
