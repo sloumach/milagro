@@ -4,8 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserOrderController;
+use App\Http\Controllers\Admin\AdminStatsController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\AdminClientController;
 use App\Http\Controllers\Admin\AdminCouponController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -65,9 +67,18 @@ Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(functio
     Route::apiResource('categories', AdminCategoriesController::class);
     Route::apiResource('products', AdminProductsController::class);
     Route::apiResource('coupons', AdminCouponController::class);
-    Route::get('/clients', [\App\Http\Controllers\Admin\ClientController::class, 'index']);
-    Route::get('/clients/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'show']);
+    Route::get('/clients', [AdminClientController::class, 'index']);
+    Route::get('/clients/{id}', [AdminClientController::class, 'show']);
 });
+Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin/stats')->group(function () {
+    Route::get('/daily-sales', [AdminStatsController::class, 'daily']);
+    Route::get('/monthly-sales', [AdminStatsController::class, 'monthly']);
+    Route::get('/top-products', [AdminStatsController::class, 'topProducts']);
+    Route::get('/export-orders', [AdminStatsController::class, 'export']);
+
+
+});
+
 
 
 

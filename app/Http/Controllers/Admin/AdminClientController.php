@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ClientService;
 use Illuminate\Http\JsonResponse;
 
-class ClientController extends Controller
+class AdminClientController extends Controller
 {
     public function __construct(protected ClientService $clientService)
     {
