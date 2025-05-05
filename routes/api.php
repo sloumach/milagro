@@ -6,6 +6,7 @@ use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\AdminCouponController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\AdminCategoriesController;
@@ -46,10 +47,13 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
 Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(function () {
     Route::apiResource('categories', AdminCategoriesController::class);
     Route::apiResource('products', AdminProductsController::class);
+    Route::apiResource('coupons', AdminCouponController::class);
 });
+
 Route::middleware(['auth:sanctum', 'role:user'])->prefix('user')->group(function () {
     Route::apiResource('orders', UserOrderController::class)->only(['index', 'store', 'show']);
 });
