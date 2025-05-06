@@ -16,45 +16,39 @@
         <router-link to="/account/profile" class="icon-link">
           <img src="../../../public/assets/img/Account.png" alt="User" class="icon" />
         </router-link>
-        <img src="../../../public/assets/img/Cart.png" alt="Bag" class="icon" />
-        <img src="../../../public/assets/img/heart.png" alt="Heart" class="icon" />
+        <router-link to="/cart" class="icon-link">
+          <img src="../../../public/assets/img/Cart.png" alt="Bag" class="icon" />
+        </router-link>
+        <router-link to="/wishlist" class="icon-link">
+          <img src="../../../public/assets/img/heart.png" alt="Heart" class="icon" />
+        </router-link>
         <img src="../../../public/assets/img/Ellipse.png" alt="Search" class="icon" />
       </div>
 
       <div class="navbar__center">
-        <a v-for="link in orderedLinks" :key="link.path" 
-           @click="handleNavClick(link)" 
-           :class="{ active: isActive(link.path) }">
+        <router-link 
+          v-for="link in orderedLinks" 
+          :key="link.path"
+          :to="link.path"
+          :class="{ active: isActive(link.path) }"
+        >
           {{ translations[link.key][currentLang] }}
-        </a>
+        </router-link>
       </div>
 
       <div class="navbar__right">
         <img src="../../../public/assets/img/logo.png" alt="Logo" class="logo" />
       </div>
     </nav>
-
-    <!-- Contact Modal -->
-    <ContactModal 
-      :show="showContactModal" 
-      :currentLang="currentLang"
-      @close="showContactModal = false" 
-    />
   </div>
 </template>
 
 <script>
-import ContactModal from './ContactModal.vue';
-
 export default {
   name: "Navbar",
-  components: {
-    ContactModal
-  },
   data() {
     return {
       currentLang: localStorage.getItem('currentLang') || 'ar',
-      showContactModal: false,
       translations: {
         contact: {
           ar: 'تواصل معنا',
@@ -75,8 +69,8 @@ export default {
       },
       links: [
         { path: '/contact', key: 'contact' },
-        { path: '/new', key: 'newArrivals' },
-        { path: '/shop', key: 'shop' },
+        { path: '/shop/new', key: 'newArrivals' },
+        { path: '/shop/boxes', key: 'shop' },
         { path: '/', key: 'home' }
       ]
     };
@@ -87,13 +81,6 @@ export default {
       localStorage.setItem('currentLang', lang);
       this.$root.$emit('languageChanged', lang);
       window.location.reload();
-    },
-    handleNavClick(link) {
-      if (link.key === 'contact') {
-        this.showContactModal = true;
-      } else {
-        this.$router.push(link.path);
-      }
     },
     isActive(path) {
       return this.$route.path === path;
@@ -152,7 +139,7 @@ export default {
   width: 31px;
   height: 32px;
   margin-left: 0;
-  filter: brightness(0) saturate(100%) invert(69%) sepia(13%) saturate(386%) hue-rotate(337deg) brightness(92%) contrast(88%);
+  filter: brightness(0) saturate(110%) invert(76%) sepia(34%) saturate(409%) hue-rotate(337deg) brightness(109%) contrast(97%);
 }
 
 /* Logo style */

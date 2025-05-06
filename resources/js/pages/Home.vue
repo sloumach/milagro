@@ -13,8 +13,11 @@
         <div class="ovals-row">
           <!-- Images section -->
           <div class="slides-container" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
-            <div class="slides-wrapper" :style="{ transform: `translateX(-${currentSlide * 25}%)` }">
-              <!-- All images in a single row with different sizes based on position -->
+            <div class="slides-wrapper"
+              :style="{ transform: currentLang === 'ar' ? 
+                `translateX(${currentSlide === 0 ? 0 : currentSlide === 1 ? 46 : currentSlide === 2 ? 89 : 131}%)` : 
+                `translateX(-${currentSlide * 25}%)` }">
+
               <div class="oval-container" :class="{ 'primary': currentSlide === 0, 'secondary': currentSlide === 3 }">
                 <img src="../../../public/assets/img/homeslider/Group76.png" class="img-oval" alt="Pastries" />
               </div>
@@ -339,8 +342,8 @@ export default {
   position: absolute;
   width: 33px;
   height: 33px;
-  left: 25vh;
-  top: 58vh;
+  left: 22vh;
+  top: 60vh;
   z-index: 2;
 }
 
@@ -366,11 +369,9 @@ export default {
   overflow: hidden;
 }
 
-/* Reverse ovals row for English */
-.ltr .ovals-row {
+/* Just reverse the direction for Arabic */
+.rtl .ovals-row {
   flex-direction: row-reverse;
-  left: 0;
-  right: 0;
 }
 
 /* Left oval */
@@ -420,6 +421,11 @@ export default {
   align-items: center;
 }
 
+/* RTL adjustment for hero section */
+.rtl .hero-figma-small {
+  width: 52%;
+}
+
 .milagro-content {
   width: 50%;
   display: flex;
@@ -429,6 +435,11 @@ export default {
   padding-left: 0px;
   padding-right: 8%;
   text-align: right;
+}
+
+/* RTL adjustment for content section */
+.rtl .milagro-content {
+  width: 32%;
 }
 
 /* Adjust content alignment for English */
@@ -665,14 +676,14 @@ export default {
 
 .slides-wrapper {
   display: flex;
-  transition: transform 0.8s ease;
   width: 175%;
+  transition: transform 0.8s ease;
 }
 
 .oval-container {
   position: relative;
   flex: 0 0 23%;
-  padding: 0 10px;
+  padding: 34px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -702,20 +713,64 @@ export default {
   opacity: 0.5;
 }
 
-.img-oval {
-  border-radius: 50% / 30%;
-
-  object-fit: cover;
-  background: #212A1E;
-  z-index: 2;
-  padding: 0;
-  transition: all 0.6s ease-in-out;
-}
-
 /* Remove the different size classes */
 .oval-choco,
 .oval-sale {
   width: 231px;
   height: 376px;
+}
+
+/* New specific styles for Arabic version */
+.rtl .slides-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.rtl .slides-wrapper {
+  display: flex;
+  width: 98%;
+  transition: transform .8s ease;
+  flex-direction: row-reverse;
+  /* Ensure normal direction */
+}
+
+.rtl .oval-container {
+  flex: 0 0 23%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 34px 10px;
+}
+
+.rtl .img-oval {
+  width: 40vh;
+  height: 65vh;
+  border-radius: 50% / 30%;
+  object-fit: cover;
+  background: #212A1E;
+  transition: all 0.6s ease;
+}
+
+/* Show first two images in Arabic */
+.rtl .primary .img-oval {
+  width: 40vh;
+  height: 65vh;
+  transform: scale(1);
+  opacity: 1;
+  z-index: 3;
+}
+
+.rtl .secondary .img-oval {
+  width: 38vh;
+  height: 61vh;
+  transform: scale(0.9);
+  opacity: 0.9;
+  z-index: 2;
+}
+
+/* Hide other images */
+.rtl .oval-container:not(.primary):not(.secondary) {
+  opacity: 0;
 }
 </style>
