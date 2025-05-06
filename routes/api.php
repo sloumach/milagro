@@ -71,6 +71,8 @@ Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(functio
     Route::get('/clients/{id}', [AdminClientController::class, 'show']);
     Route::get('/orders', [AdminOrderController::class, 'index']);
     Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
+    Route::patch('/orders/{id}/payment-status', [AdminOrderController::class, 'updatePaymentStatus']);
+
 
 });
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin/stats')->group(function () {

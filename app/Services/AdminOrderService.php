@@ -24,4 +24,13 @@ class AdminOrderService
 
         return $order->load(['user', 'orderItems.product']);
     }
+
+    public function updatePaymentStatus(int $id, string $status): Order
+    {
+        $order = Order::findOrFail($id);
+        $order->payment_status = $status;
+        $order->save();
+
+        return $order->load(['user', 'orderItems']);
+    }
 }

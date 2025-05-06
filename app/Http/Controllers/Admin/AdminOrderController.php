@@ -37,4 +37,21 @@ class AdminOrderController extends Controller
             'data' => $order,
         ]);
     }
+
+    public function updatePaymentStatus(Request $request, int $id): JsonResponse
+    {
+        $request->validate([
+            'payment_status' => 'required|in:pending,paid,failed',
+        ]);
+
+        $order = $this->adminOrderService->updatePaymentStatus($id, $request->payment_status);
+
+        return response()->json([
+            'message_en' => 'Payment status updated.',
+            'message_ar' => 'تم تحديث حالة الدفع.',
+            'data' => $order,
+        ]);
+    }
+
+
 }
