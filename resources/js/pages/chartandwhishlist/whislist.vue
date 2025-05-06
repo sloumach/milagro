@@ -370,7 +370,6 @@ export default {
     background: rgba(33, 42, 30, 0.95);
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid rgba(170, 139, 122, 0.2);
     transition: transform 0.3s ease;
 }
 
@@ -383,6 +382,7 @@ export default {
     width: 100%;
     height: 250px;
     overflow: hidden;
+    border-radius: 8px;
 }
 
 .product-image img {

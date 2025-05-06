@@ -12,7 +12,11 @@
           class="next-arrow next-arrow-en" alt="next" @click="swapOvals" />
         <div class="ovals-row">
           <!-- Images section -->
-          <div class="slides-container" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
+          <div class="slides-container" :class="currentLang === 'en' ? 'ltr' : 'rtl'"
+            @mousedown="startDrag"
+            @mousemove="onDrag"
+            @mouseup="endDrag"
+            @mouseleave="endDrag">
             <div class="slides-wrapper"
               :style="{ transform: currentLang === 'ar' ? 
                 `translateX(${currentSlide === 0 ? 0 : currentSlide === 1 ? 46 : currentSlide === 2 ? 89 : 131}%)` : 
@@ -102,6 +106,8 @@ export default {
       currentLang: localStorage.getItem('currentLang') || 'en',
       currentSlide: 0,
       swapped: false,
+      isDragging: false,
+      startX: 0,
       translations: {
         description: {
           ar: 'شوكولاتة راقية تُضفي لمسة سحرية على لحظاتك الخاصة',
@@ -147,8 +153,46 @@ export default {
     };
   },
   methods: {
+    startDrag(event) {
+      this.isDragging = true;
+      this.startX = event.clientX;
+    },
+    onDrag(event) {
+      if (!this.isDragging) return;
+      
+      const currentX = event.clientX;
+      const diffX = currentX - this.startX;
+      const isRTL = this.currentLang === 'ar';
+      
+      // If dragged more than 100px, trigger slide
+      if (Math.abs(diffX) > 100) {
+        if (isRTL) {
+          // RTL (Arabic) mode - reverse the direction
+          if (diffX < 0 && this.currentSlide > 0) {
+            // Dragged left - go to previous slide
+            this.currentSlide--;
+          } else if (diffX > 0 && this.currentSlide < 3) {
+            // Dragged right - go to next slide
+            this.currentSlide++;
+          }
+        } else {
+          // LTR (English) mode
+          if (diffX > 0 && this.currentSlide > 0) {
+            // Dragged right - go to previous slide
+            this.currentSlide--;
+          } else if (diffX < 0 && this.currentSlide < 3) {
+            // Dragged left - go to next slide
+            this.currentSlide++;
+          }
+        }
+        this.isDragging = false;
+      }
+    },
+    endDrag() {
+      this.isDragging = false;
+    },
     swapOvals() {
-      this.currentSlide = (this.currentSlide + 1) % 4; // 4 images total
+      this.currentSlide = (this.currentSlide + 1) % 4;
     }
   },
   created() {
@@ -672,12 +716,18 @@ export default {
   position: relative;
   width: 100%;
   overflow: hidden;
+  cursor: grab;
+}
+
+.slides-container:active {
+  cursor: grabbing;
 }
 
 .slides-wrapper {
   display: flex;
   width: 175%;
   transition: transform 0.8s ease;
+  will-change: transform;
 }
 
 .oval-container {
