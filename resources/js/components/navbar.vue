@@ -17,10 +17,10 @@
           <img src="../../../public/assets/img/Account.png" alt="User" class="icon" />
         </router-link>
         <router-link to="/cart" class="icon-link">
-          <img src="../../../public/assets/img/Cart.png" alt="Bag" class="icon" />
+        <img src="../../../public/assets/img/Cart.png" alt="Bag" class="icon" />
         </router-link>
         <router-link to="/wishlist" class="icon-link">
-          <img src="../../../public/assets/img/heart.png" alt="Heart" class="icon" />
+        <img src="../../../public/assets/img/heart.png" alt="Heart" class="icon" />
         </router-link>
         <img src="../../../public/assets/img/Ellipse.png" alt="Search" class="icon" />
       </div>

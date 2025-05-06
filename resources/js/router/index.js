@@ -19,7 +19,7 @@ import Chart from '../pages/chartandwhishlist/chart.vue';
 import Payment from '../pages/chartandwhishlist/Paiment.vue';
 import Contact from '../pages/Contact.vue';
 
-Vue.use(VueRouter); 
+Vue.use(VueRouter);
 
 const routes = [
     {

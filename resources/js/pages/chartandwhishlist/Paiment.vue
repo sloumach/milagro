@@ -32,13 +32,13 @@
                         <div class="step" :class="{ 'active': currentStep === 1 }">
                             <div class="step-label">{{ currentLang === 'en' ? 'Delivery' : 'التوصيل' }}</div>
                             <div class="step-number"><span>1</span></div>
-                           
-                        </div>
+
+                </div>
                         <div class="step" :class="{ 'active': currentStep === 2 }">
                             <div class="step-label">{{ currentLang === 'en' ? 'Payment' : 'الدفع' }}</div>
                             <div class="step-number"><span>2</span></div>
                             
-                        </div>
+            </div>
                         <div class="step" :class="{ 'active': currentStep === 3 }">
                             <div class="step-label">{{ currentLang === 'en' ? 'Confirmation' : 'التأكيد' }}</div>
                             <div class="step-number"><span>3</span></div>
@@ -869,7 +869,7 @@ export default {
     display: flex;
     gap: 20px;
     background: #212A1E;
-
+    
     border-radius: 8px;
     padding: 20px;
 }
@@ -1067,7 +1067,7 @@ export default {
     margin-bottom: 10px;
     background-color: #212A1E;
     padding: 15px 0px;
-
+    
 }
 
 .nav-link {
@@ -1079,7 +1079,7 @@ export default {
     transition: color 0.3s;
     width: 100%;
     gap: 29px;
-
+    
 }
 
 .rtl .nav-link {
