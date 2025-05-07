@@ -1,24 +1,30 @@
 <?php
-namespace App\Services;
+namespace App\Services\Payment;
 
 use MyFatoorah\Library\MyFatoorah;
 
 class MyFatoorahService
 {
-    protected $mfObj;
+    protected MyFatoorah $mf;
 
     public function __construct()
     {
-        $this->mfObj = new MyFatoorah(env('MYFATOORAH_API_KEY'), env('MYFATOORAH_IS_LIVE') === 'true');
+        $this->mf = new MyFatoorah(
+            config('services.myfatoorah.api_key'),
+            config('services.myfatoorah.is_live')
+        );
     }
 
-    public function createInvoice($data)
+    public function initiatePayment(array $payload): array
     {
-        return $this->mfObj->sendPayment($data);
+        return $this->mf->sendPayment($payload);
     }
 
-    public function getPaymentStatus($paymentId)
+    public function getStatus(string $paymentId): array
     {
-        return $this->mfObj->getPaymentStatus(['Key' => $paymentId, 'KeyType' => 'PaymentId']);
+        return $this->mf->getPaymentStatus([
+            'Key' => $paymentId,
+            'KeyType' => 'PaymentId'
+        ]);
     }
 }
