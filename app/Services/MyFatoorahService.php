@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Payment;
+namespace App\Services;
 
 use MyFatoorah\Library\MyFatoorah;
 
@@ -9,15 +9,19 @@ class MyFatoorahService
 
     public function __construct()
     {
-        $this->mf = new MyFatoorah(
-            config('services.myfatoorah.api_key'),
-            config('services.myfatoorah.is_live')
-        );
+
+
     }
 
     public function initiatePayment(array $payload): array
     {
-        return $this->mf->sendPayment($payload);
+        $mf = new MyFatoorah([
+            'apiKey'  => config('services.myfatoorah.apiKey'),
+            'isTest'  => config('services.myfatoorah.isTest'),
+            'vcCode' => 'KWT',
+
+        ]);
+        return $mf->initiatePayments($payload,0);
     }
 
     public function getStatus(string $paymentId): array

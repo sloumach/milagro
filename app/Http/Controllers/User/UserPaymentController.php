@@ -1,15 +1,11 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use App\Services\Payment\MyFatoorahService;
+use App\Http\Controllers\Controller;
+use App\Services\MyFatoorahService;
 use Illuminate\Http\Request;
-
-namespace App\Http\Controllers;
-
 use App\Models\Order;
 use App\Services\OrderService;
-use App\Services\Payment\MyFatoorahService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserPaymentController extends Controller
@@ -41,7 +37,7 @@ class UserPaymentController extends Controller
             'CustomerName'       => $user->name,
             'CustomerEmail'      => $user->email,
             'InvoiceValue'       => $order->final_amount,
-            'DisplayCurrencyIso' => 'TND',
+            'DisplayCurrencyIso' => 'KWT',
             'CallBackUrl'        => route('payment.callback', $order->id),
             'ErrorUrl'           => route('payment.failed', $order->id),
         ];
