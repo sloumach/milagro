@@ -261,7 +261,7 @@ export default {
     }
 
     .image-container {
-        padding: 20px;
+        padding: 9px;
         border-radius: 75px;
     }
 
@@ -278,7 +278,7 @@ export default {
     }
 
     .image-container::after {
-        right: -35px;
+        right: 33px;
         bottom: -62px;
         border-radius: 0 0 0 125px;
     }

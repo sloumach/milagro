@@ -4,11 +4,34 @@
             <!-- Title -->
             <h1 class="profile-title">
                 {{ currentLang === 'en' ? 'My Profile' : 'ملفي الشخصي' }}
+                <img src="../../../../public/assets/img/star.png" class="title-star" alt="star" />
             </h1>
 
             <div class="profile-layout">
-                <!-- Sidebar -->
-                <div class="profile-sidebar">
+                <!-- Mobile Tabs -->
+                <div v-if="isMobile" class="mobile-profile-tabs">
+                    <router-link
+                        to="/account/profile"
+                        class="mobile-profile-tab"
+                        :class="{ active: $route.path === '/account/profile' }"
+                    >{{ currentLang === 'en' ? 'My Information' : 'معلوماتي' }}</router-link>
+                    <router-link
+                        to="/account/addresses"
+                        class="mobile-profile-tab"
+                        :class="{ active: $route.path === '/account/addresses' }"
+                    >{{ currentLang === 'en' ? 'My Addresses' : 'عناويني' }}</router-link>
+                    <router-link
+                        to="/account/orders"
+                        class="mobile-profile-tab"
+                        :class="{ active: $route.path === '/account/orders' }"
+                    >{{ currentLang === 'en' ? 'My Orders' : 'طلباتي' }}</router-link>
+                    <div class="mobile-profile-tab" @click="logout">
+                        {{ currentLang === 'en' ? 'Log Out' : 'تسجيل الخروج' }}
+                    </div>
+                </div>
+
+                <!-- Desktop Sidebar -->
+                <div v-else class="profile-sidebar">
                     <div class="sidebar-item" :class="{ active: activeTab === 'info' }">
                         {{ currentLang === 'en' ? 'My Information' : 'معلوماتي' }}
                     </div>
@@ -84,6 +107,7 @@ export default {
         return {
             currentLang: localStorage.getItem('currentLang') || 'en',
             activeTab: 'info',
+            isMobile: false,
             form: {
                 firstName: '',
                 lastName: '',
@@ -95,15 +119,27 @@ export default {
     methods: {
         handleSubmit() {
             console.log('Form submitted:', this.form);
+        },
+        checkMobile() {
+            this.isMobile = window.innerWidth <= 480;
+        },
+        logout() {
+            // Handle logout logic here
+            console.log('Logging out...');
         }
+    },
+    mounted() {
+        this.checkMobile();
+        window.addEventListener('resize', this.checkMobile);
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.checkMobile);
+        this.$root.$off('languageChanged');
     },
     created() {
         this.$root.$on('languageChanged', (lang) => {
             this.currentLang = lang;
         });
-    },
-    beforeDestroy() {
-        this.$root.$off('languageChanged');
     }
 }
 </script>
@@ -127,7 +163,12 @@ export default {
     position: relative;
     top: -45px;
 }
-
+.title-star {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: -12px;
+}
 .profile-layout {
     display: flex;
     gap: 60px;
@@ -299,6 +340,7 @@ export default {
     text-align: center !important;
 }
 
+
 @media (max-width: 992px) {
     .profile-page {
         padding: 40px 20px;
@@ -326,5 +368,102 @@ export default {
 
 .router-link-active {
     color: #AA8B7A;
+}
+
+@media (max-width: 480px) {
+    .profile-page {
+        padding: 20px 12px;
+    }
+
+    .profile-title {
+        font-size: 30px;
+        margin-bottom: 25px;
+        top: -25px;
+    }
+
+    .title-star {
+        width: 14px;
+        height: 14px;
+        top: -8px;
+    }
+
+    .profile-layout {
+        gap: 20px;
+        top: -20px;
+    }
+
+    .mobile-profile-tabs {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 0 10px 18px 10px;
+        margin: 0 0 10px 0;
+        width: 96vw;
+        box-sizing: border-box;
+    }
+
+    .mobile-profile-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-profile-tab {
+        flex: 0 0 auto;
+        padding: 7px 22px;
+        border: 1px solid #AA8B7A;
+        border-radius: 7px;
+        background: transparent;
+        color: #AA8B7A;
+        font-size: 18px;
+        font-family: 'Philosopher', serif;
+        text-decoration: none;
+        text-align: center;
+        transition: background 0.2s, color 0.2s;
+        outline: none;
+        margin-bottom: 0;
+        margin-top: 0;
+        cursor: pointer;
+    }
+
+    .mobile-profile-tab.active {
+        background: #AA8B7A;
+        color: #ffffff;
+        font-weight: 600;
+        border: 1px solid #AA8B7A;
+    }
+
+    .mobile-profile-tab {
+        color: #ffffff !important;
+        font-weight: 400 !important;
+        border: 1px solid #AA8B7A !important;
+    }
+
+    .mobile-profile-tab.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .profile-form {
+        padding: 20px;
+        margin: 0;
+        background: #212A1E;
+        border-radius: 8px;
+    }
+
+    .form-group input {
+        height: 42px;
+        font-size: 14px;
+    }
+
+    .submit-btn {
+        height: 42px;
+        font-size: 15px;
+        margin-top: 25px;
+    }
+
+    /* Hide desktop sidebar in mobile */
+    .profile-sidebar {
+        display: none;
+    }
 }
 </style>

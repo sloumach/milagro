@@ -4,6 +4,7 @@
             <!-- Title -->
             <h1 class="profile-title">
                 {{ currentLang === 'en' ? 'My Profile' : 'ملفي الشخصي' }}
+                <img src="../../../../public/assets/img/star.png" class="title-star" alt="star" />
             </h1>
 
             <!-- Navigation link with arrow -->
@@ -24,8 +25,10 @@
             </div>
 
             <div class="profile-layout">
-                <!-- Sidebar -->
-                <div class="profile-sidebar">
+              
+
+                <!-- Desktop Sidebar -->
+                <div v-if="!isMobile" class="profile-sidebar">
                     <div class="sidebar-item">
                         <router-link to="/account/profile" class="sidebar-link">
                             {{ currentLang === 'en' ? 'My Information' : 'معلوماتي' }}
@@ -135,25 +138,29 @@ export default {
     name: 'OrderDetails',
     data() {
         return {
-            currentLang: localStorage.getItem('currentLang') || 'ar'
+            currentLang: localStorage.getItem('currentLang') || 'ar',
+            isMobile: false
         }
     },
-    watch: {
-        currentLang: {
-            immediate: true,
-            handler(newLang) {
-                document.documentElement.dir = newLang === 'en' ? 'ltr' : 'rtl';
-                document.documentElement.lang = newLang;
-            }
+   
+    methods: {
+        checkMobile() {
+            this.isMobile = window.innerWidth <= 480;
+        },
+        logout() {
+            // Handle logout logic here
+            console.log('Logging out...');
         }
     },
-    created() {
+    mounted() {
+        this.checkMobile();
+        window.addEventListener('resize', this.checkMobile);
         this.$root.$on('languageChanged', (lang) => {
             this.currentLang = lang;
-            localStorage.setItem('currentLang', lang);
         });
     },
     beforeDestroy() {
+        window.removeEventListener('resize', this.checkMobile);
         this.$root.$off('languageChanged');
     }
 }
@@ -494,7 +501,12 @@ export default {
     justify-content: start;
     flex-direction: row-reverse;
 }
-
+.title-star {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: -12px;
+}
 .ltr .nav-link {
     font-family: Philosopher, serif !important;
     justify-content: start;
@@ -518,5 +530,154 @@ export default {
 .ltr .arrow-icon {
     margin-left: 0px;
     transform: scaleX(-1);
+}
+@media (max-width: 480px) {
+    .profile-page {
+        padding: 20px 12px;
+    }
+
+    .profile-title {
+        font-size: 30px;
+        margin-bottom: 25px;
+        top: -25px;
+    }
+
+    .title-star {
+        width: 14px;
+        height: 14px;
+        top: -8px;
+    }
+
+    .profile-layout {
+        gap: 20px;
+        top: -20px;
+    }
+
+    .mobile-profile-tabs {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 0 10px 18px 10px;
+        margin: 0 0 10px 0;
+        width: 97vw;
+        box-sizing: border-box;
+    }
+
+    .mobile-profile-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-profile-tab {
+        flex: 0 0 auto;
+        padding: 7px 22px;
+        border: 1px solid #AA8B7A;
+        border-radius: 7px;
+        background: transparent;
+        color: #AA8B7A;
+        font-size: 18px;
+        font-family: 'Philosopher', serif;
+        text-decoration: none;
+        text-align: center;
+        transition: background 0.2s, color 0.2s;
+        outline: none;
+        margin-bottom: 0;
+        margin-top: 0;
+        cursor: pointer;
+    }
+
+    .mobile-profile-tab.active {
+        background: #AA8B7A;
+        color: #ffffff;
+        font-weight: 600;
+        border: 1px solid #AA8B7A;
+    }
+
+    .mobile-profile-tab {
+        color: #ffffff !important;
+        font-weight: 400 !important;
+        border: 1px solid #AA8B7A !important;
+    }
+
+    /* Hide desktop sidebar in mobile */
+    .profile-sidebar {
+        display: none;
+    }
+
+    /* Adjust order details for mobile */
+    .orders-navigation {
+        top: -25px;
+    }
+
+    .nav-link {
+        font-size: 16px;
+        gap: 15px;
+    }
+
+    .arrow-icon {
+        width: 80px;
+        height: 12px;
+    }
+
+    .order-details {
+        margin-top: 20px;
+    }
+
+    .status-header {
+        margin-bottom: 12px;
+    }
+
+    .order-id {
+        font-size: 16px;
+    }
+
+    .status {
+        font-size: 14px;
+    }
+
+    .section-header {
+        margin-top: 24px;
+        margin-bottom: 16px;
+    }
+
+    .section-header h2 {
+        font-size: 16px;
+    }
+
+    .section-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .order-items {
+        gap: 16px;
+    }
+
+    .item-image {
+        width: 56px;
+        height: 56px;
+    }
+
+    .item-name {
+        font-size: 14px;
+    }
+
+    .item-specs,
+    .item-quantity,
+    .item-price {
+        font-size: 12px;
+    }
+
+    .address-details {
+        font-size: 14px;
+    }
+
+    .summary-row {
+        font-size: 14px;
+    }
+
+    .summary-row.total {
+        font-size: 16px;
+    }
 }
 </style>

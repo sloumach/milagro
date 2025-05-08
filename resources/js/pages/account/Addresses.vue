@@ -4,11 +4,34 @@
             <!-- Title -->
             <h1 class="profile-title">
                 {{ currentLang === 'en' ? 'My Profile' : 'ملفي الشخصي' }}
+                <img src="../../../../public/assets/img/star.png" class="title-star" alt="star" />
             </h1>
 
             <div class="profile-layout">
-                <!-- Sidebar -->
-                <div class="profile-sidebar">
+                <!-- Mobile Tabs -->
+                <div v-if="isMobile" class="mobile-profile-tabs">
+                    <router-link
+                        to="/account/profile"
+                        class="mobile-profile-tab"
+                        :class="{ active: $route.path === '/account/profile' }"
+                    >{{ currentLang === 'en' ? 'My Information' : 'معلوماتي' }}</router-link>
+                    <router-link
+                        to="/account/addresses"
+                        class="mobile-profile-tab"
+                        :class="{ active: $route.path === '/account/addresses' }"
+                    >{{ currentLang === 'en' ? 'My Addresses' : 'عناويني' }}</router-link>
+                    <router-link
+                        to="/account/orders"
+                        class="mobile-profile-tab"
+                        :class="{ active: $route.path === '/account/orders' }"
+                    >{{ currentLang === 'en' ? 'My Orders' : 'طلباتي' }}</router-link>
+                    <div class="mobile-profile-tab" @click="logout">
+                        {{ currentLang === 'en' ? 'Log Out' : 'تسجيل الخروج' }}
+                    </div>
+                </div>
+
+                <!-- Desktop Sidebar -->
+                <div v-else class="profile-sidebar">
                     <div class="sidebar-item" >
                         <router-link to="/account/profile" class="sidebar-link">
                             {{ currentLang === 'en' ? 'My Information' : 'معلوماتي' }}
@@ -159,7 +182,8 @@ export default {
                 street: '',
                 buildingNumber: '',
                 specialDirections: ''
-            }
+            },
+            isMobile: false
         }
     },
     computed: {
@@ -207,14 +231,21 @@ export default {
         },
         selectAddress(index) {
             this.activeAddressIndex = index;
+        },
+        checkMobile() {
+            this.isMobile = window.innerWidth <= 480;
+        },
+        logout() {
+            // Handle logout logic here
+            console.log('Logging out...');
         }
     },
-    created() {
-        this.$root.$on('languageChanged', (lang) => {
-            this.currentLang = lang;
-        });
+    mounted() {
+        this.checkMobile();
+        window.addEventListener('resize', this.checkMobile);
     },
     beforeDestroy() {
+        window.removeEventListener('resize', this.checkMobile);
         this.$root.$off('languageChanged');
     }
 }
@@ -647,5 +678,103 @@ export default {
 .ltr .submit-btn,
 .ltr .add-address-btn {
     font-family: 'Cairo', sans-serif;
+}
+
+@media (max-width: 480px) {
+    .profile-page {
+        padding: 20px 12px;
+    }
+
+    .profile-title {
+        font-size: 30px;
+        margin-bottom: 25px;
+        top: -25px;
+    }
+
+    .title-star {
+        width: 14px;
+        height: 14px;
+        top: -8px;
+    }
+
+    .profile-layout {
+        gap: 20px;
+        top: -20px;
+    }
+
+    .mobile-profile-tabs {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 0 10px 18px 10px;
+        margin: 0 0 10px 0;
+        width: 96vw;
+        box-sizing: border-box;
+    }
+
+    .mobile-profile-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-profile-tab {
+        flex: 0 0 auto;
+        padding: 7px 22px;
+        border: 1px solid #AA8B7A;
+        border-radius: 7px;
+        background: transparent;
+        color: #AA8B7A;
+        font-size: 18px;
+        font-family: 'Philosopher', serif;
+        text-decoration: none;
+        text-align: center;
+        transition: background 0.2s, color 0.2s;
+        outline: none;
+        margin-bottom: 0;
+        margin-top: 0;
+        cursor: pointer;
+    }
+
+    .mobile-profile-tab.active {
+        background: #AA8B7A;
+        color: #ffffff;
+        font-weight: 600;
+        border: 1px solid #AA8B7A;
+    }
+
+    .mobile-profile-tab {
+        color: #ffffff !important;
+        font-weight: 400 !important;
+        border: 1px solid #AA8B7A !important;
+    }
+
+    /* Hide desktop sidebar in mobile */
+    .profile-sidebar {
+        display: none;
+    }
+
+    /* Adjust address list for mobile */
+    .address-list {
+        margin-top: 20px;
+    }
+
+    .address-item {
+        padding: 15px;
+    }
+
+    .address-title {
+        font-size: 16px;
+    }
+
+    .address-text {
+        font-size: 13px;
+    }
+
+    /* Adjust modal for mobile */
+    .modal-content {
+        padding: 20px;
+        margin: 20px;
+        max-width: none;
+    }
 }
 </style>

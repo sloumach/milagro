@@ -720,7 +720,7 @@ export default {
 }
 
 .price {
-    color: #AA8B7A;
+    color: #ffffff;
     font-size: 24px;
     white-space: nowrap;
     margin-left: 20px;
@@ -785,7 +785,7 @@ export default {
 }
 
 .additions h3 {
-    color: #FFFFFF;
+    color: #aa8b7a;
     font-size: 18px;
     margin-bottom: 15px;
 }
@@ -856,7 +856,7 @@ export default {
 }
 
 .addition-price {
-    color: #AA8B7A;
+    color: #FFFFFF;
     margin-left: 10px;
 }
 
@@ -1357,5 +1357,25 @@ textarea.form-input {
 .modal-enter-from,
 .modal-leave-to {
     opacity: 0;
+}
+
+@media (max-width: 480px) {
+    .arrow-icon {
+        width: 63px;
+        height: 12px;
+    }
+    .nav-link {
+        font-size: 16px
+    }
+    .product-header h1 {
+        font-size: 24px;
+    }
+    .ltr .product-header h1 {
+        font-family: 'Philosopher', serif;
+    }
+    .product-header .price {
+        font-size: 20px;
+    }
+    
 }
 </style>

@@ -1,11 +1,21 @@
 <template>
     <section class="best-seller-section" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
         <div class="section-header">
-            <h2 class="section-title">
-                <span v-if="currentLang === 'en'">Best Seller</span>
+            <h2 class="section-title" v-if="!isMobile">
+                <span v-if="currentLang === 'en'">Best Sellers</span>
                 <span v-else>الأكثر مبيعًا</span>
                 <img src="../../../../public/assets/img/star.png" class="star-icon" alt="star" />
             </h2>
+            <h2 class="section-title" v-if="isMobile">
+                <span v-if="currentLang === 'en'">Best Sellers</span>
+                <span v-else>الأكثر مبيعًا</span>
+            </h2>
+            <div v-if="isMobile" class="mobile-best-seller-line">
+
+                <span class="line"></span>
+                <span class="diamond-icon"></span>
+                <span class="line"></span>
+            </div>
         </div>
 
         <div class="slider-container">
@@ -22,7 +32,8 @@
                     <div class="product-info">
                         <h3 class="product-title">{{ product.title[currentLang] }}</h3>
                         <div class="product-details">
-                            <span class="product-price">{{ product.price }} {{ translations.currency[currentLang] }}</span>
+                            <span class="product-price">{{ product.price }} {{ translations.currency[currentLang]
+                                }}</span>
                             <span class="product-pieces" :dir="currentLang === 'ar' ? 'rtl' : 'ltr'">
                                 <template v-if="currentLang === 'ar'">
                                     <span class="pieces-number">{{ product.pieces }}</span>
@@ -57,6 +68,7 @@ export default {
     },
     data() {
         return {
+            isMobile: false,
             translations: {
                 pieces: {
                     ar: 'حبة',
@@ -106,6 +118,18 @@ export default {
                 }
             ]
         }
+    },
+    methods: {
+        checkMobile() {
+            this.isMobile = window.innerWidth <= 445;
+        }
+    },
+    mounted() {
+        this.checkMobile();
+        window.addEventListener('resize', this.checkMobile);
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.checkMobile);
     }
 }
 </script>
@@ -166,6 +190,10 @@ export default {
     justify-content: flex-start;
     width: 100%;
     max-width: 1280px;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
 }
 
 /* RTL (Arabic) specific styles */
@@ -316,7 +344,8 @@ export default {
 }
 
 .rtl .section-title {
-    font-family: 'TheSansArabic', sans-serif;
+    font-family: 'TheSansArabic', sans-serif !important;
+
 }
 
 .rtl .star-icon {
@@ -355,7 +384,7 @@ export default {
 
 @media (max-width: 768px) {
     .slider-container {
-        padding: 0 40px;
+        padding: 0px 0px 0px 31px;
     }
 
     .product-card {
@@ -365,11 +394,20 @@ export default {
     .section-title {
         font-size: 36px;
     }
+
+    .products-container {
+        overflow-x: auto !important;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        gap: 16px;
+    }
 }
 
 /* Custom scrollbar for the products container */
 .products-container::-webkit-scrollbar {
-    height: 6px;
+    display: none;
+    /* Chrome, Safari, Opera */
 }
 
 .products-container::-webkit-scrollbar-track {
@@ -384,5 +422,83 @@ export default {
 
 .products-container::-webkit-scrollbar-thumb:hover {
     background: rgba(170, 139, 122, 0.5);
+}
+
+/* Mobile only: Decorative line with diamond under Best Seller title */
+.mobile-best-seller-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 0 0;
+}
+
+.mobile-best-seller-line .line {
+    display: inline-block;
+    height: 0.5px;
+    width: 14vw;
+    background: #aa8b7a;
+    border-radius: 2px;
+    opacity: 0.7;
+}
+
+.mobile-best-seller-line .diamond-icon {
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    transform: rotate(45deg);
+    margin: 0 0px;
+    border-radius: 2px;
+    /* Optional: add a border for a more elegant look */
+    border: 1px solid #aa8b7a;
+    box-sizing: border-box;
+}
+
+@media (min-width: 446px) {
+    .mobile-best-seller-line {
+        display: none !important;
+    }
+}
+
+@media (max-width: 445px) {
+    .section-header {
+        text-align: center !important;
+        padding: 0 !important;
+        margin-bottom: 18px !important;
+    }
+
+    .section-title {
+        font-family: 'Tenor Sans', serif !important;
+        text-transform: uppercase !important;
+        letter-spacing: 4px !important;
+        line-height: 40px !important;
+        font-size: 18px !important;
+        color: #FFFFFF !important;
+        font-weight: 400 !important;
+    }
+
+    .best-seller-section {
+        padding-top: 85px;
+    }
+
+    .rtl .section-title {
+        letter-spacing: 1px !important;
+    }
+
+    .product-title {
+        font-size: 15px;
+    }
+
+    .product-price {
+        font-size: 15px;
+    }
+
+    .product-pieces {
+        font-size: 14px;
+    }
+
+    .next {
+        display: none;
+    }
+
 }
 </style>
