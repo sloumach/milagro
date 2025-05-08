@@ -2,16 +2,16 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Services\MyFatoorahService;
-use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Services\MyFatoorahService;
 use App\Services\OrderService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserPaymentController extends Controller
 {
     public function __construct(
-        protected MyFatoorahService $myFatoorah,
+        protected MyFatoorahService $myFatoorahService,
         protected OrderService $orderService
     ) {}
 
@@ -19,61 +19,76 @@ class UserPaymentController extends Controller
     {
         $user = Auth::user();
 
-        // 1. Créer la commande via OrderService (avec coupon si fourni)
+        // ✅ Validation des données d’entrée
         $data = $request->validate([
-            'delivery_address' => 'required|string|max:255',
-            'items' => 'required|array|min:1',
+            'delivery_address'   => 'required|string|max:255',
+            'items'              => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
-            'items.*.quantity' => 'required|integer|min:1',
-            'coupon_code' => 'nullable|string|exists:coupons,code',
+            'items.*.quantity'   => 'required|integer|min:1',
+            'coupon_code'        => 'nullable|string|exists:coupons,code',
         ]);
 
         $data['payment_method'] = 'myfatoorah';
 
+        // ✅ Création de la commande dans la base
         $order = $this->orderService->createOrder($data, $user);
 
-        // 2. Rediriger vers MyFatoorah avec les bons montants
+        // ✅ Création de la facture MyFatoorah
         $payload = [
             'CustomerName'       => $user->name,
             'CustomerEmail'      => $user->email,
             'InvoiceValue'       => $order->final_amount,
-            'DisplayCurrencyIso' => 'KWT',
+            'NotificationOption' => 'LNK',
+            'DisplayCurrencyIso' => 'KWD', // ou TND si accepté
             'CallBackUrl'        => route('payment.callback', $order->id),
             'ErrorUrl'           => route('payment.failed', $order->id),
         ];
 
-        $response = $this->myFatoorah->initiatePayment($payload);
+        try {
+            $payment = $this->myFatoorahService->createInvoice($payload);
 
-        // 3. Sauvegarder la référence pour le suivi
-        $order->update([
-            'payment_reference' => $response['InvoiceId'], // ou InvoiceURL si tu préfères
-        ]);
+            // ✅ Enregistrer la référence
+            $order->update([
+                'payment_reference' => $payment['InvoiceId']
+            ]);
 
-        return redirect($response['InvoiceURL']);
+            return redirect($payment['invoiceURL']);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'MyFatoorah error: ' . $e->getMessage()], 500);
+        }
     }
 
     public function callback(Request $request, Order $order)
     {
-        $paymentId = $request->query('paymentId');
+        try {
+            $paymentId = $request->query('paymentId');
+            $data = $this->myFatoorahService->getPaymentStatus($paymentId);
+            if ($data->InvoiceStatus === 'Paid') {
+                $order->update([
+                    'payment_status' => 'paid',
+                    'payment_reference' => $data->InvoiceId,
+                    'status' => 'processing',
+                ]);
+                foreach ($order->orderItems as $item) {
+                    $item->product->decrement('quantity', $item->quantity);
+                }
+                return response()->json(['message' => 'Payment successful.'], 200);
+            } else {
+                $order->update(['payment_status' => 'failed', 'status' => 'cancelled']);
+                return response()->json(['message' => 'Payment failed.'], 400);
+            }
 
-        $status = $this->myFatoorah->getStatus($paymentId);
 
-        if ($status['InvoiceStatus'] === 'Paid') {
-            $order->update([
-                'payment_status' => 'paid',
-                'payment_reference' => $paymentId,
-                'status' => 'processing',
-            ]);
-
-            return view('payment.success', compact('status', 'order'));
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Callback error: ' . $e->getMessage()], 500);
         }
-
-        return view('payment.failed', compact('status', 'order'));
     }
 
     public function failed(Order $order)
     {
-        return view('payment.failed', compact('order'));
+        $order->update(['payment_status' => 'failed','status' => 'cancelled',]);
+        return response()->json(['message' => 'Payment failed.'], 400);
     }
 }
 

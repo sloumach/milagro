@@ -1,34 +1,32 @@
 <?php
 namespace App\Services;
 
-use MyFatoorah\Library\MyFatoorah;
+use MyFatoorah\Library\API\Payment\MyFatoorahPayment;
+use MyFatoorah\Library\API\Payment\MyFatoorahPaymentStatus;
 
 class MyFatoorahService
 {
-    protected MyFatoorah $mf;
+    protected array $config;
 
     public function __construct()
     {
-
-
-    }
-
-    public function initiatePayment(array $payload): array
-    {
-        $mf = new MyFatoorah([
-            'apiKey'  => config('services.myfatoorah.apiKey'),
-            'isTest'  => config('services.myfatoorah.isTest'),
+        $this->config = [
+            'apiKey' => config('services.myfatoorah.apiKey'),
+            'isTest' => config('services.myfatoorah.isTest', true),
             'vcCode' => 'KWT',
-
-        ]);
-        return $mf->initiatePayments($payload,0);
+        ];
     }
 
-    public function getStatus(string $paymentId): array
+    public function createInvoice(array $payload, int $paymentMethodId = 0, $orderId = null, $sessionId = null): array
     {
-        return $this->mf->getPaymentStatus([
-            'Key' => $paymentId,
-            'KeyType' => 'PaymentId'
-        ]);
+        $mf = new MyFatoorahPayment($this->config);
+        return $mf->getInvoiceURL($payload, $paymentMethodId, $orderId, $sessionId);
+    }
+
+    public function getPaymentStatus(string $paymentId): object
+    {
+        $mf = new MyFatoorahPaymentStatus($this->config);
+        return $mf->getPaymentStatus($paymentId, 'PaymentId');
     }
 }
+

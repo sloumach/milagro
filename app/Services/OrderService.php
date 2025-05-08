@@ -14,49 +14,51 @@ class OrderService
         return DB::transaction(function () use ($data, $user) {
             $total = 0;
 
+            // Vérification du stock (sans décrémenter)
             foreach ($data['items'] as $item) {
                 $product = Product::findOrFail($item['product_id']);
+
+                if ($product->quantity < $item['quantity']) {
+                    throw new \Exception("Not enough stock for product: {$product->name_en}");
+                }
+
                 $total += $product->price * $item['quantity'];
             }
 
-            // 🔁 Vérification du coupon
-            $coupon = $this->validateCoupon($data['coupon_code'] ?? null);
-            $discount = 0;
-
-            if ($coupon) {
-                $discount = $coupon->type === 'percentage'
-                    ? ($total * $coupon->discount_value / 100)
-                    : $coupon->discount_value;
-
-                $coupon->increment('used_count');
-            }
-
-            $final = max(0, $total - $discount);
+            $discount = $data['discount_amount'] ?? 0;
+            $final = $total - $discount;
 
             // Création de la commande
             $order = Order::create([
-                'user_id' => $user->id,
-                'total_amount' => $total,
-                'discount_amount' => $discount,
-                'final_amount' => $final,
-                'payment_method' => $data['payment_method'] ?? 'cash_on_delivery',
-                'payment_status' => 'pending',
-                'payment_reference' => $data['payment_reference'] ?? null,
+                'user_id'          => $user->id,
+                'total_amount'     => $total,
+                'discount_amount'  => $discount,
+                'final_amount'     => $final,
+                'payment_method'   => $data['payment_method'],
+                'payment_status'   => 'pending',
                 'delivery_address' => $data['delivery_address'],
-                'status' => 'new',
+                'status'           => 'new',
             ]);
 
+            // Création des order_items
             foreach ($data['items'] as $item) {
                 $product = Product::findOrFail($item['product_id']);
 
                 OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $product->id,
+                    'order_id'     => $order->id,
+                    'product_id'   => $product->id,
                     'product_name' => $product->name_en,
-                    'quantity' => $item['quantity'],
-                    'price' => $product->price,
-                    'total' => $product->price * $item['quantity'],
+                    'quantity'     => $item['quantity'],
+                    'price'        => $product->price,
+                    'total'        => $product->price * $item['quantity'],
                 ]);
+            }
+
+            // Si paiement à la livraison : décrémenter le stock maintenant
+            if ($data['payment_method'] === 'cash_on_delivery') {
+                foreach ($order->orderItems as $item) {
+                    $item->product->decrement('quantity', $item->quantity);
+                }
             }
 
             return $order->load('orderItems');

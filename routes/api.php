@@ -56,10 +56,13 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::middleware(['auth:sanctum', 'role:user'])->prefix('user')->group(function () {
     Route::apiResource('orders', UserOrderController::class)->only(['index', 'store', 'show']);
 });
-Route::middleware(['auth:sanctum'/* , 'role:user' */])->group(function () {
-    Route::post('/pay', [MyFatoorahController::class, 'index'])->name('payment.initiate');
+Route::middleware(['auth:sanctum', 'role:user'])->group(function () {
+    /*  */
+
+    Route::post('/payment/initiate', [UserPaymentController::class, 'initiate'])->name('payment.initiate');
     Route::get('/payment/callback/{order}', [UserPaymentController::class, 'callback'])->name('payment.callback');
     Route::get('/payment/failed/{order}', [UserPaymentController::class, 'failed'])->name('payment.failed');
+
 });
 Route::middleware(['auth:sanctum', 'role:user'])->prefix('user/cart')->group(function () {
     Route::get('/', [UserCartController::class, 'index']);

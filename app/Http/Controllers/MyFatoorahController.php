@@ -62,7 +62,7 @@ class MyFatoorahController extends Controller {
                 'CustomerEmail'      => $user->email,
                 'InvoiceValue'       => 250,
                 'NotificationOption' => 'LNK',
-                'DisplayCurrencyIso' => 'KWT',
+                'DisplayCurrencyIso' => 'KWD',
                 'CallBackUrl'        => route('payment.callback', 111),
                 'ErrorUrl'           => route('payment.failed', 111),
             ];
@@ -76,7 +76,7 @@ class MyFatoorahController extends Controller {
 
             $mfObj   = new MyFatoorahPayment($this->mfConfig);
             $payment = $mfObj->getInvoiceURL($payload, $paymentId, 111, $sessionId);
-dd($payment);
+        dd($payment);
             return ($payment['invoiceURL']);
 
             $exMessage = __('myfatoorah.' . $ex->getMessage());
