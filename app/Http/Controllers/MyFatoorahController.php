@@ -28,7 +28,7 @@ class MyFatoorahController extends Controller {
         $this->mfConfig = [
             'apiKey'      => config('services.myfatoorah.apiKey'),
             'isTest'      => config('services.myfatoorah.isTest'),
-            'countryCode' => 'KWT',
+            'vcCode' => 'KWT',
         ];
     }
 
@@ -56,18 +56,12 @@ class MyFatoorahController extends Controller {
 
             // 2. Rediriger vers MyFatoorah avec les bons montants
             //$order = $this->orderService->createOrder($data, $user);
-        // 1. Créer la commande via OrderService (avec coupon si fourni)
-            $data = $request->validate([
-                'delivery_address' => 'required|string|max:255',
-                'items' => 'required|array|min:1',
-                'items.*.product_id' => 'required|exists:products,id',
-                'items.*.quantity' => 'required|integer|min:1',
-                'coupon_code' => 'nullable|string|exists:coupons,code',
-            ]);
+
             $payload = [
                 'CustomerName'       => $user->name,
                 'CustomerEmail'      => $user->email,
                 'InvoiceValue'       => 250,
+                'NotificationOption' => 'LNK',
                 'DisplayCurrencyIso' => 'KWT',
                 'CallBackUrl'        => route('payment.callback', 111),
                 'ErrorUrl'           => route('payment.failed', 111),
