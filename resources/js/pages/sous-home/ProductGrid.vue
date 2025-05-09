@@ -710,4 +710,72 @@ export default {
     color: #aa8b7a;
 }
 }
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .product-grid-section {
+        padding: 80px 20px;
+    }
+
+    .products-container {
+        max-width: 100%;
+        gap: 40px;
+    }
+
+    .products-row {
+        gap: 30px;
+        padding: 0 20px;
+    }
+
+    .product-card {
+        max-width: 220px;
+    }
+
+    .product-image {
+        height: 250px;
+    }
+
+    .product-info {
+        padding: 12px 6px;
+    }
+
+    .product-title {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+
+    .product-details {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 5px;
+    }
+
+    .quantity-info {
+        font-size: 15px;
+    }
+
+    .price-info {
+        font-size: 16px;
+    }
+
+    /* RTL specific adjustments for tablet */
+    .rtl .product-details {
+        padding: 0 5px;
+    }
+
+    .rtl .product-title {
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    /* LTR specific adjustments for tablet */
+    .ltr .product-details {
+        padding: 0 5px;
+    }
+
+    .ltr .product-title {
+        text-align: left;
+        padding-left: 5px;
+    }
+}
 </style>

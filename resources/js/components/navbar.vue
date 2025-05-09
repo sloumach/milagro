@@ -246,6 +246,7 @@ export default {
   margin-left: 0;
   margin-right: 24px;
   font-family: Philosopher,serif;
+  font-size: 21px;
 }
 
 /* Active link style */
@@ -561,5 +562,137 @@ export default {
 
 .menu-icon:hover {
   opacity: 0.8;
+}
+
+/* Tablet Specific Styles (Surface Pro 7 and similar devices) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .navbar {
+    padding: 20px 40px;
+  }
+
+  .language-switcher {
+    padding: 10px 40px;
+  }
+
+  /* Adjust logo size for tablets */
+  .logo {
+    width: 60px;
+    height: 55px;
+  }
+
+  /* Adjust icon sizes */
+  .icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Adjust center navigation */
+  .navbar__center {
+    margin-left: 20%;
+  }
+
+  .navbar.ltr .navbar__center {
+    margin-right: 20%;
+    margin-left: 0;
+  }
+
+  /* Adjust navigation text size */
+  .navbar__center a {
+    font-size: 16px;
+    margin-left: 16px;
+  }
+
+  .navbar.ltr .navbar__center a {
+    margin-left: 0;
+    margin-right: 16px;
+    font-size: 18px;
+  }
+
+  /* Adjust icon spacing */
+  .icon-link {
+    margin-left: 8px;
+  }
+
+  .navbar.ltr .icon-link {
+    margin-left: 0;
+    margin-right: 8px;
+  }
+
+  /* Adjust language switcher for tablets */
+  .lang-btn {
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+}
+
+/* Landscape tablet adjustments */
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .navbar {
+    padding: 24px 80px;
+  }
+
+  .language-switcher {
+    padding: 12px 80px;
+  }
+
+  .navbar__center {
+    margin-left: 25%;
+  }
+
+  .navbar.ltr .navbar__center {
+    margin-right: 25%;
+    margin-left: 0;
+  }
+}
+
+/* Adjust the existing mobile breakpoint to not conflict with tablet */
+@media only screen and (max-width: 767px) {
+  /* Move existing mobile styles here */
+  .navbar {
+    padding: 15px 20px !important;
+    position: relative !important;
+  }
+
+  .language-switcher {
+    padding: 8px 20px !important;
+    text-align: center !important;
+  }
+
+  .navbar__center {
+    display: none !important;
+  }
+
+  .desktop-icons {
+    display: none !important;
+  }
+
+  .mobile-menu {
+    display: block !important;
+    order: 1 !important;
+  }
+
+  .navbar__right {
+    order: 2 !important;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .mobile-icons {
+    display: flex !important;
+    gap: 15px !important;
+    order: 3 !important;
+    align-items: center !important;
+  }
+
+  .logo {
+    width: 50px !important;
+    height: 45px !important;
+  }
+
+  .icon {
+    width: 24px !important;
+    height: 24px !important;
+  }
 }
 </style>

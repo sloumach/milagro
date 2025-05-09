@@ -739,4 +739,121 @@ export default {
         gap: 20px 40px;
     }
 }
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .contact-container {
+        padding: 40px 30px;
+        max-width: 900px;
+    }
+
+    .contact-content {
+        flex-direction: row;
+        gap: 30px;
+    }
+
+    .image-section {
+        flex: 0 0 45%;
+    }
+
+    .oval-frame {
+        width: 71%;
+        height: 500px;
+    }
+
+    .form-section {
+        flex: 0 0 55%;
+        padding: 0;
+    }
+
+    .contact-title {
+        font-size: 32px;
+        margin-bottom: 12px;
+    }
+
+    .contact-description {
+        font-size: 15px;
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        font-size: 15px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 10px 14px;
+        font-size: 15px;
+    }
+
+    .phone-input .phone-prefix {
+        padding: 10px 14px;
+        font-size: 15px;
+    }
+
+    .submit-btn {
+        font-size: 15px;
+        padding: 12px 24px;
+        width: auto;
+        align-self: flex-start;
+    }
+
+    .rtl .submit-btn {
+        align-self: flex-end;
+    }
+
+    /* Map section adjustments */
+    .map-section {
+        margin-top: 50px;
+    }
+
+    .map-container {
+        height: 350px;
+    }
+
+    .map-overlay {
+        padding: 12px 20px;
+    }
+
+    .opening-hours .title {
+        font-size: 15px;
+    }
+
+    .hours-text span {
+        font-size: 14px;
+    }
+
+    .contact-info {
+        padding: 20px 10px;
+        gap: 30px;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .info-item {
+        font-size: 15px;
+        gap: 10px;
+        flex: 0 0 auto;
+    }
+
+    .info-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Navigation adjustments */
+    .orders-navigation {
+        top: -30px;
+    }
+
+    .nav-link {
+        font-size: 18px;
+        gap: 20px;
+    }
+
+    .arrow-icon {
+        width: 100px;
+        height: 14px;
+    }
+}
 </style>

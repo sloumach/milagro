@@ -504,4 +504,89 @@ export default {
         grid-template-columns: 1fr;
     }
 }
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px;
+        min-height: calc(100vh - 180px);
+    }
+
+    .profile-container {
+        max-width: 1000px;
+    }
+
+    .profile-title {
+        font-size: 36px;
+        top: -35px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        top: -10px;
+    }
+
+    .profile-layout {
+        gap: 40px;
+        top: -25px;
+    }
+
+    /* Products Grid */
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 15px 0;
+    }
+
+    .product-card {
+        background: rgba(33, 42, 30, 0.95);
+        border-radius: 6px;
+    }
+
+    .product-image {
+        height: 220px;
+    }
+
+    .favorite-btn {
+        top: 10px;
+        right: 10px;
+    }
+
+    .rtl .favorite-btn {
+        right: auto;
+        left: 10px;
+    }
+
+    .favorite-btn img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .product-info {
+        padding: 14px;
+    }
+
+    .product-info h3 {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .info-row {
+        margin-bottom: 12px;
+    }
+
+    .pieces {
+        font-size: 13px;
+    }
+
+    .price {
+        font-size: 15px;
+    }
+
+    .add-to-cart {
+        padding: 10px;
+        font-size: 13px;
+    }
+}
 </style>

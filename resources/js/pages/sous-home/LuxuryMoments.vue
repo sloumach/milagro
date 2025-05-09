@@ -299,4 +299,56 @@ export default {
         height: 120px !important;
     }
 }
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .luxury-moments-section {
+        padding-top: 40px;
+    }
+
+    .content-container {
+        max-width: 100%;
+        padding: 0 30px;
+    }
+
+    .section-title {
+        font-size: 32px;
+        margin-bottom: 15px;
+        padding: 0 20px;
+    }
+
+    .rtl .section-title,
+    .ltr .section-title {
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .description-container {
+        padding: 0 30px;
+        margin-bottom: 30px;
+    }
+
+    .section-description {
+        font-size: 20px;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .rtl .section-description,
+    .ltr .section-description {
+        text-align: center;
+    }
+
+    .full-width-image-container {
+        height: 400px;
+        margin-top: 30px;
+    }
+
+    .play-button {
+        width: 45px;
+        height: 45px;
+        left: 18px;
+        bottom: 18px;
+    }
+}
 </style>

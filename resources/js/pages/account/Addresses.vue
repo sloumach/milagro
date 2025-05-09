@@ -442,23 +442,7 @@ export default {
     text-align: center !important;
 }
 
-@media (max-width: 992px) {
-    .profile-page {
-        padding: 40px 20px;
-    }
 
-    .profile-layout {
-        flex-direction: column;
-    }
-
-    .profile-sidebar {
-        width: 100%;
-    }
-
-    .profile-form {
-        max-width: 100%;
-    }
-}
 
 .sidebar-link {
     color: inherit;
@@ -775,6 +759,149 @@ export default {
         padding: 20px;
         margin: 20px;
         max-width: none;
+    }
+}
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px !important;
+        min-height: calc(100vh - 180px);
+    }
+
+    .profile-container {
+        max-width: 900px;
+    }
+
+    .profile-title {
+        font-size: 36px;
+        top: -35px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        top: -10px;
+    }
+
+    .profile-layout {
+        gap: 40px;
+        top: -25px;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start;
+    }
+
+    .profile-sidebar {
+        width: 180px !important;
+        flex-shrink: 0;
+        position: relative;
+        top: 12px;
+        display: block !important;
+    }
+
+    .profile-content {
+        position: relative;
+        top: 12px;
+        flex: 1;
+        max-width: calc(100% - 220px);
+    }
+
+    .sidebar-item {
+        font-size: 18px;
+        margin-bottom: 14px;
+        padding: 0;
+    }
+
+    .rtl .sidebar-item.active::after {
+        right: -120px;
+        width: 108%;
+        bottom: -8px;
+    }
+
+    .ltr .sidebar-item.active::after {
+        left: -120px;
+        width: 128%;
+        bottom: -8px;
+    }
+
+    /* Address List Adjustments */
+    .address-list {
+        gap: 16px;
+        margin-bottom: 16px;
+        margin-top: 0;
+    }
+
+    .address-item {
+        padding: 16px;
+        gap: 14px;
+    }
+
+    .address-title {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+
+    .address-text {
+        font-size: 14px;
+    }
+
+    .address-icon img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .edit-btn img,
+    .delete-btn img {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Add Address Button */
+    .add-address-btn {
+        height: 44px;
+        font-size: 15px;
+    }
+
+    /* Modal Adjustments */
+    .modal-content {
+        padding: 24px 120px;
+        max-width: 520px;
+    }
+
+    .modal-header h2 {
+        font-size: 22px;
+    }
+
+    .form-group label {
+        font-size: 15px;
+    }
+
+    .form-group input,
+    .form-group select {
+        height: 44px;
+        font-size: 15px;
+        padding: 0 14px;
+    }
+
+    .submit-btn {
+        height: 44px;
+        font-size: 15px;
+        margin-top: 14px;
+    }
+
+    .address-form {
+        gap: 14px;
+    }
+
+    .ltr .address-form {
+        gap: 4px !important;
+    }
+
+    /* Force hide mobile tabs in tablet view */
+    .mobile-profile-tabs {
+        display: none !important;
     }
 }
 </style>

@@ -2081,4 +2081,219 @@ export default {
         padding: 0;
     }
 }
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px;
+        min-height: calc(100vh - 180px);
+    }
+
+    .profile-container {
+        max-width: 1000px;
+    }
+
+    .profile-title {
+        font-size: 36px;
+        top: -35px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        top: -10px;
+    }
+
+    .payment-layout {
+        gap: 30px;
+        margin-top: 10px;
+    }
+
+    /* Steps Indicator */
+    .steps-container {
+        padding: 15px;
+        margin-bottom: -40px;
+    }
+
+    .step-number {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    .step-label {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+    .steps-line {
+        top: 68px;
+        left: 45px;
+        right: 45px;
+    }
+
+    /* Delivery Form */
+    .delivery-form {
+        padding: 30px;
+        margin-top: 60px;
+    }
+
+    .delivery-form h2 {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+
+    .form-row {
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .form-group input,
+    .form-group select {
+        height: 44px;
+        font-size: 15px;
+        padding: 0 12px;
+    }
+
+    .phone-prefix {
+        height: 44px;
+        font-size: 15px;
+        padding: 0 12px;
+    }
+
+    /* Payment Method Container */
+    .payment-method-container {
+        padding: 30px;
+        margin-top: 60px;
+    }
+
+    .payment-method-container h2 {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .payment-subtitle {
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    .payment-options {
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .payment-option {
+        height: 54px;
+        font-size: 16px;
+    }
+
+    .payment-option.apple-pay img {
+        height: 25px;
+    }
+
+    /* Order Summary */
+    .order-summary {
+        width: 350px;
+        padding: 25px;
+    }
+
+    .order-summary h2 {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+
+    .order-items {
+        gap: 15px;
+    }
+
+    .order-item {
+        gap: 15px;
+        padding-bottom: 15px;
+    }
+
+    .item-thumbnail {
+        width: 90px;
+        height: 90px;
+    }
+
+    .item-info h3 {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+
+    .item-quantity {
+        font-size: 13px;
+        margin: 3px 0;
+    }
+    .ltr .steps-line {
+    top: 75px;
+}
+    .item-price {
+        font-size: 15px;
+        margin: 6px 0 0 0;
+    }
+
+    .order-total {
+        padding-top: 15px;
+    }
+
+    .order-total p {
+        font-size: 16px;
+    }
+
+    /* Navigation */
+    .orders-navigation {
+        top: -35px;
+        padding: 12px 0;
+    }
+
+    .nav-link {
+        font-size: 18px;
+        gap: 25px;
+    }
+
+    .arrow-icon {
+        width: 100px;
+        height: 13px;
+    }
+
+    /* Buttons */
+    .proceed-btn,
+    .confirm-payment-btn {
+        height: 44px;
+        font-size: 15px;
+        margin-top: 25px;
+    }
+
+    /* Confirmation Page */
+    .confirmation-container {
+        padding: 30px;
+        margin-top: 60px;
+    }
+
+    .thank-you-content {
+        padding: 50px 15px;
+    }
+
+    .thank-you-star {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 15px;
+    }
+
+    .thank-you-content h2 {
+        font-size: 36px;
+        margin-bottom: 15px;
+    }
+
+    .confirmation-message {
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    .home-button {
+        padding: 10px 35px;
+        font-size: 15px;
+    }
+}
 </style>

@@ -347,20 +347,6 @@ export default {
     color: #AA8B7A;
 }
 
-@media (max-width: 992px) {
-    .profile-page {
-        padding: 40px 20px;
-    }
-
-    .profile-layout {
-        flex-direction: column;
-    }
-
-    .profile-sidebar {
-        width: 100%;
-    }
-}
-
 /* Orders List Styles */
 .orders-list {
     width: 100%;
@@ -640,6 +626,163 @@ export default {
 
     .order-total {
         font-size: 16px;
+    }
+}
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px !important;
+        min-height: calc(100vh - 180px);
+    }
+
+    .profile-container {
+        max-width: 900px;
+    }
+
+    .profile-title {
+        font-size: 36px;
+        top: -35px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        top: -10px;
+    }
+
+    .profile-layout {
+        gap: 40px;
+        top: -25px;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start;
+    }
+
+    .profile-sidebar {
+        width: 180px !important;
+        flex-shrink: 0;
+        position: relative;
+        top: 12px;
+        display: block !important;
+    }
+
+    .profile-content {
+        position: relative;
+        top: 12px;
+        flex: 1;
+        max-width: calc(100% - 220px);
+    }
+
+    .sidebar-item {
+        font-size: 18px;
+        margin-bottom: 14px;
+        padding: 0;
+    }
+
+    .rtl .sidebar-item.active::after {
+        right: -120px;
+        width: 108%;
+        bottom: -8px;
+    }
+
+    .ltr .sidebar-item.active::after {
+        left: -120px;
+        width: 128%;
+        bottom: -8px;
+    }
+
+    /* Empty Orders State */
+    .empty-orders {
+        margin-top: 0;
+        gap: 20px;
+    }
+
+    .empty-orders-icon {
+        width: 120px;
+        height: 120px;
+    }
+
+    .empty-orders-text {
+        font-size: 22px;
+    }
+
+    /* Orders List Adjustments */
+    .orders-list {
+        gap: 20px;
+        margin-top: 0;
+    }
+
+    .order-card {
+        border-radius: 14px;
+    }
+
+    .order-header {
+        padding: 16px 20px;
+    }
+
+    .order-id {
+        font-size: 17px;
+    }
+
+    .cart-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .order-status {
+        font-size: 15px;
+    }
+
+    .order-items {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .order-item {
+        gap: 14px;
+    }
+
+    .item-image {
+        width: 56px;
+        height: 56px;
+        border-radius: 6px;
+    }
+
+    .item-name {
+        font-size: 17px;
+        margin-bottom: 6px;
+    }
+
+    .item-specs,
+    .item-quantity {
+        font-size: 15px;
+        margin-bottom: 3px;
+    }
+
+    .item-price {
+        font-size: 15px;
+        margin-top: 6px;
+    }
+
+    .order-footer {
+        padding: 16px 20px;
+    }
+
+    .order-total {
+        font-size: 17px;
+        gap: 10px;
+    }
+
+    .details-btn {
+        font-size: 15px;
+        padding: 3px 6px;
+    }
+
+    /* Force hide mobile tabs in tablet view */
+    .mobile-profile-tabs {
+        display: none !important;
     }
 }
 </style>

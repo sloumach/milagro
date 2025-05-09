@@ -210,6 +210,33 @@ export default {
               return 'translateX(19px)';
           }
         }
+      } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+        // Tablet-specific transforms
+        if (this.currentLang === 'ar') {
+          // Arabic tablet transforms
+          switch (this.currentSlide) {
+            case 1:
+              return 'translateX(110%)';
+            case 2:
+              return 'translateX(221%)';
+            case 3:
+              return 'translateX(265%)';
+            default:
+              return 'translateX(0%)';
+          }
+        } else {
+          // English tablet transforms
+          switch (this.currentSlide) {
+            case 1:
+              return 'translateX(-26%)';
+            case 2:
+              return 'translateX(-54%)';
+            case 3:
+              return 'translateX(-79%)';
+            default:
+              return 'translateX(0%)';
+          }
+        }
       } else {
         // Desktop transforms
         return this.currentLang === 'ar'
@@ -223,8 +250,8 @@ export default {
       this.isMobile = window.innerWidth <= 445;
     },
     goToShopBoxes() {
-            window.location.href = '/shop/boxes';
-        },
+      window.location.href = '/shop/boxes';
+    },
     startDrag(event) {
       this.isDragging = true;
       this.startX = event.clientX;
@@ -530,6 +557,7 @@ export default {
 /* Just reverse the direction for Arabic */
 .rtl .ovals-row {
   flex-direction: row-reverse;
+  padding-right: 68px;
 }
 
 /* Left oval */
@@ -597,14 +625,20 @@ export default {
 
 /* RTL adjustment for content section */
 .rtl .milagro-content {
-  width: 32%;
+  width: 35%;
+  padding-right: 106px;
+}
+
+.ltr .hero-figma-small {
+  margin: 0px 81px;
+  width: 69%;
 }
 
 /* Adjust content alignment for English */
 .ltr .milagro-content {
   align-items: flex-start;
   padding-right: 0px;
-  padding-left: 8%;
+  padding-left: 10%;
   text-align: left;
 }
 
@@ -689,13 +723,21 @@ export default {
 /* Adjust top star position for English */
 .ltr .star.star-top {
   left: auto;
-  right: 42vh;
+  right: 48vh;
+  top: 2px;
+}
+
+.ltr .features-container {
+  max-width: 1343px;
+  padding: 0px 130px;
+  gap: 58px;
 }
 
 /* Adjust bottom star position for English */
 .ltr .star.star-bottom {
   left: auto;
-  right: 5vh;
+  right: 9vh;
+  top: 58vh;
 }
 
 /* Add transform animations for swapped state */
@@ -716,11 +758,11 @@ export default {
 }
 
 .features-container {
-  max-width: 1200px;
+  max-width: 1246px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  padding: 0 40px;
+  padding: 0 33px;
   position: relative;
   gap: 40px;
 }
@@ -746,7 +788,7 @@ export default {
 
 .feature-title {
   color: #aa8b7a;
-  font-size: 24px;
+  font-size: 27px;
   font-weight: 500;
   margin: 0;
   font-family: 'TheSansArabic', sans-serif;
@@ -754,7 +796,7 @@ export default {
 
 .feature-description {
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.6;
   margin: 0;
   opacity: 0.9;
@@ -806,7 +848,7 @@ export default {
 .ltr .feature-title {
   text-align: left;
   font-family: 'Cairo', sans-serif;
-  font-size: 23px;
+  font-size: 27px;
   letter-spacing: 0;
   font-weight: 400;
   color: #FFFFFF;
@@ -819,6 +861,7 @@ export default {
   line-height: auto;
   letter-spacing: 0;
   font-weight: 400;
+  font-size: 19px;
 }
 
 .ltr .feature-item:not(:last-child)::after {
@@ -899,6 +942,11 @@ export default {
   /* Ensure normal direction */
 }
 
+.rtl .star.star-top {
+  left: 435px;
+  top: 1px;
+}
+
 .rtl .oval-container {
   flex: 0 0 23%;
   display: flex;
@@ -923,6 +971,17 @@ export default {
   transform: scale(1);
   opacity: 1;
   z-index: 3;
+}
+
+.rtl .next-arrow {
+  height: 38px;
+  left: 45vh;
+  top: 60vh;
+}
+
+.rtl .star.star-bottom {
+  left: 17vh;
+  top: 57vh;
 }
 
 .rtl .secondary .img-oval {
@@ -1062,6 +1121,7 @@ export default {
   .rtl .ovals-row {
     flex-direction: row-reverse;
     width: 100%;
+    padding-right: 0px;
   }
 
   .ltr .ovals-row {
@@ -1150,6 +1210,7 @@ export default {
     margin: 24px 0 0 0;
     width: 100%;
   }
+
   .mobile-features-row {
     display: flex;
     flex-direction: row;
@@ -1158,6 +1219,7 @@ export default {
     padding: 0 0;
     margin-bottom: 18px;
   }
+
   .mobile-feature-item {
     display: flex;
     flex-direction: column;
@@ -1165,12 +1227,14 @@ export default {
     flex: 1 1 0;
     margin: 0 4px;
   }
+
   .mobile-feature-item .feature-icon {
     width: 48px;
     height: 48px;
     margin-bottom: 6px;
     filter: brightness(0) saturate(110%) invert(76%) sepia(34%) saturate(409%) hue-rotate(337deg) brightness(109%) contrast(97%);
   }
+
   .mobile-feature-item .feature-title {
     color: #fff;
     font-size: 15px;
@@ -1179,12 +1243,14 @@ export default {
     margin-top: 2px;
     letter-spacing: 0.2px;
   }
+
   .mobile-features-decor {
     display: flex;
     justify-content: center;
     width: 100%;
     margin-top: 8px;
   }
+
   .mobile-features-decor img {
     width: 178px;
   }
@@ -1246,6 +1312,228 @@ export default {
   .secondary .img-oval {
     width: 220px !important;
     height: 290px !important;
+  }
+}
+
+/* Tablet Specific Styles (Surface Pro 7 and similar devices) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  /* Hero Section Adjustments */
+  .hero-figma-small-row {
+    height: 40vh;
+  }
+
+   
+  /* Milagro Content Adjustments */
+  .milagro-content {
+    padding-right: 4%;
+  }
+
+  .rtl .milagro-content {
+    width: 38%;
+    padding-right: 0px;
+  }
+
+  .rtl .hero-figma-small {
+    width: 58%;
+  }
+
+  .rtl .oval-container {
+    padding: 34px 2px;
+  }
+
+  .ltr .milagro-content {
+    padding-left: 4%;
+  }
+
+  .hero-figma-small-row.rtl  {
+    width: 96%;
+  }
+
+  .milagro-title {
+    font-size: 42px;
+  }
+
+  .ovals-row {
+    width: 100%;
+  }
+
+  .milagro-desc {
+    font-size: 22px;
+  }
+
+  .shop-btn {
+    padding: 12px 100px;
+    font-size: 20px;
+  }
+
+  /* Image Slider Adjustments */
+  .hero-figma-small {
+    width: 55%;
+  }
+
+  .ltr .hero-figma-small {
+    margin: 0px 0px;
+    width: 72%;
+  }
+
+  /* Adjust image sizes */
+  .primary .img-oval {
+    width: 18vh;
+    height: 31vh;
+  }
+
+  .secondary .img-oval {
+    width: 14vh;
+    height: 23vh;
+  }
+
+  .rtl .ovals-row {
+    padding-right: 0px;
+  }
+
+  .rtl .secondary .img-oval {
+    width: 16vh;
+    height: 26vh;
+  }
+
+  .rtl .primary .img-oval {
+    width: 19vh;
+    height: 31vh;
+  }
+
+  /* Star positions */
+  .star.star-top {
+    width: 35px;
+    height: 35px;
+  }
+
+  .rtl .star.star-top {
+    left: 265px;
+        top: 56px;
+  }
+
+  .ltr .star.star-top {
+    right: 19vh;
+    top: 45px;
+  }
+
+  .star.star-bottom {
+    width: 25px;
+    height: 25px;
+  }
+
+  .rtl .star.star-bottom {
+    left: 2vh;
+    top: 28vh;
+  }
+
+  .ltr .star.star-bottom {
+    right: 2vh;
+    top: 28vh;
+  }
+ 
+  /* Next arrow adjustments */
+  .next-arrow {
+    width: 70px;
+    height: 30px;
+  }
+
+  .rtl .next-arrow {
+    left: 13vh;
+    top: 30vh;
+  }
+
+  .ltr .next-arrow {
+    right: 14vh;
+        top: 29vh;
+  }
+
+  /* Features Section Adjustments */
+  .features-section {
+    padding: 40px 0;
+    min-height: 220px;
+  }
+
+  .features-container {
+    padding: 0 30px;
+    gap: 30px;
+  }
+
+  .ltr .features-container {
+    max-width: 100%;
+    padding: 0 40px;
+    gap: 30px;
+  }
+
+  .feature-title {
+    font-size: 22px;
+  }
+
+  .feature-description {
+    font-size: 16px;
+  }
+
+  .feature-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .feature-item {
+    padding: 15px;
+  }
+
+  .title-row {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  /* RTL specific adjustments */
+  .rtl .feature-item:not(:last-child)::after {
+    right: -15px;
+  }
+
+  .ltr .feature-item:not(:last-child)::after {
+    right: -5px;
+  }
+
+  .rtl .slides-wrapper {
+    width: 100%;
+  }
+
+  .ltr .feature-description {
+    margin-left: 25px;
+    font-size: 17px;
+  }
+}
+
+/* Landscape tablet adjustments */
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .hero-figma-small-row {
+    height: 65vh;
+  }
+
+  .milagro-content {
+    padding-right: 6%;
+  }
+
+  .rtl .milagro-content {
+    width: 40%;
+    padding-right: 60px;
+  }
+
+  .ltr .milagro-content {
+    padding-left: 6%;
+  }
+
+  .features-container {
+    max-width: 1100px;
+    padding: 0 40px;
+  }
+
+  .ltr .features-container {
+    max-width: 1200px;
+    padding: 0 60px;
   }
 }
 </style>

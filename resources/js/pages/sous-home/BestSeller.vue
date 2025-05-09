@@ -20,10 +20,24 @@
 
         <div class="slider-container">
             <!-- Left Arrow -->
-            <button class="nav-arrow prev" aria-label="Previous">
+            <button 
+                :class="['nav-arrow', 'prev', {'visible': canScrollLeft}]"
+                aria-label="Previous" 
+                @click="slidePrev"
+            >
                 <span>‹</span>
             </button>
-            <div class="products-container">
+            <div 
+                ref="productsContainer"
+                class="products-container"
+                @mousedown="startDragging"
+                @mousemove="moveSlider"
+                @mouseup="stopDragging"
+                @mouseleave="stopDragging"
+                @touchstart="startDragging"
+                @touchmove="moveSlider"
+                @touchend="stopDragging"
+            >
                 <div class="product-card" v-for="(product, index) in products" :key="index">
                     <div class="product-image-container">
                         <img :src="product.image" :alt="product.title[currentLang]" class="product-image" />
@@ -49,7 +63,11 @@
             </div>
 
             <!-- Right Arrow -->
-            <button class="nav-arrow next" aria-label="Next">
+            <button 
+                :class="['nav-arrow', 'next', {'visible': canScrollRight}]"
+                aria-label="Next" 
+                @click="slideNext"
+            >
                 <span>›</span>
             </button>
         </div>
@@ -69,6 +87,11 @@ export default {
     data() {
         return {
             isMobile: false,
+            isDragging: false,
+            startX: 0,
+            scrollLeft: 0,
+            canScrollLeft: false,
+            canScrollRight: true,
             translations: {
                 pieces: {
                     ar: 'حبة',
@@ -115,6 +138,24 @@ export default {
                     },
                     pieces: 30,
                     price: '29.000'
+                },
+                {
+                    image: '/assets/img/red.png',
+                    title: {
+                        ar: 'توزيعات ميلاجرو أحمر',
+                        en: 'Red Giveaway Tray'
+                    },
+                    pieces: 30,
+                    price: '29.000'
+                },
+                {
+                    image: '/assets/img/red.png',
+                    title: {
+                        ar: 'توزيعات ميلاجرو أحمر',
+                        en: 'Red Giveaway Tray'
+                    },
+                    pieces: 30,
+                    price: '29.000'
                 }
             ]
         }
@@ -122,14 +163,141 @@ export default {
     methods: {
         checkMobile() {
             this.isMobile = window.innerWidth <= 445;
+        },
+        updateScrollButtons() {
+            const slider = this.$refs.productsContainer;
+            if (!slider) return;
+
+            const maxScroll = slider.scrollWidth - slider.clientWidth;
+            const threshold = 10;
+            const currentScroll = Math.abs(slider.scrollLeft);
+
+            if (this.currentLang === 'ar') {
+                // For RTL (Arabic)
+                this.canScrollLeft = currentScroll < maxScroll - threshold;
+                this.canScrollRight = currentScroll > threshold;
+            } else {
+                // For LTR (English)
+                this.canScrollLeft = currentScroll > threshold;
+                this.canScrollRight = currentScroll < maxScroll - threshold;
+            }
+
+            // Force a re-render of the arrows
+            this.$forceUpdate();
+        },
+        startDragging(e) {
+            this.isDragging = true;
+            const slider = this.$refs.productsContainer;
+            this.startX = e.type === 'mousedown' ? e.pageX : e.touches[0].pageX;
+            this.scrollLeft = slider.scrollLeft;
+            slider.style.cursor = 'grabbing';
+            slider.style.userSelect = 'none';
+            slider.style.scrollBehavior = 'auto';
+        },
+        stopDragging(e) {
+            this.isDragging = false;
+            const slider = this.$refs.productsContainer;
+            slider.style.cursor = 'grab';
+            slider.style.removeProperty('user-select');
+            slider.style.scrollBehavior = 'smooth';
+            this.updateScrollButtons();
+        },
+        moveSlider(e) {
+            if (!this.isDragging) return;
+            
+            e.preventDefault();
+            const slider = this.$refs.productsContainer;
+            const x = e.type === 'mousemove' ? e.pageX : e.touches[0].pageX;
+            const difference = x - this.startX;
+            
+            // Use positive difference for both RTL and LTR
+            const scrollDifference = -difference;
+            slider.scrollLeft = this.scrollLeft + scrollDifference;
+            
+            // Immediate update of button visibility
+            requestAnimationFrame(() => this.updateScrollButtons());
+        },
+        slideNext() {
+            const slider = this.$refs.productsContainer;
+            const cardWidth = 300 + 24;
+            const scrollAmount = cardWidth;
+            
+            slider.scrollBy({ 
+                left: this.currentLang === 'ar' ? -scrollAmount : scrollAmount, 
+                behavior: 'smooth' 
+            });
+            
+            // Update buttons after animation
+            const checkScroll = () => {
+                if (slider.scrollLeft === this.scrollLeft) {
+                    this.updateScrollButtons();
+                } else {
+                    this.scrollLeft = slider.scrollLeft;
+                    requestAnimationFrame(checkScroll);
+                }
+            };
+            requestAnimationFrame(checkScroll);
+        },
+        slidePrev() {
+            const slider = this.$refs.productsContainer;
+            const cardWidth = 300 + 24;
+            const scrollAmount = cardWidth;
+            
+            slider.scrollBy({ 
+                left: this.currentLang === 'ar' ? scrollAmount : -scrollAmount, 
+                behavior: 'smooth' 
+            });
+            
+            // Update buttons after animation
+            const checkScroll = () => {
+                if (slider.scrollLeft === this.scrollLeft) {
+                    this.updateScrollButtons();
+                } else {
+                    this.scrollLeft = slider.scrollLeft;
+                    requestAnimationFrame(checkScroll);
+                }
+            };
+            requestAnimationFrame(checkScroll);
         }
     },
     mounted() {
         this.checkMobile();
         window.addEventListener('resize', this.checkMobile);
+        
+        this.$nextTick(() => {
+            const slider = this.$refs.productsContainer;
+            
+            // Initialize slider position for RTL
+            if (this.currentLang === 'ar') {
+                // For RTL, start at the beginning (left side)
+                slider.scrollLeft = 0;
+            }
+            
+            // Add scroll event listener with debounce
+            let scrollTimeout;
+            slider.addEventListener('scroll', () => {
+                if (scrollTimeout) {
+                    window.cancelAnimationFrame(scrollTimeout);
+                }
+                scrollTimeout = requestAnimationFrame(() => {
+                    this.updateScrollButtons();
+                });
+            });
+            
+            // Initial button check
+            this.updateScrollButtons();
+        });
+
+        // Prevent default drag behaviors
+        const slider = this.$refs.productsContainer;
+        slider.addEventListener('dragstart', e => e.preventDefault());
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.checkMobile);
+        const slider = this.$refs.productsContainer;
+        if (slider) {
+            slider.removeEventListener('scroll', () => this.updateScrollButtons());
+        }
     }
 }
 </script>
@@ -184,26 +352,38 @@ export default {
 .products-container {
     display: flex;
     gap: 24px;
-    overflow: hidden;
+    overflow-x: scroll;
     padding: 20px 0;
     margin: 0 auto;
     justify-content: flex-start;
     width: 100%;
     max-width: 1280px;
     scrollbar-width: none;
-    /* Firefox */
     -ms-overflow-style: none;
-    /* IE and Edge */
+    scroll-behavior: smooth;
+    cursor: grab;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+}
+
+.products-container:active {
+    cursor: grabbing !important;
 }
 
 /* RTL (Arabic) specific styles */
 .rtl .products-container {
-    direction: right;
+    direction: rtl;
+    /* Remove any transform or other directional overrides */
 }
 
 /* LTR (English) specific styles */
 .ltr .products-container {
-    direction: left;
+    direction: ltr;
+    /* Remove any transform or other directional overrides */
 }
 
 .product-card {
@@ -213,6 +393,8 @@ export default {
     overflow: hidden;
     transition: transform 0.3s ease;
     margin: 0 auto;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .product-image-container {
@@ -229,6 +411,9 @@ export default {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .hover-hand {
@@ -317,16 +502,20 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 3;
+}
+
+.nav-arrow.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
 .nav-arrow:focus {
     outline: none;
     color: #fff;
-}
-
-.nav-arrow:focus-visible {
-    outline: none;
 }
 
 .prev {
@@ -340,7 +529,7 @@ export default {
 /* RTL (Arabic) specific styles */
 .rtl .section-header {
     text-align: right;
-    padding-right: 176px;
+    padding-right: 152px;
 }
 
 .rtl .section-title {
@@ -356,7 +545,7 @@ export default {
 /* LTR (English) specific styles */
 .ltr .section-header {
     text-align: left;
-    padding-left: 177px;
+    padding-left: 152px;
     padding-right: 0;
 }
 
@@ -369,6 +558,17 @@ export default {
     margin-right: 0;
     order: 1;
     /* Places star after text in LTR */
+}
+
+/* RTL (Arabic) specific styles */
+.rtl .prev {
+    left: 40px;
+    right: auto;
+}
+
+.rtl .next {
+    right: 40px;
+    left: auto;
 }
 
 /* Responsive adjustments */
@@ -407,7 +607,6 @@ export default {
 /* Custom scrollbar for the products container */
 .products-container::-webkit-scrollbar {
     display: none;
-    /* Chrome, Safari, Opera */
 }
 
 .products-container::-webkit-scrollbar-track {
@@ -496,9 +695,122 @@ export default {
         font-size: 14px;
     }
 
-    .next {
-        display: none;
+    .slider-container {
+        padding: 0 40px;
+        position: relative;
+        overflow: visible;
     }
 
+    .nav-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 48px;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .nav-arrow.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .prev {
+        left: 5px;
+    }
+
+    .next {
+        right: 5px;
+    }
+
+    .rtl .prev {
+        left: 5px;
+        right: auto;
+    }
+
+    .rtl .next {
+        right: 5px;
+        left: auto;
+    }
+}
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .section-header {
+        text-align: right;
+        padding-right: 40px;
+        margin-bottom: 30px;
+    }
+
+    .ltr .section-header {
+        text-align: left;
+        padding-left: 40px;
+        padding-right: 0;
+    }
+
+    .section-title {
+        font-size: 32px;
+    }
+
+    .star-icon {
+        width: 14px;
+        height: 14px;
+        margin-top: -20px;
+    }
+
+    .slider-container {
+        padding: 0 40px;
+        max-width: 100%;
+    }
+
+    .products-container {
+        gap: 16px;
+        padding: 15px 0;
+    }
+
+    .product-card {
+        flex: 0 0 240px;
+    }
+
+    .product-image-container {
+        height: 220px;
+    }
+
+    .product-title {
+        font-size: 18px;
+    }
+
+    .product-price {
+        font-size: 16px;
+    }
+
+    .product-pieces {
+        font-size: 15px;
+    }
+
+    .nav-arrow {
+        width: 45px;
+        height: 40px;
+        font-size: 60px;
+    }
+
+    .prev {
+        left: 20px;
+    }
+
+    .next {
+        right: 20px;
+    }
+
+    .rtl .section-header {
+        padding-right: 40px;
+    }
+
+    .rtl .prev {
+        left: 20px;
+    }
+
+    .rtl .next {
+        right: 20px;
+    }
 }
 </style>

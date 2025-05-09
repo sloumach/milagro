@@ -680,4 +680,186 @@ export default {
         font-size: 16px;
     }
 }
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px !important;
+        min-height: calc(100vh - 180px);
+    }
+
+    .profile-container {
+        max-width: 900px;
+    }
+
+    .profile-title {
+        font-size: 36px;
+        top: -35px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        top: -10px;
+    }
+
+    /* Orders Navigation */
+    .orders-navigation {
+        top: -32px;
+        padding: 12px 0;
+    }
+
+    .nav-link {
+        font-size: 18px;
+        gap: 20px;
+    }
+
+    .arrow-icon {
+        width: 90px;
+        height: 13px;
+    }
+
+    .profile-layout {
+        gap: 40px;
+        top: -25px;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start;
+    }
+
+    .profile-sidebar {
+        width: 180px !important;
+        flex-shrink: 0;
+        position: relative;
+        top: 12px;
+        display: block !important;
+    }
+
+    .profile-content {
+        position: relative;
+        top: 12px;
+        flex: 1;
+        max-width: calc(100% - 220px);
+    }
+
+    .sidebar-item {
+        font-size: 18px;
+        margin-bottom: 14px;
+        padding: 0;
+    }
+
+    .rtl .sidebar-item.active::after {
+        right: -120px;
+        width: 108%;
+        bottom: -8px;
+    }
+
+    .ltr .sidebar-item.active::after {
+        left: -120px;
+        width: 128%;
+        bottom: -8px;
+    }
+
+    /* Order Details Content */
+    .order-details {
+        margin-top: -5px;
+    }
+
+    .status-header {
+        margin-bottom: 6px;
+    }
+
+    .order-id {
+        font-size: 17px;
+        gap: 6px;
+    }
+
+    .cart-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .status {
+        font-size: 15px;
+    }
+
+    .order-date {
+        font-size: 13px;
+        margin-bottom: 28px;
+    }
+
+    .section-header {
+        gap: 10px;
+        margin-bottom: 20px;
+        margin-top: 28px;
+    }
+
+    .section-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .section-header h2 {
+        font-size: 17px;
+    }
+
+    .order-items {
+        gap: 16px;
+    }
+
+    .order-item {
+        gap: 14px;
+    }
+
+    .item-image {
+        width: 56px;
+        height: 56px;
+        border-radius: 6px;
+    }
+
+    .item-details {
+        flex: 1;
+    }
+
+    .item-name {
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+
+    .item-specs,
+    .item-quantity {
+        font-size: 13px;
+        margin-bottom: 3px;
+    }
+
+    .item-price {
+        font-size: 15px;
+        margin-left: 14px;
+        margin-right: 14px;
+    }
+
+    .address-details {
+        font-size: 15px;
+        line-height: 1.4;
+    }
+
+    .summary-details {
+        gap: 14px;
+    }
+
+    .summary-row {
+        font-size: 15px;
+    }
+
+    .summary-row.total {
+        font-size: 17px;
+        margin-top: 6px;
+        padding-top: 14px;
+    }
+
+    /* Force hide mobile tabs in tablet view */
+    .mobile-profile-tabs {
+        display: none !important;
+    }
+}
 </style>

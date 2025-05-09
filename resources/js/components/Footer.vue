@@ -402,4 +402,79 @@ export default {
     gap: 7px;
     justify-content: center;
 }
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .footer {
+        padding: 50px 40px;
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 100%;
+    }
+
+    .logo-section {
+        grid-column: 1 / -1;
+        margin-bottom: 20px;
+    }
+
+    .footer-logo {
+        width: 120px;
+        height: 90px;
+        top: 0;
+        right: 0;
+    }
+
+    .footer-heading {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .footer-nav a,
+    .contact-info p,
+    .address {
+        font-size: 15px;
+    }
+
+    .social-links {
+        gap: 12px;
+    }
+
+    .social-link img {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* RTL specific adjustments for tablet */
+    .rtl .footer-logo {
+        right: 0;
+    }
+
+    .rtl .footer-heading,
+    .rtl .footer-nav a,
+    .rtl .contact-info p,
+    .rtl .address {
+        text-align: center;
+        font-size: 15px;
+    }
+
+    /* LTR specific adjustments for tablet */
+    .ltr .footer-heading,
+    .ltr .footer-nav a,
+    .ltr .contact-info p,
+    .ltr .address {
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .address-section {
+        grid-column: span 2;
+    }
+
+    .social-section {
+        grid-column: span 1;
+    }
+}
 </style>

@@ -1378,4 +1378,238 @@ textarea.form-input {
     }
     
 }
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px;
+    }
+
+    .profile-container {
+        max-width: 1000px;
+    }
+
+    .orders-navigation {
+        top: -35px;
+        padding: 15px 0;
+    }
+
+    .nav-link {
+        font-size: 19px;
+        gap: 25px;
+    }
+
+    .arrow-icon {
+        width: 100px;
+        height: 14px;
+    }
+    .profile-page {
+    min-height: calc(71vh - 286px);
+}
+    .product-details {
+        display: flex;
+        flex-direction: row;
+        gap: 35px;
+        margin-top: 20px;
+    }
+
+    .product-gallery {
+        flex: 1;
+        max-width: 450px;
+    }
+
+    .gallery-container {
+        display: flex;
+        gap: 18px;
+        flex-direction: row-reverse;
+    }
+
+    .main-image {
+        flex: 1;
+        height: 420px;
+    }
+
+    .thumbnail-gallery {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100px;
+    }
+
+    .thumbnail {
+        width: 100px;
+        height: 130px;
+    }
+
+    .product-info {
+        flex: 1;
+        max-width: 450px;
+    }
+
+    .product-header h1 {
+        font-size: 30px;
+    }
+
+    .price {
+        font-size: 23px;
+    }
+
+    .rating {
+        margin-bottom: 18px;
+    }
+
+    .stars img {
+        width: 15px;
+        height: 15px;
+    }
+
+    .description {
+        font-size: 16px;
+        margin-bottom: 28px;
+        line-height: 1.5;
+    }
+
+    .additions h3 {
+        font-size: 17px;
+        margin-bottom: 14px;
+    }
+
+    .addition-option {
+        margin-bottom: 12px;
+    }
+
+    .addition-option label {
+        padding: 10px 0;
+        padding-left: 32px;
+        font-size: 16px;
+    }
+
+    .rtl .addition-option label {
+        padding-left: 0;
+        padding-right: 32px;
+    }
+
+    .addition-option label::before {
+        width: 19px;
+        height: 19px;
+    }
+
+    .addition-option input[type="radio"]:checked + label::after {
+        width: 11px;
+        height: 11px;
+        left: 6px;
+    }
+
+    .rtl .addition-option input[type="radio"]:checked + label::after {
+        left: auto;
+        right: 6px;
+    }
+
+    .quantity-section {
+        gap: 18px;
+        margin-bottom: 28px;
+    }
+
+    .quantity-label {
+        font-size: 17px;
+    }
+
+    .quantity-controls {
+        height: 38px;
+    }
+
+    .quantity-btn {
+        width: 38px;
+        font-size: 19px;
+    }
+
+    .quantity-controls input {
+        width: 38px;
+        font-size: 16px;
+    }
+
+    .add-to-cart {
+        height: 46px;
+        font-size: 16px;
+    }
+
+    /* Reviews Section Tablet Styles */
+    .reviews-section {
+        margin-top: 50px;
+        padding: 35px;
+    }
+
+    .reviews-header h2 {
+        font-size: 23px;
+    }
+
+    .reviews-header img {
+        width: 19px;
+        height: 19px;
+    }
+
+    .review-item {
+        padding: 28px 50px;
+    }
+
+    .user-name {
+        font-size: 17px;
+    }
+
+    .review-text {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .reviews-footer {
+        margin-top: 35px;
+        gap: 14px;
+    }
+
+    .write-review {
+        padding: 13px 28px;
+        font-size: 16px;
+        max-width: 210px;
+    }
+
+    /* Modal Tablet Styles */
+    .modal-container {
+        max-width: 650px;
+        width: 90%;
+    }
+
+    .modal-header {
+        padding: 14px 45px;
+    }
+
+    .modal-header h3 {
+        font-size: 23px;
+    }
+
+    .modal-content {
+        padding: 38px 80px;
+    }
+
+    .rating-section label {
+        font-size: 17px;
+    }
+
+    .star-icon {
+        font-size: 26px;
+    }
+
+    .form-group label {
+        font-size: 16px;
+    }
+
+    .form-input {
+        padding: 11px;
+        font-size: 16px;
+    }
+
+    .submit-review {
+        padding: 13px;
+        font-size: 16px;
+    }
+}
 </style>

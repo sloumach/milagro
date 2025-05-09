@@ -409,4 +409,76 @@ export default {
         display: none;
     }
 }
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px;
+        min-height: calc(100vh - 180px);
+    }
+
+    .profile-container {
+        max-width: 1000px;
+    }
+
+    .profile-title {
+        font-size: 36px;
+        top: -35px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        top: -10px;
+    }
+
+    .profile-layout {
+        gap: 40px;
+        top: -25px;
+    }
+
+    .profile-sidebar {
+        width: 180px;
+    }
+
+    .sidebar-item {
+        font-size: 18px;
+        margin-bottom: 14px;
+    }
+
+    .rtl .sidebar-item.active::after {
+        right: -120px;
+        width: 123%;
+    }
+
+    .ltr .sidebar-item.active::after {
+        left: -120px;
+        width: 123%;
+    }
+
+    .form-group label {
+        font-size: 15px;
+    }
+
+    .form-group input {
+        height: 44px;
+        font-size: 15px;
+        padding: 0 14px;
+    }
+
+    .submit-btn {
+        height: 44px;
+        font-size: 15px;
+        margin-top: 14px;
+    }
+
+    .profile-content {
+        flex: 1;
+        padding-right: 20px;
+    }
+
+    .profile-form {
+        max-width: 420px;
+    }
+}
 </style>
