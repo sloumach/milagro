@@ -1,6 +1,48 @@
 <template>
     <footer class="footer" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
-        <div class="footer-content">
+        <div v-if="isMobile" class="footer-mobile-wrapper">
+            <!-- Mobile Layout -->
+            <div class="footer-mobile-logo">
+                <img src="../../../public/assets/img/logo-footer.png" alt="Milagro Logo" class="footer-logo" />
+            </div>
+            <div class="footer-mobile-social-row">
+                <span class="footer-mobile-follow">{{ currentLang === 'en' ? 'FOLLOW US' : 'تابعنا' }}</span>
+                <div class="footer-mobile-social-icons">
+                    <a href="#" class="social-link"><img src="../../../public/assets/img/facebook.png" alt="Facebook" /></a>
+                    <a href="#" class="social-link"><img src="../../../public/assets/img/twitter.png" alt="Twitter" /></a>
+                    <a href="#" class="social-link"><img src="../../../public/assets/img/youtube.png" alt="YouTube" /></a>
+                </div>
+            </div>
+            <div class="footer-mobile-columns">
+                <div class="footer-mobile-col footer-mobile-contact">
+                    <div class="footer-mobile-heading">{{ currentLang === 'en' ? 'CONTACT US' : 'تواصل معنا' }}</div>
+                    <div class="footer-mobile-contact-info">
+                        <div>123 Simply Quidem</div>
+                        <div>Soluta Lorem</div>
+                        <div>The Park</div>
+                        <div>AB 10000</div>
+                    </div>
+                    <div class="footer-mobile-heading footer-mobile-sub">{{ currentLang === 'en' ? 'PHONE NO.' : 'رقم الهاتف' }}</div>
+                    <div class="footer-mobile-contact-info">(216) 5599 3548</div>
+                    <div class="footer-mobile-heading footer-mobile-sub">EMAIL</div>
+                    <div class="footer-mobile-contact-info">support@rido.design</div>
+                </div>
+                <div class="footer-mobile-col footer-mobile-links">
+                    <div class="footer-mobile-heading">{{ currentLang === 'en' ? 'QUICK LINKS' : 'روابط سريعة' }}</div>
+                    <div class="footer-mobile-links-list">
+                        <div>Taxt</div>
+                        <div>Ipsum</div>
+                        <div>Popular</div>
+                        <div>Services</div>
+                        <div>Matters</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-mobile-copyright">
+                Copyright© Milagro All Rights Reserved.
+            </div>
+        </div>
+        <div v-else class="footer-content">
             <!-- Logo Section -->
             <div class="logo-section">
                 <img src="../../../public/assets/img/logo-footer.png" alt="Milagro Logo" class="footer-logo" />
@@ -76,6 +118,23 @@ export default {
             required: true,
             default: 'ar'
         }
+    },
+    data() {
+        return {
+            isMobile: false
+        }
+    },
+    methods: {
+        checkMobile() {
+            this.isMobile = window.innerWidth <= 480;
+        }
+    },
+    mounted() {
+        this.checkMobile();
+        window.addEventListener('resize', this.checkMobile);
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.checkMobile);
     }
 }
 </script>
@@ -88,6 +147,127 @@ export default {
     border-top: 1px solid rgba(170, 139, 122, 0.2);
 }
 
+/* --- MOBILE LAYOUT --- */
+@media (max-width: 480px) {
+    .footer {
+        padding: 0;
+        background: #212A1E;
+    }
+    .footer-mobile-wrapper {
+        width: 100%;
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #212A1E;
+        color: #AA8B7A;
+        font-family: 'Tenor Sans', serif;
+    }
+    .footer-mobile-logo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 24px;
+        margin-bottom: 10px;
+    }
+    .footer-logo {
+        width: 90px;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+        right: 0px !important;
+    }
+    .footer-mobile-social-row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        margin-bottom: 18px;
+    }
+    .footer-mobile-follow {
+        font-size: 16px;
+        font-weight: 600;
+        color: #AA8B7A;
+        margin-right: 10px;
+        letter-spacing: 1px;
+    }
+    .footer-mobile-social-icons {
+        display: flex;
+        flex-direction: row;
+        gap: 14px;
+    }
+    .footer-mobile-social-icons .social-link img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: transparent;
+        border: 1px solid #AA8B7A;
+        padding: 4px;
+    }
+    .footer-mobile-columns {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 18px;
+        margin-bottom: 18px;
+    }
+    .footer-mobile-col {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        color: #AA8B7A;
+        font-size: 15px;
+        font-family: 'Tenor Sans', serif;
+        padding: 0 8px;
+    }
+    .footer-mobile-heading {
+        font-size: 15px;
+        font-weight: 700;
+        color: #AA8B7A;
+        margin-bottom: 8px;
+        margin-top: 12px;
+        letter-spacing: 1px;
+    }
+    .footer-mobile-sub {
+        margin-top: 14px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #AA8B7A;
+    }
+    .footer-mobile-contact-info {
+        margin-bottom: 2px;
+        color: #AA8B7A;
+        font-size: 15px;
+        font-family: 'Tenor Sans', serif;
+    }
+    .footer-mobile-links-list div {
+        margin-bottom: 4px;
+        color: #AA8B7A;
+        font-size: 15px;
+        font-family: 'Tenor Sans', serif;
+    }
+    .footer-mobile-copyright {
+        width: 100%;
+        text-align: center;
+        color: #AA8B7A;
+        font-size: 13px;
+        margin: 18px 0 10px 0;
+        font-family: 'Tenor Sans', serif;
+    }
+    .rtl .footer-logo {
+
+        right: 0px !important;
+    }
+}
+
+/* --- DESKTOP LAYOUT (unchanged) --- */
 .footer-content {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -209,22 +389,6 @@ export default {
     }
 }
 
-@media (max-width: 480px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .logo-section {
-        display: flex;
-        justify-content: center;
-    }
-
-    .social-links {
-        justify-content: center;
-    }
-}
-
 /* Center logo */
 .logo-section {
     display: flex;
@@ -237,5 +401,80 @@ export default {
     display: flex;
     gap: 7px;
     justify-content: center;
+}
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .footer {
+        padding: 50px 40px;
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 100%;
+    }
+
+    .logo-section {
+        grid-column: 1 / -1;
+        margin-bottom: 20px;
+    }
+
+    .footer-logo {
+        width: 120px;
+        height: 90px;
+        top: 0;
+        right: 0;
+    }
+
+    .footer-heading {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .footer-nav a,
+    .contact-info p,
+    .address {
+        font-size: 15px;
+    }
+
+    .social-links {
+        gap: 12px;
+    }
+
+    .social-link img {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* RTL specific adjustments for tablet */
+    .rtl .footer-logo {
+        right: 0;
+    }
+
+    .rtl .footer-heading,
+    .rtl .footer-nav a,
+    .rtl .contact-info p,
+    .rtl .address {
+        text-align: center;
+        font-size: 15px;
+    }
+
+    /* LTR specific adjustments for tablet */
+    .ltr .footer-heading,
+    .ltr .footer-nav a,
+    .ltr .contact-info p,
+    .ltr .address {
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .address-section {
+        grid-column: span 2;
+    }
+
+    .social-section {
+        grid-column: span 1;
+    }
 }
 </style>

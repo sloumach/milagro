@@ -33,16 +33,16 @@
                             <div class="step-label">{{ currentLang === 'en' ? 'Delivery' : 'التوصيل' }}</div>
                             <div class="step-number"><span>1</span></div>
 
-                </div>
+                        </div>
                         <div class="step" :class="{ 'active': currentStep === 2 }">
                             <div class="step-label">{{ currentLang === 'en' ? 'Payment' : 'الدفع' }}</div>
                             <div class="step-number"><span>2</span></div>
-                            
-            </div>
+
+                        </div>
                         <div class="step" :class="{ 'active': currentStep === 3 }">
                             <div class="step-label">{{ currentLang === 'en' ? 'Confirmation' : 'التأكيد' }}</div>
                             <div class="step-number"><span>3</span></div>
-                           
+
                         </div>
                         <div class="steps-line"></div>
                     </div>
@@ -105,27 +105,26 @@
                             </div>
                         </div>
 
-                        <h2 class="section-title">{{ currentLang === 'en' ? 'Delivery Information' : 'معلومات التوصيل'
-                            }}</h2>
-                        <div class="form-group">
-                            <select v-model="formData.governorate">
-                                <option value="" disabled selected>{{ currentLang === 'en' ? 'Governorate' : 'المحافظة'
-                                    }}</option>
-                                <option v-for="gov in governorates" :key="gov.en" :value="gov.en">
-                                    {{ currentLang === 'en' ? gov.en : gov.ar }}
-                                </option>
-                            </select>
+                        <h2 class="section-title">{{ currentLang === 'en' ? 'Delivery Information' : 'معلومات التوصيل' }}</h2>
+                        <div class="form-row location-row">
+                            <div class="form-group">
+                                <select v-model="formData.governorate">
+                                    <option value="" disabled selected>{{ currentLang === 'en' ? 'Governorate' : 'المحافظة' }}</option>
+                                    <option v-for="gov in governorates" :key="gov.en" :value="gov.en">
+                                        {{ currentLang === 'en' ? gov.en : gov.ar }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select v-model="formData.area">
+                                    <option value="" disabled selected>{{ currentLang === 'en' ? 'Area' : 'المنطقة' }}</option>
+                                    <option v-for="area in availableAreas" :key="area.en" :value="area.en">
+                                        {{ currentLang === 'en' ? area.en : area.ar }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <select v-model="formData.area">
-                                <option value="" disabled selected>{{ currentLang === 'en' ? 'Area' : 'المنطقة' }}
-                                </option>
-                                <option v-for="area in availableAreas" :key="area.en" :value="area.en">
-                                    {{ currentLang === 'en' ? area.en : area.ar }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-row">
+                        <div class="form-row address-row">
                             <div class="form-group">
                                 <input type="text" :placeholder="currentLang === 'en' ? 'Block' : 'القطعة'"
                                     v-model="formData.block" />
@@ -135,7 +134,7 @@
                                     v-model="formData.street" />
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row building-row">
                             <div class="form-group">
                                 <input type="text"
                                     :placeholder="currentLang === 'en' ? 'Building Number' : 'رقم المبنى'"
@@ -147,7 +146,7 @@
                                     v-model="formData.directions" />
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row delivery-row">
                             <div class="form-group date-group">
                                 <input type="text"
                                     :placeholder="currentLang === 'en' ? 'Delivery Date' : 'تاريخ التوصيل'"
@@ -173,9 +172,9 @@
                             <div class="form-group">
                                 <select v-model="formData.deliveryTime">
                                     <option value="" disabled selected>{{ currentLang === 'en' ? 'Delivery Time' : 'وقت التوصيل' }}</option>
-                                    <option value="morning">{{ currentLang === 'en' ? 'Morning (9 AM - 1 PM)' : 'صباحاً(9 ص - 1 م)' }}</option>
+                                    <option value="morning">{{ currentLang === 'en' ? 'Morning (9 AM - 1 PM)' :'صباحاً(9 ص - 1 م)' }}</option>
                                     <option value="evening">{{ currentLang === 'en' ? 'Evening (4 PM - 8 PM)' : 'مساءً(4 م - 8 م)' }}</option>
-                                      
+
                                 </select>
                             </div>
                         </div>
@@ -869,7 +868,7 @@ export default {
     display: flex;
     gap: 20px;
     background: #212A1E;
-    
+
     border-radius: 8px;
     padding: 20px;
 }
@@ -1067,7 +1066,7 @@ export default {
     margin-bottom: 10px;
     background-color: #212A1E;
     padding: 15px 0px;
-    
+
 }
 
 .nav-link {
@@ -1079,7 +1078,7 @@ export default {
     transition: color 0.3s;
     width: 100%;
     gap: 29px;
-    
+
 }
 
 .rtl .nav-link {
@@ -1652,9 +1651,11 @@ export default {
     font-size: 14px;
     margin-bottom: 14px;
 }
+
 .ltr .steps-line {
     top: 86px;
 }
+
 .steps-line {
     position: absolute;
     top: 78px;
@@ -1957,5 +1958,342 @@ export default {
 
 .ltr .home-button {
     font-family: 'Cairo', sans-serif;
+}
+
+@media (max-width: 480px) {
+    .arrow-icon {
+        width: 63px;
+        height: 12px;
+    }
+    .nav-link {
+        font-size: 16px
+    }
+    .title-star {
+    width: 14px;
+    height: 14px;
+    }
+    .profile-title {
+     font-size: 30px;
+    }
+    .payment-layout {
+        margin-top: 1px;
+    }
+    .step-label {
+    color: #FFFFFF;
+    font-size: 14px;
+    }
+    .delivery-form {
+        margin-top: 45px;
+        padding: 20px;
+    }
+    .delivery-form h2 {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 400;
+    }
+
+    /* Keep form-row items in the same line for specific fields */
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    /* Special handling for specific form rows that should stay horizontal */
+    .form-row.location-row,
+    .form-row.address-row,
+    .form-row.building-row,
+    .form-row.delivery-row {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .form-row.location-row .form-group,
+    .form-row.address-row .form-group,
+    .form-row.building-row .form-group,
+    .form-row.delivery-row .form-group {
+        width: 50%;
+        margin-bottom: 0;
+    }
+
+    /* Style select boxes */
+    .form-group select {
+        width: 100%;
+        height: 42px;
+        font-size: 14px;
+        padding: 0 12px;
+        background-position: right 8px center;
+    }
+
+    .rtl .form-group select {
+        background-position: left 8px center;
+        padding-right: 12px;
+        padding-left: 30px;
+    }
+
+    /* Adjust input fields */
+    .form-group input {
+        height: 42px;
+        font-size: 14px;
+        padding: 0 12px;
+    }
+
+    /* Phone group adjustments */
+    .phone-group {
+        height: 42px;
+    }
+
+    .phone-prefix {
+        height: 42px;
+        font-size: 14px;
+        padding: 0 10px;
+    }
+
+    /* Date and time inputs */
+    .date-group input,
+    .form-group select[v-model="formData.deliveryTime"] {
+        height: 42px;
+        font-size: 14px;
+    }
+
+    /* Proceed button */
+    .proceed-btn {
+        height: 42px;
+        font-size: 15px;
+        margin-top: 25px;
+    }
+
+    /* Calendar adjustments */
+    .custom-calendar {
+        padding: 15px;
+    }
+
+    .calendar-days-header span {
+        font-size: 11px;
+    }
+
+    .calendar-day {
+        height: 25px;
+        font-size: 13px;
+    }
+
+    .order-summary {
+        padding: 0;
+    }
+}
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px;
+        min-height: calc(100vh - 180px);
+    }
+
+    .profile-container {
+        max-width: 1000px;
+    }
+
+    .profile-title {
+        font-size: 36px;
+        top: -35px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        top: -10px;
+    }
+
+    .payment-layout {
+        gap: 30px;
+        margin-top: 10px;
+    }
+
+    /* Steps Indicator */
+    .steps-container {
+        padding: 15px;
+        margin-bottom: -40px;
+    }
+
+    .step-number {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    .step-label {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+    .steps-line {
+        top: 68px;
+        left: 45px;
+        right: 45px;
+    }
+
+    /* Delivery Form */
+    .delivery-form {
+        padding: 30px;
+        margin-top: 60px;
+    }
+
+    .delivery-form h2 {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+
+    .form-row {
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .form-group input,
+    .form-group select {
+        height: 44px;
+        font-size: 15px;
+        padding: 0 12px;
+    }
+
+    .phone-prefix {
+        height: 44px;
+        font-size: 15px;
+        padding: 0 12px;
+    }
+
+    /* Payment Method Container */
+    .payment-method-container {
+        padding: 30px;
+        margin-top: 60px;
+    }
+
+    .payment-method-container h2 {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .payment-subtitle {
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    .payment-options {
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .payment-option {
+        height: 54px;
+        font-size: 16px;
+    }
+
+    .payment-option.apple-pay img {
+        height: 25px;
+    }
+
+    /* Order Summary */
+    .order-summary {
+        width: 350px;
+        padding: 25px;
+    }
+
+    .order-summary h2 {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+
+    .order-items {
+        gap: 15px;
+    }
+
+    .order-item {
+        gap: 15px;
+        padding-bottom: 15px;
+    }
+
+    .item-thumbnail {
+        width: 90px;
+        height: 90px;
+    }
+
+    .item-info h3 {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+
+    .item-quantity {
+        font-size: 13px;
+        margin: 3px 0;
+    }
+    .ltr .steps-line {
+    top: 75px;
+}
+    .item-price {
+        font-size: 15px;
+        margin: 6px 0 0 0;
+    }
+
+    .order-total {
+        padding-top: 15px;
+    }
+
+    .order-total p {
+        font-size: 16px;
+    }
+
+    /* Navigation */
+    .orders-navigation {
+        top: -35px;
+        padding: 12px 0;
+    }
+
+    .nav-link {
+        font-size: 18px;
+        gap: 25px;
+    }
+
+    .arrow-icon {
+        width: 100px;
+        height: 13px;
+    }
+
+    /* Buttons */
+    .proceed-btn,
+    .confirm-payment-btn {
+        height: 44px;
+        font-size: 15px;
+        margin-top: 25px;
+    }
+
+    /* Confirmation Page */
+    .confirmation-container {
+        padding: 30px;
+        margin-top: 60px;
+    }
+
+    .thank-you-content {
+        padding: 50px 15px;
+    }
+
+    .thank-you-star {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 15px;
+    }
+
+    .thank-you-content h2 {
+        font-size: 36px;
+        margin-bottom: 15px;
+    }
+
+    .confirmation-message {
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    .home-button {
+        padding: 10px 35px;
+        font-size: 15px;
+    }
 }
 </style>

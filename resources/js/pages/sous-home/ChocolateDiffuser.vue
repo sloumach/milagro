@@ -50,7 +50,7 @@ export default {
 }
 
 .content-container {
-    max-width: 1200px;
+    max-width: 1241px;
     margin: 0 auto;
     text-align: center;
     padding-top: 97px;
@@ -104,33 +104,51 @@ export default {
 
 .image-container::before,
 .image-container::after {
-    content: '';
+    content: "";
     position: absolute;
-    width: 251px;
-    height: 251px;
+    width: 219px;
+    height: 232px;
     border: 2px solid #AA8B7A;
     z-index: 1;
     pointer-events: none;
 }
 
-.image-container::before {
-    left: -7px;
-    top: 49px;
-    border-radius: 251px 0 0 0;
+/* RTL (Default) Styles */
+.rtl .image-container::before {
+    left: 2px;
+    top: 69px;
+    border-radius: 223px 0 0;
     border-right: none;
     border-bottom: none;
-    transform: none;
-    transform: rotate(-10deg);
+    transform: rotate(-16deg);
 }
 
-.image-container::after {
-    right: -13px;
+.rtl .image-container::after {
+    right: 1px;
     bottom: 77px;
     border-radius: 0 0 251px;
     border-left: none;
     border-top: none;
-    transform: none;
     transform: rotate(-22deg);
+}
+
+/* LTR Styles - Mirrored */
+.ltr .image-container::before {
+    right: 2px;
+    top: 69px;
+    border-radius: 0 223px 0 0;
+    border-left: none;
+    border-bottom: none;
+    transform: rotate(16deg);
+}
+
+.ltr .image-container::after {
+    left: 1px;
+    bottom: 77px;
+    border-radius: 0 0 0 251px;
+    border-right: none;
+    border-top: none;
+    transform: rotate(22deg);
 }
 
 .product-image {
@@ -149,11 +167,23 @@ export default {
     background-image: url('/assets/img/star.png');
     background-size: contain;
     background-repeat: no-repeat;
-    left: -35px;
-    top: 64%;
     z-index: 2;
+    top: 64%;
 }
 
+/* RTL Star position */
+.rtl .decorative-star {
+    left: -8px;
+}
+
+/* LTR Star position - Mirrored */
+.ltr .decorative-star {
+    right: -8px;
+}
+
+.ltr .content-container {
+    max-width: 1293px;
+}
 .learn-more-btn {
     position: absolute;
     top: 50%;
@@ -261,7 +291,7 @@ export default {
     }
 
     .image-container {
-        padding: 20px;
+        padding: 9px;
         border-radius: 75px;
     }
 
@@ -278,7 +308,7 @@ export default {
     }
 
     .image-container::after {
-        right: -35px;
+        right: 33px;
         bottom: -62px;
         border-radius: 0 0 0 125px;
     }
@@ -297,6 +327,91 @@ export default {
     .learn-more-btn {
         padding: 8px 20px;
         font-size: 16px;
+    }
+}
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .content-container {
+        max-width: 100%;
+        padding-top: 60px;
+    }
+
+    .section-title {
+        font-size: 32px;
+        margin-bottom: 15px;
+    }
+
+    .description-container {
+        padding: 0 30px;
+        margin-bottom: 30px;
+    }
+
+    .section-description {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .image-container {
+        max-width: 600px;
+        padding: 30px;
+    }
+
+    .image-container::before,
+    .image-container::after {
+        width: 160px;
+        height: 170px;
+    }
+
+    /* RTL (Arabic) tablet adjustments */
+    .rtl .image-container::before {
+        left: 2px;
+        top: 50px;
+    }
+
+    .rtl .image-container::after {
+        right: 1px;
+        bottom: 60px;
+    }
+
+    /* LTR (English) tablet adjustments */
+    .ltr .image-container::before {
+        right: 2px;
+        top: 50px;
+    }
+
+    .ltr .image-container::after {
+        left: 1px;
+        bottom: 60px;
+    }
+
+    .decorative-star {
+        width: 25px;
+        height: 25px;
+        top: 60%;
+    }
+
+    /* RTL Star position for tablet */
+    .rtl .decorative-star {
+        left: -5px;
+    }
+
+    /* LTR Star position for tablet */
+    .ltr .decorative-star {
+        right: -5px;
+    }
+
+    .learn-more-btn {
+        padding: 10px 25px;
+        font-size: 16px;
+    }
+
+    .rtl .section-title {
+        padding-right: 30px;
+    }
+
+    .ltr .section-title {
+        padding-left: 30px;
     }
 }
 </style> 

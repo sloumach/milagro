@@ -12,15 +12,10 @@
           class="next-arrow next-arrow-en" alt="next" @click="swapOvals" />
         <div class="ovals-row">
           <!-- Images section -->
-          <div class="slides-container" :class="currentLang === 'en' ? 'ltr' : 'rtl'"
-            @mousedown="startDrag"
-            @mousemove="onDrag"
-            @mouseup="endDrag"
-            @mouseleave="endDrag">
-            <div class="slides-wrapper"
-              :style="{ transform: currentLang === 'ar' ? 
-                `translateX(${currentSlide === 0 ? 0 : currentSlide === 1 ? 46 : currentSlide === 2 ? 89 : 131}%)` : 
-                `translateX(-${currentSlide * 25}%)` }">
+          <div class="slides-container" :class="currentLang === 'en' ? 'ltr' : 'rtl'" @mousedown="startDrag"
+            @mousemove="onDrag" @mouseup="endDrag" @mouseleave="endDrag" @touchstart="startTouch" @touchmove="onTouch"
+            @touchend="endTouch">
+            <div class="slides-wrapper" :style="{ transform: slideTransform }">
 
               <div class="oval-container" :class="{ 'primary': currentSlide === 0, 'secondary': currentSlide === 3 }">
                 <img src="../../../public/assets/img/homeslider/Group76.png" class="img-oval" alt="Pastries" />
@@ -49,12 +44,43 @@
             {{ translations.description[currentLang] }}
           </span>
         </div>
-        <button class="shop-btn">{{ translations.shopButton[currentLang] }}</button>
+        <button class="shop-btn" @click="goToShopBoxes">{{ translations.shopButton[currentLang] }}</button>
+      </div>
+    </div>
+
+    <!-- Mobile Only: Luxurious Chocolate Moments Section -->
+    <div class="mobile-luxury-moments" v-if="isMobile">
+      <span v-if="currentLang === 'ar'">
+        جلب لحظات الشوكولاتة الفاخرة للجميع مع ذوق للأناقة والدلال.
+      </span>
+      <span v-else>
+        Bringing luxurious chocolate moments to everyone with a taste for elegance and indulgence.
+      </span>
+    </div>
+
+    <!-- Mobile Only: Features Section -->
+    <div class="mobile-features-section" v-if="isMobile">
+      <div class="mobile-features-row">
+        <div class="mobile-feature-item">
+          <img src="../../../public/assets/img/delivery.png" class="feature-icon" alt="delivery" />
+          <div class="feature-title">{{ translations.features.delivery.title[currentLang] }}</div>
+        </div>
+        <div class="mobile-feature-item">
+          <img src="../../../public/assets/img/selection.png" class="feature-icon" alt="selection" />
+          <div class="feature-title">{{ translations.features.selection.title[currentLang] }}</div>
+        </div>
+        <div class="mobile-feature-item">
+          <img src="../../../public/assets/img/quality.png" class="feature-icon" alt="quality" />
+          <div class="feature-title">{{ translations.features.quality.title[currentLang] }}</div>
+        </div>
+      </div>
+      <div class="mobile-features-decor">
+        <img src="../../../public/assets/img/line.png" alt="decor" />
       </div>
     </div>
 
     <!-- Features Section -->
-    <section class="features-section" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
+    <section class="features-section" v-if="!isMobile" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
       <div class="features-container">
         <!-- Best Quality -->
         <div class="feature-item">
@@ -86,7 +112,7 @@
     </section>
 
     <best-seller :current-lang="currentLang" />
-    <chocolate-diffuser :current-lang="currentLang" />
+    <chocolate-diffuser :current-lang="currentLang" v-if="!isMobile" />
     <luxury-moments :current-lang="currentLang" />
     <product-grid :current-lang="currentLang" />
   </div>
@@ -108,6 +134,9 @@ export default {
       swapped: false,
       isDragging: false,
       startX: 0,
+      isMobile: false,
+      touchStartX: 0,
+      isTouching: false,
       translations: {
         description: {
           ar: 'شوكولاتة راقية تُضفي لمسة سحرية على لحظاتك الخاصة',
@@ -152,18 +181,88 @@ export default {
       }
     };
   },
+  computed: {
+    slideTransform() {
+      if (this.isMobile) {
+        // Mobile-specific transforms
+        if (this.currentLang === 'ar') {
+          // Arabic mobile transforms
+          switch (this.currentSlide) {
+            case 1:
+              return 'translateX(105%)';
+            case 2:
+              return 'translateX(203%)';
+            case 3:
+              return 'translateX(251%)';
+            default:
+              return 'translateX(22px)';
+          }
+        } else {
+          // English mobile transforms
+          switch (this.currentSlide) {
+            case 1:
+              return 'translateX(-22%)';
+            case 2:
+              return 'translateX(-48%)';
+            case 3:
+              return 'translateX(-73%)';
+            default:
+              return 'translateX(19px)';
+          }
+        }
+      } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+        // Tablet-specific transforms
+        if (this.currentLang === 'ar') {
+          // Arabic tablet transforms
+          switch (this.currentSlide) {
+            case 1:
+              return 'translateX(110%)';
+            case 2:
+              return 'translateX(221%)';
+            case 3:
+              return 'translateX(265%)';
+            default:
+              return 'translateX(0%)';
+          }
+        } else {
+          // English tablet transforms
+          switch (this.currentSlide) {
+            case 1:
+              return 'translateX(-26%)';
+            case 2:
+              return 'translateX(-54%)';
+            case 3:
+              return 'translateX(-79%)';
+            default:
+              return 'translateX(0%)';
+          }
+        }
+      } else {
+        // Desktop transforms
+        return this.currentLang === 'ar'
+          ? `translateX(${this.currentSlide === 0 ? 0 : this.currentSlide === 1 ? 46 : this.currentSlide === 2 ? 89 : 131}%)`
+          : `translateX(-${this.currentSlide * 25}%)`;
+      }
+    }
+  },
   methods: {
+    checkMobile() {
+      this.isMobile = window.innerWidth <= 445;
+    },
+    goToShopBoxes() {
+      window.location.href = '/shop/boxes';
+    },
     startDrag(event) {
       this.isDragging = true;
       this.startX = event.clientX;
     },
     onDrag(event) {
       if (!this.isDragging) return;
-      
+
       const currentX = event.clientX;
       const diffX = currentX - this.startX;
       const isRTL = this.currentLang === 'ar';
-      
+
       // If dragged more than 100px, trigger slide
       if (Math.abs(diffX) > 100) {
         if (isRTL) {
@@ -193,15 +292,57 @@ export default {
     },
     swapOvals() {
       this.currentSlide = (this.currentSlide + 1) % 4;
+    },
+    startTouch(event) {
+      this.isTouching = true;
+      this.touchStartX = event.touches[0].clientX;
+    },
+    onTouch(event) {
+      if (!this.isTouching) return;
+      event.preventDefault();
+
+      const currentX = event.touches[0].clientX;
+      const diffX = currentX - this.touchStartX;
+      const isRTL = this.currentLang === 'ar';
+
+      // If swiped more than 50px (more sensitive for touch)
+      if (Math.abs(diffX) > 50) {
+        if (isRTL) {
+          // RTL (Arabic) mode - reversed logic
+          if (diffX > 0 && this.currentSlide > 0) {
+            // Swiped right - go to previous slide
+            this.currentSlide--;
+          } else if (diffX < 0 && this.currentSlide < 3) {
+            // Swiped left - go to next slide
+            this.currentSlide++;
+          }
+        } else {
+          // LTR (English) mode
+          if (diffX > 0 && this.currentSlide > 0) {
+            // Swiped right - go to previous slide
+            this.currentSlide--;
+          } else if (diffX < 0 && this.currentSlide < 3) {
+            // Swiped left - go to next slide
+            this.currentSlide++;
+          }
+        }
+        this.isTouching = false;
+      }
+    },
+    endTouch() {
+      this.isTouching = false;
     }
   },
   created() {
     this.$root.$on('languageChanged', (lang) => {
       this.currentLang = lang;
     });
+    this.checkMobile();
+    window.addEventListener('resize', this.checkMobile);
   },
   beforeDestroy() {
     this.$root.$off('languageChanged');
+    window.removeEventListener('resize', this.checkMobile);
   },
   components: {
     BestSeller,
@@ -416,6 +557,7 @@ export default {
 /* Just reverse the direction for Arabic */
 .rtl .ovals-row {
   flex-direction: row-reverse;
+  padding-right: 68px;
 }
 
 /* Left oval */
@@ -483,14 +625,20 @@ export default {
 
 /* RTL adjustment for content section */
 .rtl .milagro-content {
-  width: 32%;
+  width: 35%;
+  padding-right: 106px;
+}
+
+.ltr .hero-figma-small {
+  margin: 0px 81px;
+  width: 69%;
 }
 
 /* Adjust content alignment for English */
 .ltr .milagro-content {
   align-items: flex-start;
   padding-right: 0px;
-  padding-left: 8%;
+  padding-left: 10%;
   text-align: left;
 }
 
@@ -575,13 +723,21 @@ export default {
 /* Adjust top star position for English */
 .ltr .star.star-top {
   left: auto;
-  right: 42vh;
+  right: 48vh;
+  top: 2px;
+}
+
+.ltr .features-container {
+  max-width: 1343px;
+  padding: 0px 130px;
+  gap: 58px;
 }
 
 /* Adjust bottom star position for English */
 .ltr .star.star-bottom {
   left: auto;
-  right: 5vh;
+  right: 9vh;
+  top: 58vh;
 }
 
 /* Add transform animations for swapped state */
@@ -602,11 +758,11 @@ export default {
 }
 
 .features-container {
-  max-width: 1200px;
+  max-width: 1246px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  padding: 0 40px;
+  padding: 0 33px;
   position: relative;
   gap: 40px;
 }
@@ -632,7 +788,7 @@ export default {
 
 .feature-title {
   color: #aa8b7a;
-  font-size: 24px;
+  font-size: 27px;
   font-weight: 500;
   margin: 0;
   font-family: 'TheSansArabic', sans-serif;
@@ -640,7 +796,7 @@ export default {
 
 .feature-description {
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.6;
   margin: 0;
   opacity: 0.9;
@@ -692,7 +848,7 @@ export default {
 .ltr .feature-title {
   text-align: left;
   font-family: 'Cairo', sans-serif;
-  font-size: 23px;
+  font-size: 27px;
   letter-spacing: 0;
   font-weight: 400;
   color: #FFFFFF;
@@ -705,6 +861,7 @@ export default {
   line-height: auto;
   letter-spacing: 0;
   font-weight: 400;
+  font-size: 19px;
 }
 
 .ltr .feature-item:not(:last-child)::after {
@@ -785,6 +942,11 @@ export default {
   /* Ensure normal direction */
 }
 
+.rtl .star.star-top {
+  left: 435px;
+  top: 1px;
+}
+
 .rtl .oval-container {
   flex: 0 0 23%;
   display: flex;
@@ -811,6 +973,17 @@ export default {
   z-index: 3;
 }
 
+.rtl .next-arrow {
+  height: 38px;
+  left: 45vh;
+  top: 60vh;
+}
+
+.rtl .star.star-bottom {
+  left: 17vh;
+  top: 57vh;
+}
+
 .rtl .secondary .img-oval {
   width: 38vh;
   height: 61vh;
@@ -822,5 +995,545 @@ export default {
 /* Hide other images */
 .rtl .oval-container:not(.primary):not(.secondary) {
   opacity: 0;
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media only screen and (max-width: 445px) {
+  .hero-figma-small-row {
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 20px 0 40px 0 !important;
+  }
+
+  .hero-figma-small {
+    width: 100% !important;
+    height: 400px !important;
+
+  }
+
+  .rtl .milagro-content {
+    width: 32%;
+    padding-right: 0 !important;
+  }
+
+  .milagro-content {
+    width: 100% !important;
+    padding: 0px -1px !important;
+    align-items: flex-start !important;
+    text-align: center !important;
+  }
+
+  .milagro-title {
+    font-size: 42px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .milagro-desc-row {
+    justify-content: center !important;
+    margin-bottom: 24px !important;
+    width: 100% !important;
+  }
+
+  .rtl .milagro-title {
+    font-size: 42px !important;
+    margin-bottom: 16px !important;
+    margin-left: -18px !important;
+    /* Remove left margin */
+    text-align: right !important;
+    /* Align text to the right */
+    width: 100%;
+    /* Optional: make it take full width */
+  }
+
+  .rtl .milagro-desc-row {
+    justify-content: center !important;
+    margin-bottom: 24px !important;
+    width: 100% !important;
+    margin-left: 7px !important;
+  }
+
+  .rtl .milagro-desc {
+    font-size: 16px !important;
+    text-align: justify !important;
+    width: 69% !important;
+    font-family: Cairo, sans-serif;
+  }
+
+  .rtl .shop-btn {
+    padding: 12px 100px !important;
+    font-size: 20px !important;
+    margin-right: 23px !important;
+  }
+
+  .milagro-desc {
+    font-size: 16px !important;
+    text-align: justify !important;
+    width: 80% !important;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .shop-btn {
+    padding: 12px 100px !important;
+    font-size: 20px !important;
+  }
+
+  .next-arrow {
+    top: auto !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 70px !important;
+  }
+
+  .next-arrow-en {
+    right: auto !important;
+    left: 70% !important;
+    bottom: 59px !important;
+    height: 30px !important;
+  }
+
+  .rtl .next-arrow {
+    top: auto !important;
+    bottom: 53px !important;
+    left: 25% !important;
+    transform: translate(-50%) !important;
+    width: 63px !important;
+    height: 28px;
+  }
+
+  .star.star-top {
+    left: auto !important;
+    right: 162px !important;
+    top: 8px !important;
+    width: 32px !important;
+    height: 31px !important;
+  }
+
+  .star.star-bottom {
+    top: auto !important;
+    bottom: 72px !important;
+    width: 23px !important;
+    right: 23vh !important;
+    left: 89% !important;
+    height: 23px !important;
+  }
+
+  .rtl .ovals-row {
+    flex-direction: row-reverse;
+    width: 100%;
+    padding-right: 0px;
+  }
+
+  .ltr .ovals-row {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .slides-container {
+    width: 100% !important;
+    overflow: hidden !important;
+    touch-action: pan-y pinch-zoom !important;
+    /* Enable vertical scrolling but allow pinch zoom */
+  }
+
+  .slides-wrapper {
+    width: 216% !important;
+    transition: transform 0.6s ease !important;
+    -webkit-user-select: none !important;
+    /* Prevent text selection during swipe */
+    user-select: none !important;
+  }
+
+  .rtl .slides-wrapper {
+    width: 89% !important;
+    flex-direction: row-reverse !important;
+  }
+
+  .rtl .star.star-top {
+    right: 218px !important;
+    top: 0px !important;
+  }
+
+  .rtl .star.star-bottom {
+    bottom: 10px !important;
+  }
+
+  .oval-container {
+    padding: 1px !important;
+    justify-content: center !important;
+    flex: 0 0 25% !important;
+  }
+
+  .primary .img-oval {
+    width: 240px !important;
+    height: 392px !important;
+    margin-right: 0 !important;
+  }
+
+  .rtl .primary .img-oval {
+    width: 240px !important;
+    height: 392px !important;
+  }
+
+  .secondary .img-oval {
+    width: 187px !important;
+    height: 295px !important;
+    margin-top: -78px !important;
+  }
+
+  .rtl .secondary .img-oval {
+    width: 186px !important;
+    height: 304px !important;
+  }
+
+  .mobile-luxury-moments {
+    display: block;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    margin: 95px 0 40px 0;
+    padding: 0 47px;
+    font-family: Tenor Sans, Cairo, sans-serif;
+    line-height: 1.7;
+    letter-spacing: 0.6px;
+  }
+
+  /* Hide features-section in RTL (Arabic) on mobile */
+  .rtl .features-section {
+    display: none !important;
+  }
+
+  .mobile-features-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px 0 0 0;
+    width: 100%;
+  }
+
+  .mobile-features-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 0;
+    margin-bottom: 18px;
+  }
+
+  .mobile-feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 0;
+    margin: 0 4px;
+  }
+
+  .mobile-feature-item .feature-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 6px;
+    filter: brightness(0) saturate(110%) invert(76%) sepia(34%) saturate(409%) hue-rotate(337deg) brightness(109%) contrast(97%);
+  }
+
+  .mobile-feature-item .feature-title {
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    font-family: 'Cairo', 'TheSansArabic', sans-serif;
+    margin-top: 2px;
+    letter-spacing: 0.2px;
+  }
+
+  .mobile-features-decor {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .mobile-features-decor img {
+    width: 178px;
+  }
+}
+
+@media only screen and (max-width: 393px) {
+  .hero-figma-small {
+    height: 380px !important;
+  }
+
+  .milagro-title {
+    font-size: 38px !important;
+  }
+
+  .milagro-desc {
+    font-size: 18px !important;
+  }
+
+  .shop-btn {
+    padding: 10px 80px !important;
+    font-size: 18px !important;
+  }
+
+  .primary .img-oval {
+    width: 260px !important;
+    height: 330px !important;
+  }
+
+  .secondary .img-oval {
+    width: 240px !important;
+    height: 310px !important;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .hero-figma-small {
+    height: 360px !important;
+  }
+
+  .milagro-title {
+    font-size: 36px !important;
+  }
+
+  .milagro-desc {
+    font-size: 17px !important;
+    width: 90% !important;
+  }
+
+  .shop-btn {
+    padding: 10px 70px !important;
+    font-size: 17px !important;
+  }
+
+  .primary .img-oval {
+    width: 240px !important;
+    height: 310px !important;
+  }
+
+  .secondary .img-oval {
+    width: 220px !important;
+    height: 290px !important;
+  }
+}
+
+/* Tablet Specific Styles (Surface Pro 7 and similar devices) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  /* Hero Section Adjustments */
+  .hero-figma-small-row {
+    height: 40vh;
+  }
+
+   
+  /* Milagro Content Adjustments */
+  .milagro-content {
+    padding-right: 4%;
+  }
+
+  .rtl .milagro-content {
+    width: 38%;
+    padding-right: 0px;
+  }
+
+  .rtl .hero-figma-small {
+    width: 58%;
+  }
+
+  .rtl .oval-container {
+    padding: 34px 2px;
+  }
+
+  .ltr .milagro-content {
+    padding-left: 4%;
+  }
+
+  .hero-figma-small-row.rtl  {
+    width: 96%;
+  }
+
+  .milagro-title {
+    font-size: 42px;
+  }
+
+  .ovals-row {
+    width: 100%;
+  }
+
+  .milagro-desc {
+    font-size: 22px;
+  }
+
+  .shop-btn {
+    padding: 12px 100px;
+    font-size: 20px;
+  }
+
+  /* Image Slider Adjustments */
+  .hero-figma-small {
+    width: 55%;
+  }
+
+  .ltr .hero-figma-small {
+    margin: 0px 0px;
+    width: 72%;
+  }
+
+  /* Adjust image sizes */
+  .primary .img-oval {
+    width: 18vh;
+    height: 31vh;
+  }
+
+  .secondary .img-oval {
+    width: 14vh;
+    height: 23vh;
+  }
+
+  .rtl .ovals-row {
+    padding-right: 0px;
+  }
+
+  .rtl .secondary .img-oval {
+    width: 16vh;
+    height: 26vh;
+  }
+
+  .rtl .primary .img-oval {
+    width: 19vh;
+    height: 31vh;
+  }
+
+  /* Star positions */
+  .star.star-top {
+    width: 35px;
+    height: 35px;
+  }
+
+  .rtl .star.star-top {
+    left: 265px;
+        top: 56px;
+  }
+
+  .ltr .star.star-top {
+    right: 19vh;
+    top: 45px;
+  }
+
+  .star.star-bottom {
+    width: 25px;
+    height: 25px;
+  }
+
+  .rtl .star.star-bottom {
+    left: 2vh;
+    top: 28vh;
+  }
+
+  .ltr .star.star-bottom {
+    right: 2vh;
+    top: 28vh;
+  }
+ 
+  /* Next arrow adjustments */
+  .next-arrow {
+    width: 70px;
+    height: 30px;
+  }
+
+  .rtl .next-arrow {
+    left: 13vh;
+    top: 30vh;
+  }
+
+  .ltr .next-arrow {
+    right: 14vh;
+        top: 29vh;
+  }
+
+  /* Features Section Adjustments */
+  .features-section {
+    padding: 40px 0;
+    min-height: 220px;
+  }
+
+  .features-container {
+    padding: 0 30px;
+    gap: 30px;
+  }
+
+  .ltr .features-container {
+    max-width: 100%;
+    padding: 0 40px;
+    gap: 30px;
+  }
+
+  .feature-title {
+    font-size: 22px;
+  }
+
+  .feature-description {
+    font-size: 16px;
+  }
+
+  .feature-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .feature-item {
+    padding: 15px;
+  }
+
+  .title-row {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  /* RTL specific adjustments */
+  .rtl .feature-item:not(:last-child)::after {
+    right: -15px;
+  }
+
+  .ltr .feature-item:not(:last-child)::after {
+    right: -5px;
+  }
+
+  .rtl .slides-wrapper {
+    width: 100%;
+  }
+
+  .ltr .feature-description {
+    margin-left: 25px;
+    font-size: 17px;
+  }
+}
+
+/* Landscape tablet adjustments */
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .hero-figma-small-row {
+    height: 65vh;
+  }
+
+  .milagro-content {
+    padding-right: 6%;
+  }
+
+  .rtl .milagro-content {
+    width: 40%;
+    padding-right: 60px;
+  }
+
+  .ltr .milagro-content {
+    padding-left: 6%;
+  }
+
+  .features-container {
+    max-width: 1100px;
+    padding: 0 40px;
+  }
+
+  .ltr .features-container {
+    max-width: 1200px;
+    padding: 0 60px;
+  }
 }
 </style>

@@ -5,10 +5,9 @@
                 <span v-if="currentLang === 'en'">Add a Touch of Luxury to Your Celebrations</span>
                 <span v-else>أضف لمسة من الفخامة إلى احتفالاتك</span>
             </h1>
-            <div class="description-container">
-              
+            <div class="description-container" v-if="!isMobile">
                 <p class="section-description">
-                    <span v-if="currentLang === 'en'">
+                    <span v-if="currentLang === 'en'" >
                         Make your special occasions unforgettable with our elegant silver trays. Now available in-store. Perfect for serving your guests in style and making every moment memorable.
                     </span>
                     <span v-else>
@@ -18,9 +17,42 @@
             </div>
         </div>
         <div class="full-width-image-container">
-            <img src="../../../../public/assets/img/chocolate-collection.png" alt="Milagro Chocolate Collection" class="full-width-image" />
-           
+            <template v-if="videoUrl">
+                <template v-if="isYouTube(videoUrl)">
+                    <iframe
+                        class="full-width-image"
+                        :src="youtubeEmbedUrl(videoUrl)"
+                        frameborder="0"
+                        allow="autoplay; encrypted-media"
+                        allowfullscreen
+                    ></iframe>
+                </template>
+                <template v-else>
+                    <video
+                        class="full-width-image"
+                        :src="videoUrl"
+                        controls
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                    ></video>
+                </template>
+            </template>
+            <template v-else>
+                <img src="../../../../public/assets/img/chocolate-collection.png" alt="Milagro Chocolate Collection" class="full-width-image" />
+            </template>
         </div>
+        <div class="description-container" v-if="isMobile">
+                <p class="section-description">
+                    <span v-if="currentLang === 'en'" >
+                        Make your special occasions unforgettable with our elegant silver trays. Now available in-store. Perfect for serving your guests in style and making every moment memorable.
+                    </span>
+                    <span v-else>
+                        . اجعل مناسباتك الخاصة لا تُنسى مع موادنا الفضية الأنيقة متوفرة الآن في المتجر. مثالية لتقديم الضيافة لزوارك بأناقة وجعل كل لحظة مميزة
+                    </span>
+                </p>
+            </div>
     </section>
 </template>
 
@@ -32,7 +64,43 @@ export default {
             type: String,
             required: true,
             default: 'ar'
+        },
+        videoUrl: {
+            type: String,
+            default: 'https://www.youtube.com/watch?v=LFZ-ntPA5co'
         }
+    },
+    data() {
+        return {
+            isMobile: false,
+            videoUrl: 'https://www.youtube.com/watch?v=LFZ-ntPA5co' // Set your video URL here, e.g. 'https://www.w3schools.com/html/mov_bbb.mp4'
+        }
+    },
+    methods: {
+        checkMobile() {
+            this.isMobile = window.innerWidth <= 445;
+        },
+        isYouTube(url) {
+            return url.includes('youtube.com') || url.includes('youtu.be');
+        },
+        youtubeEmbedUrl(url) {
+            // Convert normal YouTube URL to embed URL
+            let videoId = '';
+            if (url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1];
+            } else {
+                const match = url.match(/[?&]v=([^&]+)/);
+                videoId = match ? match[1] : '';
+            }
+            return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}`;
+        }
+    },
+    mounted() {
+        this.checkMobile();
+        window.addEventListener('resize', this.checkMobile);
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.checkMobile);
     }
 }
 </script>
@@ -170,6 +238,117 @@ export default {
         height: 40px;
         left: 15px;
         bottom: 15px;
+    }
+}
+
+@media only screen and (max-width: 445px) {
+    .luxury-moments-section {
+        padding-top: 49px;
+    }
+    .section-title {
+        font-size: 22px !important;
+        margin-bottom: 10px !important;
+        text-align: center !important;
+        padding: 0 !important;
+    }
+
+    .section-description {
+        font-size: 15px !important;
+        padding: 20px 5px !important;
+        color: #aa8b7a;
+        font-family: 'Tenor Sans', serif !important;
+    }
+
+    .ltr .section-title{
+    text-align: center;
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 400;
+    }
+    .rtl .section-title {
+    text-align: center;
+    padding-right: 40px;
+    color: #ffffff;
+}
+    .full-width-image-container {
+        height: 180px !important;
+        margin-top: 10px !important;
+    }
+}
+
+@media only screen and (max-width: 393px) {
+    .section-title {
+        font-size: 18px !important;
+    }
+    .section-description {
+        font-size: 13px !important;
+    }
+    .full-width-image-container {
+        height: 140px !important;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .section-title {
+        font-size: 16px !important;
+    }
+    .section-description {
+        font-size: 12px !important;
+    }
+    .full-width-image-container {
+        height: 120px !important;
+    }
+}
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .luxury-moments-section {
+        padding-top: 40px;
+    }
+
+    .content-container {
+        max-width: 100%;
+        padding: 0 30px;
+    }
+
+    .section-title {
+        font-size: 32px;
+        margin-bottom: 15px;
+        padding: 0 20px;
+    }
+
+    .rtl .section-title,
+    .ltr .section-title {
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .description-container {
+        padding: 0 30px;
+        margin-bottom: 30px;
+    }
+
+    .section-description {
+        font-size: 20px;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .rtl .section-description,
+    .ltr .section-description {
+        text-align: center;
+    }
+
+    .full-width-image-container {
+        height: 400px;
+        margin-top: 30px;
+    }
+
+    .play-button {
+        width: 45px;
+        height: 45px;
+        left: 18px;
+        bottom: 18px;
     }
 }
 </style>

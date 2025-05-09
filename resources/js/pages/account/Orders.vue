@@ -4,11 +4,34 @@
             <!-- Title -->
             <h1 class="profile-title">
                 {{ currentLang === 'en' ? 'My Profile' : 'ملفي الشخصي' }}
+                <img src="../../../../public/assets/img/star.png" class="title-star" alt="star" />
             </h1>
 
             <div class="profile-layout">
-                <!-- Sidebar -->
-                <div class="profile-sidebar">
+                <!-- Mobile Tabs -->
+                <div v-if="isMobile" class="mobile-profile-tabs">
+                    <router-link
+                        to="/account/profile"
+                        class="mobile-profile-tab"
+                        :class="{ active: $route.path === '/account/profile' }"
+                    >{{ currentLang === 'en' ? 'My Information' : 'معلوماتي' }}</router-link>
+                    <router-link
+                        to="/account/addresses"
+                        class="mobile-profile-tab"
+                        :class="{ active: $route.path === '/account/addresses' }"
+                    >{{ currentLang === 'en' ? 'My Addresses' : 'عناويني' }}</router-link>
+                    <router-link
+                        to="/account/orders"
+                        class="mobile-profile-tab"
+                        :class="{ active: $route.path === '/account/orders' }"
+                    >{{ currentLang === 'en' ? 'My Orders' : 'طلباتي' }}</router-link>
+                    <div class="mobile-profile-tab" @click="logout">
+                        {{ currentLang === 'en' ? 'Log Out' : 'تسجيل الخروج' }}
+                    </div>
+                </div>
+
+                <!-- Desktop Sidebar -->
+                <div v-else class="profile-sidebar">
                     <div class="sidebar-item">
                         <router-link to="/account/profile" class="sidebar-link">
                             {{ currentLang === 'en' ? 'My Information' : 'معلوماتي' }}
@@ -84,6 +107,7 @@ export default {
     data() {
         return {
             currentLang: localStorage.getItem('currentLang') || 'ar',
+            isMobile: false,
             orders: [
                 {
                     id: '#CTH-198203',
@@ -136,17 +160,29 @@ export default {
                     total: '41.000'
                 }
             ]
+        };
+    },
+    methods: {
+        checkMobile() {
+            this.isMobile = window.innerWidth <= 480;
+        },
+        logout() {
+            // Handle logout logic here
+            console.log('Logging out...');
         }
     },
-    created() {
+    mounted() {
+        this.checkMobile();
+        window.addEventListener('resize', this.checkMobile);
         this.$root.$on('languageChanged', (lang) => {
             this.currentLang = lang;
         });
     },
     beforeDestroy() {
+        window.removeEventListener('resize', this.checkMobile);
         this.$root.$off('languageChanged');
     }
-}
+};
 </script>
 
 <style scoped>
@@ -311,20 +347,6 @@ export default {
     color: #AA8B7A;
 }
 
-@media (max-width: 992px) {
-    .profile-page {
-        padding: 40px 20px;
-    }
-
-    .profile-layout {
-        flex-direction: column;
-    }
-
-    .profile-sidebar {
-        width: 100%;
-    }
-}
-
 /* Orders List Styles */
 .orders-list {
     width: 100%;
@@ -480,7 +502,12 @@ export default {
 .ltr .order-card {
     text-align: left;
 }
-
+.title-star {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: -12px;
+}
 .ltr .order-id,
 .ltr .order-status,
 .ltr .item-name,
@@ -490,5 +517,272 @@ export default {
 .ltr .order-total,
 .ltr .details-btn {
     font-family: 'Cairo', sans-serif;
+}
+
+@media (max-width: 480px) {
+    .profile-page {
+        padding: 20px 12px;
+    }
+
+    .profile-title {
+        font-size: 30px;
+        margin-bottom: 25px;
+        top: -25px;
+    }
+
+    .title-star {
+        width: 14px;
+        height: 14px;
+        top: -8px;
+    }
+
+    .profile-layout {
+        gap: 20px;
+        top: -20px;
+    }
+
+    .mobile-profile-tabs {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 0 10px 18px 10px;
+        margin: 0 0 10px 0;
+        width: 96vw;
+        box-sizing: border-box;
+    }
+
+    .mobile-profile-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-profile-tab {
+        flex: 0 0 auto;
+        padding: 7px 22px;
+        border: 1px solid #AA8B7A;
+        border-radius: 7px;
+        background: transparent;
+        color: #AA8B7A;
+        font-size: 18px;
+        font-family: 'Philosopher', serif;
+        text-decoration: none;
+        text-align: center;
+        transition: background 0.2s, color 0.2s;
+        outline: none;
+        margin-bottom: 0;
+        margin-top: 0;
+        cursor: pointer;
+    }
+
+    .mobile-profile-tab.active {
+        background: #AA8B7A;
+        color: #ffffff;
+        font-weight: 600;
+        border: 1px solid #AA8B7A;
+    }
+
+    .mobile-profile-tab {
+        color: #ffffff !important;
+        font-weight: 400 !important;
+        border: 1px solid #AA8B7A !important;
+    }
+
+    /* Hide desktop sidebar in mobile */
+    .profile-sidebar {
+        display: none;
+    }
+
+    /* Adjust orders list for mobile */
+    .orders-list {
+        margin-top: 20px;
+    }
+
+    .order-card {
+        margin: 0 -12px;
+        border-radius: 0;
+    }
+
+    .order-header {
+        padding: 15px;
+    }
+
+    .order-items {
+        padding: 15px;
+    }
+
+    .order-footer {
+        padding: 15px;
+    }
+
+    .item-name {
+        font-size: 16px;
+    }
+
+    .item-specs,
+    .item-quantity,
+    .item-price {
+        font-size: 14px;
+    }
+
+    .order-total {
+        font-size: 16px;
+    }
+}
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px !important;
+        min-height: calc(100vh - 180px);
+    }
+
+    .profile-container {
+        max-width: 900px;
+    }
+
+    .profile-title {
+        font-size: 36px;
+        top: -35px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        top: -10px;
+    }
+
+    .profile-layout {
+        gap: 40px;
+        top: -25px;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start;
+    }
+
+    .profile-sidebar {
+        width: 180px !important;
+        flex-shrink: 0;
+        position: relative;
+        top: 12px;
+        display: block !important;
+    }
+
+    .profile-content {
+        position: relative;
+        top: 12px;
+        flex: 1;
+        max-width: calc(100% - 220px);
+    }
+
+    .sidebar-item {
+        font-size: 18px;
+        margin-bottom: 14px;
+        padding: 0;
+    }
+
+    .rtl .sidebar-item.active::after {
+        right: -120px;
+        width: 108%;
+        bottom: -8px;
+    }
+
+    .ltr .sidebar-item.active::after {
+        left: -120px;
+        width: 128%;
+        bottom: -8px;
+    }
+
+    /* Empty Orders State */
+    .empty-orders {
+        margin-top: 0;
+        gap: 20px;
+    }
+
+    .empty-orders-icon {
+        width: 120px;
+        height: 120px;
+    }
+
+    .empty-orders-text {
+        font-size: 22px;
+    }
+
+    /* Orders List Adjustments */
+    .orders-list {
+        gap: 20px;
+        margin-top: 0;
+    }
+
+    .order-card {
+        border-radius: 14px;
+    }
+
+    .order-header {
+        padding: 16px 20px;
+    }
+
+    .order-id {
+        font-size: 17px;
+    }
+
+    .cart-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .order-status {
+        font-size: 15px;
+    }
+
+    .order-items {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .order-item {
+        gap: 14px;
+    }
+
+    .item-image {
+        width: 56px;
+        height: 56px;
+        border-radius: 6px;
+    }
+
+    .item-name {
+        font-size: 17px;
+        margin-bottom: 6px;
+    }
+
+    .item-specs,
+    .item-quantity {
+        font-size: 15px;
+        margin-bottom: 3px;
+    }
+
+    .item-price {
+        font-size: 15px;
+        margin-top: 6px;
+    }
+
+    .order-footer {
+        padding: 16px 20px;
+    }
+
+    .order-total {
+        font-size: 17px;
+        gap: 10px;
+    }
+
+    .details-btn {
+        font-size: 15px;
+        padding: 3px 6px;
+    }
+
+    /* Force hide mobile tabs in tablet view */
+    .mobile-profile-tabs {
+        display: none !important;
+    }
 }
 </style>

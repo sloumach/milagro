@@ -223,7 +223,58 @@ export default {
     font-family: 'Cairo', sans-serif;
 }
 
-@media (max-width: 768px) {
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .auth-page {
+        padding: 40px 60px;
+        min-height: calc(100vh - 180px);
+    }
+
+    .title-container {
+        margin-bottom: 30px;
+    }
+
+    .auth-title {
+        font-size: 36px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        margin-top: -15px;
+    }
+
+    .auth-container {
+        max-width: 420px;
+    }
+
+    .auth-form {
+        gap: 20px;
+    }
+
+    .form-group {
+        gap: 6px;
+    }
+
+    .form-group label {
+        font-size: 15px;
+    }
+
+    .form-group input {
+        height: 44px;
+        font-size: 15px;
+        padding: 0 14px;
+    }
+
+    .submit-btn {
+        height: 44px;
+        font-size: 15px;
+        margin-top: 14px;
+    }
+}
+
+/* Update existing mobile styles to not conflict with tablet */
+@media (max-width: 767px) {
     .auth-page {
         padding: 40px 20px;
     }

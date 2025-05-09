@@ -574,4 +574,286 @@ export default {
         align-items: flex-end;
     }
 }
+
+@media (max-width: 480px) {
+    .contact-page {
+        padding: 20px 12px;
+    }
+
+    .contact-container {
+        padding: 20px 12px;
+    }
+
+    .contact-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .image-section {
+        width: 100%;
+    }
+
+    .oval-frame {
+        width: 48%;
+        height: 313px;
+        max-width: none;
+    }
+
+    .form-section {
+        padding: 0;
+        width: 100%;
+    }
+
+    .contact-title {
+        font-size: 30px;
+        margin-bottom: 12px;
+    }
+
+    .contact-description {
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+
+    .phone-input {
+        width: 100%;
+    }
+
+    .phone-prefix {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+
+    .submit-btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .orders-navigation {
+        top: -20px;
+        margin-bottom: 5px;
+        padding: 10px 0;
+    }
+
+    .nav-link {
+        font-size: 16px;
+        gap: 15px;
+    }
+
+    .arrow-icon {
+        width: 80px;
+        height: 12px;
+    }
+
+    .map-section {
+        margin-top: 40px;
+    }
+
+    .map-container {
+        height: 300px;
+        padding: 8px;
+    }
+
+    .map-overlay {
+        bottom: 10px;
+        right: 10px;
+        padding: 10px 15px;
+    }
+
+    .rtl .map-overlay {
+        left: 10px;
+        right: auto;
+    }
+
+    .title {
+        font-size: 14px;
+    }
+
+    .hours-text span {
+        font-size: 12px;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 0;
+    }
+
+    .info-item {
+        font-size: 14px;
+        gap: 8px;
+    }
+
+    .info-icon {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* Add tablet breakpoint for better scaling */
+@media (min-width: 481px) and (max-width: 768px) {
+    .contact-container {
+        padding: 30px 20px;
+    }
+
+    .contact-content {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .oval-frame {
+        width: 100%;
+        max-width: 500px;
+        height: 500px;
+    }
+
+    .form-section {
+        padding: 20px;
+    }
+
+    .contact-title {
+        font-size: 36px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .map-container {
+        height: 350px;
+    }
+
+    .contact-info {
+        flex-wrap: wrap;
+        gap: 20px 40px;
+    }
+}
+
+/* Tablet Specific Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .contact-container {
+        padding: 40px 30px;
+        max-width: 900px;
+    }
+
+    .contact-content {
+        flex-direction: row;
+        gap: 30px;
+    }
+
+    .image-section {
+        flex: 0 0 45%;
+    }
+
+    .oval-frame {
+        width: 71%;
+        height: 500px;
+    }
+
+    .form-section {
+        flex: 0 0 55%;
+        padding: 0;
+    }
+
+    .contact-title {
+        font-size: 32px;
+        margin-bottom: 12px;
+    }
+
+    .contact-description {
+        font-size: 15px;
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        font-size: 15px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 10px 14px;
+        font-size: 15px;
+    }
+
+    .phone-input .phone-prefix {
+        padding: 10px 14px;
+        font-size: 15px;
+    }
+
+    .submit-btn {
+        font-size: 15px;
+        padding: 12px 24px;
+        width: auto;
+        align-self: flex-start;
+    }
+
+    .rtl .submit-btn {
+        align-self: flex-end;
+    }
+
+    /* Map section adjustments */
+    .map-section {
+        margin-top: 50px;
+    }
+
+    .map-container {
+        height: 350px;
+    }
+
+    .map-overlay {
+        padding: 12px 20px;
+    }
+
+    .opening-hours .title {
+        font-size: 15px;
+    }
+
+    .hours-text span {
+        font-size: 14px;
+    }
+
+    .contact-info {
+        padding: 20px 10px;
+        gap: 30px;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .info-item {
+        font-size: 15px;
+        gap: 10px;
+        flex: 0 0 auto;
+    }
+
+    .info-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Navigation adjustments */
+    .orders-navigation {
+        top: -30px;
+    }
+
+    .nav-link {
+        font-size: 18px;
+        gap: 20px;
+    }
+
+    .arrow-icon {
+        width: 100px;
+        height: 14px;
+    }
+}
 </style>

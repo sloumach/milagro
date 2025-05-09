@@ -779,4 +779,268 @@ export default {
     margin-left: 0px;
     transform: scaleX(-1);
 }
+
+@media (max-width: 480px) {
+    .profile-page {
+        padding: 20px 12px;
+        min-height: calc(100vh - 100px);
+    }
+
+    .profile-title {
+        font-size: 22px;
+        top: 16px;
+        margin-bottom: 47px;
+    }
+
+    .title-star {
+        width: 16px;
+        height: 16px;
+        top: -8px;
+    }
+
+    .cart-layout {
+        margin-top: 0;
+        gap: 16px;
+    }
+
+    .cart-items {
+        gap: 12px;
+    }
+
+    .cart-item {
+        padding: 12px;
+        gap: 12px;
+        border: 1px solid rgba(170, 139, 122, 0.2);
+        border-radius: 8px;
+    }
+
+    .item-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .item-details {
+        gap: 16px;
+    }
+
+    .item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .item-header h3 {
+        font-size: 16px;
+        line-height: 1.2;
+    }
+
+    .item-price {
+        font-size: 15px;
+    }
+
+    .controls-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .quantity-controls {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .quantity-btn {
+        width: 28px;
+        height: 28px;
+    }
+
+    .quantity-controls input {
+        width: 35px;
+        height: 28px;
+    }
+
+    .remove-btn {
+        font-size: 13px;
+    }
+
+    .order-summary {
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+    }
+
+    .order-summary h2 {
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+
+    .summary-row {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .promo-code {
+        margin: 16px 0;
+    }
+
+    .promo-code input {
+        width: 91%;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .total {
+        padding-top: 12px;
+        margin-top: 12px;
+        font-size: 16px;
+    }
+
+    .checkout-btn {
+        height: 42px;
+        font-size: 15px;
+        margin-top: 16px;
+    }
+
+    /* RTL Mobile Specific */
+    .rtl .item-header,
+    .rtl .controls-row {
+        align-items: flex-end;
+    }
+
+    .rtl .quantity-controls {
+        justify-content: flex-end;
+    }
+
+    /* LTR Mobile Specific */
+    .ltr .item-header,
+    .ltr .controls-row {
+        align-items: flex-start;
+    }
+
+    .ltr .quantity-controls {
+        justify-content: flex-start;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .profile-page {
+        padding: 40px 60px;
+        min-height: calc(100vh - 180px);
+    }
+
+    .profile-container {
+        max-width: 1000px;
+    }
+
+    .profile-title {
+        font-size: 36px;
+        top: -35px;
+    }
+
+    .title-star {
+        width: 20px;
+        height: 20px;
+        top: -10px;
+    }
+
+    .cart-layout {
+        gap: 25px;
+        margin-top: -15px;
+    }
+
+    .cart-items {
+        gap: 16px;
+    }
+
+    .cart-item {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .item-image {
+        width: 130px;
+        height: 130px;
+    }
+
+    .item-details {
+        gap: 35px;
+    }
+
+    .item-header h3 {
+        font-size: 18px;
+    }
+
+    .item-price {
+        font-size: 16px;
+    }
+
+    .quantity-controls {
+        gap: 8px;
+    }
+
+    .quantity-btn {
+        width: 28px;
+        height: 28px;
+    }
+
+    .quantity-controls input {
+        width: 35px;
+        height: 28px;
+    }
+
+    .remove-btn {
+        font-size: 14px;
+    }
+
+    .order-summary {
+        width: 350px;
+        padding: 25px 40px;
+    }
+
+    .order-summary h2 {
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .summary-row {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .promo-code {
+        margin: 18px 0;
+    }
+
+    .promo-code input {
+        height: 38px;
+        font-size: 15px;
+    }
+
+    .total {
+        padding-top: 12px;
+        margin-top: 12px;
+    }
+
+    .checkout-btn {
+        height: 44px;
+        font-size: 15px;
+        margin-top: 18px;
+    }
+
+    /* Orders Navigation Tablet Adjustments */
+    .orders-navigation {
+        top: -35px;
+        padding: 12px 0;
+    }
+
+    .nav-link {
+        font-size: 18px;
+        gap: 25px;
+    }
+
+    .arrow-icon {
+        width: 100px;
+        height: 13px;
+    }
+}
 </style>
