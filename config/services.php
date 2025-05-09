@@ -30,5 +30,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'myfatoorah' => [
+        'apiKey' => env('MYFATOORAH_API_KEY'),
+        'isTest' => env('MYFATOORAH_IS_LIVE', true),
+    ],
+
 
 ];

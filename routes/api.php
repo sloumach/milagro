@@ -2,11 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MyFatoorahController;
 use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Admin\AdminStatsController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\User\UserPaymentController;
 use App\Http\Controllers\Admin\AdminClientController;
 use App\Http\Controllers\Admin\AdminCouponController;
 use App\Http\Controllers\Admin\AdminProductsController;
@@ -53,6 +55,14 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 //user routes
 Route::middleware(['auth:sanctum', 'role:user'])->prefix('user')->group(function () {
     Route::apiResource('orders', UserOrderController::class)->only(['index', 'store', 'show']);
+});
+Route::middleware(['auth:sanctum', 'role:user'])->group(function () {
+    /*  */
+
+    Route::post('/payment/initiate', [UserPaymentController::class, 'initiate'])->name('payment.initiate');
+    Route::get('/payment/callback/{order}', [UserPaymentController::class, 'callback'])->name('payment.callback');
+    Route::get('/payment/failed/{order}', [UserPaymentController::class, 'failed'])->name('payment.failed');
+
 });
 Route::middleware(['auth:sanctum', 'role:user'])->prefix('user/cart')->group(function () {
     Route::get('/', [UserCartController::class, 'index']);
