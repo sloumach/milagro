@@ -49,7 +49,7 @@ class UserPaymentController extends Controller
 
             // ✅ Enregistrer la référence
             $order->update([
-                'payment_reference' => $payment['InvoiceId']
+                'payment_reference' => $payment['invoiceId']
             ]);
 
             return redirect($payment['invoiceURL']);
@@ -67,7 +67,7 @@ class UserPaymentController extends Controller
             if ($data->InvoiceStatus === 'Paid') {
                 $order->update([
                     'payment_status' => 'paid',
-                    'payment_reference' => $data->InvoiceId,
+                    'payment_reference' => $data->invoiceId,
                     'status' => 'processing',
                 ]);
                 foreach ($order->orderItems as $item) {
