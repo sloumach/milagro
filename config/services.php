@@ -31,8 +31,8 @@ return [
         ],
     ],
     'myfatoorah' => [
-    'api_key' => env('MYFATOORAH_API_KEY'),
-    'is_live' => env('MYFATOORAH_IS_LIVE', false),
+        'apiKey' => env('MYFATOORAH_API_KEY'),
+        'isTest' => env('MYFATOORAH_IS_LIVE', true),
     ],
 
 
