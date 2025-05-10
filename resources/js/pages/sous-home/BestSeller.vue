@@ -725,11 +725,21 @@ export default {
     .rtl .prev {
         left: 5px;
         right: auto;
+        display: none;
     }
 
     .rtl .next {
         right: 5px;
         left: auto;
+        display: none;
+    }
+    .products-container {
+        gap: 23px !important;
+        padding: 20px 10px !important;
+    }
+    .slider-container {
+        padding: 0 0 !important;
+
     }
 }
 
@@ -813,4 +823,15 @@ export default {
         right: 20px;
     }
 }
+@media (max-width: 393px) {
+    .products-container {
+        gap: 23px !important;
+        padding: 20px 10px !important;
+    }
+    .slider-container {
+        padding: 0 0 !important;
+
+    }
+}
+
 </style>

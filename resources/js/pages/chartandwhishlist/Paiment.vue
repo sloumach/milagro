@@ -3,16 +3,14 @@
         <div class="profile-container">
             <!-- Title -->
             <h1 class="profile-title">
-                {{ currentLang === 'en' ? 'Payment' : 'الدفع' }}
+                {{ currentLang === 'en' ? 'Checkout' : 'الدفع' }}
                 <img src="../../../../public/assets/img/star.png" class="title-star" alt="star" />
             </h1>
             <div class="orders-navigation">
                 <router-link to="/cart" class="nav-link">
                     <span v-if="currentLang === 'en'">
                         <span class="white-text">Shopping Cart</span> <span class="slash-text">/</span>
-                        <span :class="{ 'highlight-text': currentStep === 1 }">Delivery</span> <span
-                            class="slash-text">/</span>
-                        <span :class="{ 'highlight-text': currentStep === 2 }">Payment</span>
+                        <span :class="{ 'highlight-text': currentStep === 1 }">Delivery</span>
                     </span>
                     <span v-else>
                         <span class="white-text">سلة التسوق</span> <span class="slash-text">/</span>
@@ -108,20 +106,47 @@
                         <h2 class="section-title">{{ currentLang === 'en' ? 'Delivery Information' : 'معلومات التوصيل' }}</h2>
                         <div class="form-row location-row">
                             <div class="form-group">
-                                <select v-model="formData.governorate">
-                                    <option value="" disabled selected>{{ currentLang === 'en' ? 'Governorate' : 'المحافظة' }}</option>
-                                    <option v-for="gov in governorates" :key="gov.en" :value="gov.en">
-                                        {{ currentLang === 'en' ? gov.en : gov.ar }}
-                                    </option>
-                                </select>
+                                <!-- Custom dropdown for governorate -->
+                                <div class="custom-dropdown" :class="{ 'open': isGovDropdownOpen }">
+                                    <div class="selected-option" @click="toggleGovDropdown">
+                                        <span v-if="formData.governorate">{{ getGovernorateLabel(formData.governorate) }}</span>
+                                        <span v-else class="placeholder">{{ currentLang === 'en' ? 'Governorate' : 'المحافظة' }}</span>
+                                        <span class="dropdown-arrow"></span>
+                                    </div>
+                                    <div class="options" v-show="isGovDropdownOpen">
+                                        <div 
+                                            v-for="gov in governorates" 
+                                            :key="gov.en" 
+                                            class="option"
+                                            @click="selectGovernorate(gov.en)"
+                                        >
+                                            {{ currentLang === 'en' ? gov.en : gov.ar }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <select v-model="formData.area">
-                                    <option value="" disabled selected>{{ currentLang === 'en' ? 'Area' : 'المنطقة' }}</option>
-                                    <option v-for="area in availableAreas" :key="area.en" :value="area.en">
-                                        {{ currentLang === 'en' ? area.en : area.ar }}
-                                    </option>
-                                </select>
+                                <!-- Custom dropdown for area -->
+                                <div class="custom-dropdown" :class="{ 'open': isAreaDropdownOpen }">
+                                    <div class="selected-option" @click="toggleAreaDropdown">
+                                        <span v-if="formData.area">{{ getAreaLabel(formData.area) }}</span>
+                                        <span v-else class="placeholder">{{ currentLang === 'en' ? 'Area' : 'المنطقة' }}</span>
+                                        <span class="dropdown-arrow"></span>
+                                    </div>
+                                    <div class="options" v-show="isAreaDropdownOpen">
+                                        <div 
+                                            v-for="area in availableAreas" 
+                                            :key="area.en" 
+                                            class="option"
+                                            @click="selectArea(area.en)"
+                                        >
+                                            {{ currentLang === 'en' ? area.en : area.ar }}
+                                        </div>
+                                        <div v-if="!formData.governorate || availableAreas.length === 0" class="option disabled">
+                                            {{ currentLang === 'en' ? 'Please select a governorate first' : 'الرجاء اختيار المحافظة أولا' }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-row address-row">
@@ -170,12 +195,28 @@
                                 <input type="date" v-model="formData.deliveryDate" class="hidden-date-input" />
                             </div>
                             <div class="form-group">
-                                <select v-model="formData.deliveryTime">
-                                    <option value="" disabled selected>{{ currentLang === 'en' ? 'Delivery Time' : 'وقت التوصيل' }}</option>
-                                    <option value="morning">{{ currentLang === 'en' ? 'Morning (9 AM - 1 PM)' :'صباحاً(9 ص - 1 م)' }}</option>
-                                    <option value="evening">{{ currentLang === 'en' ? 'Evening (4 PM - 8 PM)' : 'مساءً(4 م - 8 م)' }}</option>
-
-                                </select>
+                                <!-- Custom dropdown for delivery time -->
+                                <div class="custom-dropdown" :class="{ 'open': isTimeDropdownOpen }">
+                                    <div class="selected-option" @click="toggleTimeDropdown">
+                                        <span v-if="formData.deliveryTime">{{ getDeliveryTimeLabel(formData.deliveryTime) }}</span>
+                                        <span v-else class="placeholder">{{ currentLang === 'en' ? 'Delivery Time' : 'وقت التوصيل' }}</span>
+                                        <span class="dropdown-arrow"></span>
+                                    </div>
+                                    <div class="options" v-show="isTimeDropdownOpen">
+                                        <div 
+                                            class="option"
+                                            @click="selectDeliveryTime('morning')"
+                                        >
+                                            {{ currentLang === 'en' ? 'Morning (9 AM - 1 PM)' : 'صباحاً(9 ص - 1 م)' }}
+                                        </div>
+                                        <div 
+                                            class="option"
+                                            @click="selectDeliveryTime('evening')"
+                                        >
+                                            {{ currentLang === 'en' ? 'Evening (4 PM - 8 PM)' : 'مساءً(4 م - 8 م)' }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <button class="proceed-btn" @click="proceedToPayment">
@@ -334,6 +375,9 @@ export default {
             },
             currentStep: 1,
             selectedPaymentMethod: null,
+            isGovDropdownOpen: false,
+            isAreaDropdownOpen: false,
+            isTimeDropdownOpen: false,
         }
     },
     computed: {
@@ -493,15 +537,71 @@ export default {
                 console.log('Payment confirmed with:', this.selectedPaymentMethod)
                 this.currentStep = 3
             }
+        },
+        toggleGovDropdown() {
+            this.isGovDropdownOpen = !this.isGovDropdownOpen
+        },
+        selectGovernorate(governorate) {
+            this.formData.governorate = governorate
+            this.isGovDropdownOpen = false
+        },
+        getGovernorateLabel(governorate) {
+            const gov = this.governorates.find(g => g.en === governorate)
+            return gov ? (this.currentLang === 'en' ? gov.en : gov.ar) : governorate
+        },
+        toggleAreaDropdown() {
+            this.isAreaDropdownOpen = !this.isAreaDropdownOpen
+        },
+        selectArea(area) {
+            this.formData.area = area
+            this.isAreaDropdownOpen = false
+        },
+        getAreaLabel(area) {
+            const areaObj = this.areas[this.formData.governorate]?.find(a => a.en === area)
+            return areaObj ? (this.currentLang === 'en' ? areaObj.en : areaObj.ar) : area
+        },
+        toggleTimeDropdown() {
+            this.isTimeDropdownOpen = !this.isTimeDropdownOpen
+        },
+        selectDeliveryTime(time) {
+            this.formData.deliveryTime = time
+            this.isTimeDropdownOpen = false
+        },
+        getDeliveryTimeLabel(time) {
+            const timeLabels = {
+                morning: {
+                    en: 'Morning (9 AM - 1 PM)',
+                    ar: 'صباحاً(9 ص - 1 م)'
+                },
+                evening: {
+                    en: 'Evening (4 PM - 8 PM)',
+                    ar: 'مساءً(4 م - 8 م)'
+                }
+            }
+            
+            return time ? timeLabels[time][this.currentLang] || time : '';
+        },
+        handleClickOutside(event) {
+            if (!this.$el.contains(event.target)) {
+                this.isGovDropdownOpen = false
+                this.isAreaDropdownOpen = false
+                this.isTimeDropdownOpen = false
+            }
         }
     },
     created() {
         this.$root.$on('languageChanged', (lang) => {
             this.currentLang = lang
         })
+        
+        // Add click outside event listener to close dropdowns
+        document.addEventListener('click', this.handleClickOutside)
     },
     beforeDestroy() {
         this.$root.$off('languageChanged')
+        
+        // Remove click outside event listener
+        document.removeEventListener('click', this.handleClickOutside)
     }
 }
 </script>
@@ -690,6 +790,11 @@ export default {
 
     .profile-form {
         max-width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
     }
 }
 
@@ -1270,6 +1375,11 @@ export default {
     width: 100%;
 }
 
+/* Make location-row display as column in desktop view */
+.form-row.location-row {
+    flex-direction: column;
+}
+
 .form-group {
     flex: 1;
     position: relative;
@@ -1320,7 +1430,7 @@ export default {
     border: 1px solid #AA8B7A;
     border-radius: 4px;
     padding: 0 15px;
-    color: #AA8B7A;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 16px;
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23AA8B7A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
@@ -1383,7 +1493,14 @@ export default {
 
 /* Style for the placeholder option */
 .form-group select option[value=""] {
-    color: #AA8B7A;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Dropdown menu styles */
+select option {
+    max-width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 /* Remove default arrow in IE */
@@ -1404,44 +1521,33 @@ export default {
     justify-content: center;
     background: transparent;
     border: 1px solid #AA8B7A;
-    border-right: none;
-    border-radius: 4px 0 0 4px;
-    color: #AA8B7A;
+    color: rgba(255, 255, 255, 0.5);
     padding: 0 15px;
     font-size: 16px;
-    min-width: 60px;
+    width: 60px;
+    flex-shrink: 0;
     font-family: 'Cairo', sans-serif;
 }
 
 .rtl .phone-prefix {
-    border-left: 1px solid #AA8B7A;
     border-radius: 0 4px 4px 0;
-    border-right: 1px solid #AA8B7A;
-
 }
 
 .ltr .phone-prefix {
-    border-left: 1px solid #AA8B7A;
     border-radius: 4px 0 0 4px;
-    border-right: 1px solid #AA8B7A;
-
 }
 
 .phone-group input {
-    border-left: none;
+    flex: 1;
     border-radius: 0 4px 4px 0;
-    padding-left: 15px;
 }
 
 .rtl .phone-group input {
-    border-right: none;
-    border-left: 1px solid #AA8B7A;
     border-radius: 4px 0 0 4px;
-    padding-right: 15px;
 }
 
 .form-group input::placeholder {
-    color: rgba(170, 139, 122, 0.5);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .form-group input:focus,
@@ -1478,6 +1584,7 @@ export default {
     cursor: pointer;
     margin-top: 30px;
     transition: background-color 0.3s;
+    font-weight: bold;
 }
 
 .rtl .proceed-btn {
@@ -1565,7 +1672,7 @@ export default {
     padding-right: 45px;
 }
 
-/* Hide default calendar icon */
+/* Hide default calendar input */
 .form-group input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 0;
     width: 100%;
@@ -1581,7 +1688,7 @@ export default {
 .form-group input[type="date"]::-webkit-datetime-edit-month-field,
 .form-group input[type="date"]::-webkit-datetime-edit-day-field,
 .form-group input[type="date"]::-webkit-datetime-edit-year-field {
-    color: #AA8B7A;
+    color: #FFFFFF;
 }
 
 .form-group input[type="date"]:valid::-webkit-datetime-edit-text,
@@ -1638,6 +1745,7 @@ export default {
 
 .step-number span {
     transform: rotate(-45deg);
+    font-family: 'Philosopher', serif;
 }
 
 .step.active .step-number {
@@ -1693,32 +1801,7 @@ export default {
     padding: 20px;
     margin-top: 5px;
     z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.calendar-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(170, 139, 122, 0.2);
-}
-
-.calendar-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-}
-
-.calendar-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.calendar-title {
-    color: #AA8B7A;
-    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .calendar-days-header {
@@ -1732,6 +1815,7 @@ export default {
     color: #AA8B7A;
     font-size: 12px;
     padding: 5px;
+    font-weight: bold;
 }
 
 .calendar-grid {
@@ -1749,11 +1833,12 @@ export default {
     font-size: 14px;
     cursor: pointer;
     border-radius: 4px;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
 }
 
 .calendar-day:hover:not(.disabled) {
     background: rgba(170, 139, 122, 0.2);
+    transform: scale(1.1);
 }
 
 .calendar-day.disabled {
@@ -1764,10 +1849,24 @@ export default {
 .calendar-day.selected {
     background: #AA8B7A;
     color: #FFFFFF;
+    font-weight: bold;
 }
 
 .calendar-day.today {
     border: 1px solid #AA8B7A;
+    position: relative;
+    font-weight: bold;
+}
+
+.calendar-day.today::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 4px;
+    height: 4px;
+    background: #AA8B7A;
+    border-radius: 50%;
 }
 
 /* RTL Support */
@@ -1984,23 +2083,21 @@ export default {
     }
     .delivery-form {
         margin-top: 45px;
-        padding: 20px;
+        padding: 20px 4px;
     }
     .delivery-form h2 {
         color: #fff;
         font-size: 24px;
         font-weight: 400;
     }
-
-    /* Keep form-row items in the same line for specific fields */
-    .form-row {
+    .form-row.location-row{
         flex-direction: column;
-        gap: 15px;
-        margin-bottom: 15px;
     }
-
-    /* Special handling for specific form rows that should stay horizontal */
-    .form-row.location-row,
+    .form-row.location-row .form-group {
+        width: 100% !important;
+        margin-bottom: 0;
+    }
+    
     .form-row.address-row,
     .form-row.building-row,
     .form-row.delivery-row {
@@ -2023,14 +2120,29 @@ export default {
         font-size: 14px;
         padding: 0 12px;
         background-position: right 8px center;
+        max-width: 100%; /* Ensure select doesn't exceed viewport */
     }
-
+    
+    /* Custom dropdown container for mobile */
+    select {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    
+    select option {
+        max-width: 95vw; /* Limit dropdown width to viewport */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 13px; /* Slightly smaller font for dropdown options */
+    }
+    
     .rtl .form-group select {
         background-position: left 8px center;
         padding-right: 12px;
         padding-left: 30px;
     }
-
+    
     /* Adjust input fields */
     .form-group input {
         height: 42px;
@@ -2047,6 +2159,7 @@ export default {
         height: 42px;
         font-size: 14px;
         padding: 0 10px;
+        width: 60px;
     }
 
     /* Date and time inputs */
@@ -2065,13 +2178,18 @@ export default {
 
     /* Calendar adjustments */
     .custom-calendar {
-        padding: 15px;
+                padding: 9px;
     }
 
     .calendar-days-header span {
-        font-size: 11px;
+                font-size: 7px;
     }
+.calendar-days-header span{
+    color: #aa8b7a;
 
+    padding: 4px;
+    font-weight: 700;
+}
     .calendar-day {
         height: 25px;
         font-size: 13px;
@@ -2079,6 +2197,47 @@ export default {
 
     .order-summary {
         padding: 0;
+    }
+    .step-number {
+    width: 20px;
+    height: 20px;
+    transform: rotate(45deg);
+    background-color: #fff;
+    border: 2px solid rgba(170, 139, 122, .2);
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #212a1e;
+    border-radius: 4px;
+}
+.steps-container{
+    position: relative;
+    display: flex
+;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: -48px;
+    padding: 0 22px;
+    background: #212A1E;
+    border-radius: 8px;
+}
+.steps-line {
+    position: absolute;
+    top: 48px;
+    left: 4px;
+    right: 23px;
+    height: 2px;
+    background-color: #aa8b7a;
+    opacity: 1.2;
+    z-index: 1;
+}
+.ltr .steps-line{
+    top: 57px;
+}
+.profile-page {
+        padding: 37px 8px;
     }
 }
 
@@ -2294,6 +2453,117 @@ export default {
     .home-button {
         padding: 10px 35px;
         font-size: 15px;
+    }
+}
+
+/* Custom dropdown styles */
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.selected-option {
+    width: 100%;
+    height: 48px;
+    background: transparent;
+    border: 1px solid #AA8B7A;
+    border-radius: 4px;
+    padding: 0 15px;
+    color: #FFFFFF;
+    font-size: 16px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.selected-option .placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.dropdown-arrow {
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid #AA8B7A;
+    border-bottom: 2px solid #AA8B7A;
+    transform: rotate(45deg);
+    margin-top: -5px;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+    transform: rotate(-135deg);
+    margin-top: 5px;
+}
+
+.custom-dropdown .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #212A1E;
+    border: 1px solid #AA8B7A;
+    border-radius: 4px;
+    margin-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.custom-dropdown .option {
+    padding: 10px 15px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.custom-dropdown .option:hover {
+    background: #2c3828;
+}
+
+.custom-dropdown .option.disabled {
+    color: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+    font-style: italic;
+}
+
+.custom-dropdown .option.disabled:hover {
+    background: transparent;
+}
+
+.rtl .selected-option {
+    text-align: right;
+    font-family: 'TheSansArabic', sans-serif;
+}
+
+.ltr .selected-option {
+    text-align: left;
+    font-family: 'Cairo', sans-serif;
+}
+
+.rtl .custom-dropdown .options {
+    text-align: right;
+    font-family: 'TheSansArabic', sans-serif;
+}
+
+.ltr .custom-dropdown .options {
+    text-align: left;
+    font-family: 'Cairo', sans-serif;
+}
+
+@media (max-width: 480px) {
+    .selected-option {
+        height: 42px;
+        font-size: 14px;
+        padding: 0 12px;
+    }
+    
+    .custom-dropdown .options {
+        max-width: 95vw;
+        font-size: 13px;
+    }
+    
+    .custom-dropdown .option {
+        padding: 8px 12px;
     }
 }
 </style>

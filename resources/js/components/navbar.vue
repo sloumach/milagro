@@ -2,8 +2,8 @@
   <div>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Language Switch Buttons -->
-    <div class="language-switcher">
+    <!-- Language Switch Buttons - Only show on desktop -->
+    <div class="language-switcher" v-if="!isMobile">
       <button :class="['lang-btn', currentLang === 'ar' ? 'active-lang' : '']" @click="switchLanguage('ar')">
         العربية
       </button>
@@ -19,7 +19,20 @@
     <!-- Mobile Menu Drawer -->
     <div :class="['mobile-menu-drawer', currentLang === 'en' ? 'ltr' : 'rtl', { 'open': isMenuOpen }]">
       <div class="drawer-header">
+        <router-link to="/" class="drawer-logo">
+          <img src="../../../public/assets/img/logo.png" alt="Logo" class="logo" />
+        </router-link>
         <i class="fas fa-times close-menu" @click="closeMenu"></i>
+      </div>
+      <!-- Language Switch Buttons - Only show in mobile menu -->
+      <div class="language-switcher" v-if="isMobile">
+        <button :class="['lang-btn', currentLang === 'ar' ? 'active-lang' : '']" @click="switchLanguage('ar')">
+          العربية
+        </button>
+        <span class="lang-separator">|</span>
+        <button :class="['lang-btn', currentLang === 'en' ? 'active-lang' : '']" @click="switchLanguage('en')">
+          English
+        </button>
       </div>
       <div class="drawer-content">
         <div class="drawer-nav-links">
@@ -98,6 +111,7 @@ export default {
     return {
       isMenuOpen: false,
       currentLang: localStorage.getItem('currentLang') || 'ar',
+      isMobile: false,
       translations: {
         contact: {
           ar: 'تواصل معنا',
@@ -148,6 +162,9 @@ export default {
     closeMenu() {
       this.isMenuOpen = false;
       document.body.style.overflow = '';
+    },
+    checkMobile() {
+      this.isMobile = window.innerWidth <= 767;
     }
   },
   computed: {
@@ -164,6 +181,13 @@ export default {
       this.currentLang = savedLang;
       this.$root.$emit('languageChanged', savedLang);
     }
+  },
+  mounted() {
+    this.checkMobile();
+    window.addEventListener('resize', this.checkMobile);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkMobile);
   }
 };
 </script>
@@ -200,16 +224,16 @@ export default {
 
 /* Icons style */
 .icon {
-  width: 31px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   margin-left: 0;
   filter: brightness(0) saturate(110%) invert(76%) sepia(34%) saturate(409%) hue-rotate(337deg) brightness(109%) contrast(97%);
 }
 
 /* Logo style */
 .logo {
-  width: 70px;
-  height: 65px;
+  width: 81px;
+  height: 78px;
 }
 
 /* Center nav links */
@@ -232,7 +256,7 @@ export default {
   color: #fff;
   margin-left: 24px;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 24px;
   transition: color 0.2s;
   position: relative;
   display: flex;
@@ -246,7 +270,7 @@ export default {
   margin-left: 0;
   margin-right: 24px;
   font-family: Philosopher,serif;
-  font-size: 21px;
+  font-size: 24px;
 }
 
 /* Active link style */
@@ -483,7 +507,18 @@ export default {
   padding: 20px;
   border-bottom: 1px solid rgba(170, 139, 122, 0.2);
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-logo {
+  display: flex;
+  align-items: center;
+}
+
+.drawer-logo .logo {
+  width: 50px;
+  height: 45px;
 }
 
 .close-menu {
@@ -649,7 +684,7 @@ export default {
 @media only screen and (max-width: 767px) {
   /* Move existing mobile styles here */
   .navbar {
-    padding: 15px 20px !important;
+    padding: 31px 20px !important;
     position: relative !important;
   }
 
@@ -693,6 +728,28 @@ export default {
   .icon {
     width: 24px !important;
     height: 24px !important;
+  }
+}
+
+/* Mobile menu language switcher styles */
+.mobile-menu-drawer .language-switcher {
+  padding: 15px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(170, 139, 122, 0.2);
+  background: #212A1E;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Media queries */
+@media only screen and (max-width: 767px) {
+  .language-switcher {
+    display: none;
+  }
+  
+  .mobile-menu-drawer .language-switcher {
+    display: flex;
   }
 }
 </style>

@@ -1,36 +1,44 @@
 <template>
     <div>
       <div v-if="isMobile">
-        <div class="mobile-shop-boxes-wrapper">
-          <div class="mobile-shop-title">
-            {{ currentLang === 'en' ? 'Categories' : 'الفئات' }}
-          </div>
-          <div class="mobile-categories-tabs">
-            <router-link
-              to="/shop/new"
-              class="mobile-category-tab"
-              :class="{ active: $route.path === '/shop/new' }"
-            >{{ currentLang === 'en' ? 'New' : 'جديد' }}</router-link>
-            <router-link
-              to="/shop/boxes"
-              class="mobile-category-tab"
-              :class="{ active: $route.path === '/shop/boxes' }"
-            >{{ currentLang === 'en' ? 'Boxes' : 'تشكيلة البوكسات' }}</router-link>
-            <router-link
-              to="/shop/occasions"
-              class="mobile-category-tab"
-              :class="{ active: $route.path === '/shop/occasions' }"
-            >{{ currentLang === 'en' ? 'Occasions' : 'مناسباتكم' }}</router-link>
-            <router-link
-              to="/shop/canope"
-              class="mobile-category-tab"
-              :class="{ active: $route.path === '/shop/canope' }"
-            >{{ currentLang === 'en' ? 'Savory & Canapes' : 'سبشل سولتيز' }}</router-link>
-            <span class="mobile-category-tab disabled">
-              {{ currentLang === 'en' ? 'Milagro Giveaway' : 'توزيعات ميلاقرو' }}
-            </span>
-          </div>
-          <div class="profile-content">
+        <div class="profile-page" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
+          <div class="profile-container">
+            <!-- Title -->
+            <h1 class="profile-title">
+              {{ currentLang === 'en' ? 'Categories' : 'الفئات' }}
+              <img src="../../../../public/assets/img/star.png" class="title-star" alt="star" />
+            </h1>
+
+            <div class="profile-layout">
+              <!-- Mobile Tabs -->
+              <div class="mobile-profile-tabs">
+                <router-link
+                  to="/shop/new"
+                  class="mobile-profile-tab"
+                  :class="{ active: $route.path === '/shop/new' }"
+                >{{ currentLang === 'en' ? 'New' : 'جديد' }}</router-link>
+                <router-link
+                  to="/shop/boxes"
+                  class="mobile-profile-tab"
+                  :class="{ active: $route.path === '/shop/boxes' }"
+                >{{ currentLang === 'en' ? 'Boxes' : 'تشكيلة البوكسات' }}</router-link>
+                <router-link
+                  to="/shop/occasions"
+                  class="mobile-profile-tab"
+                  :class="{ active: $route.path === '/shop/occasions' }"
+                >{{ currentLang === 'en' ? 'Occasions' : 'مناسباتكم' }}</router-link>
+                <router-link
+                  to="/shop/canope"
+                  class="mobile-profile-tab"
+                  :class="{ active: $route.path === '/shop/canope' }"
+                >{{ currentLang === 'en' ? 'Savory & Canapes' : 'سبشل سولتيز' }}</router-link>
+                <div class="mobile-profile-tab">
+                  {{ currentLang === 'en' ? 'Milagro Giveaway' : 'توزيعات ميلاقرو' }}
+                </div>
+              </div>
+
+              <!-- Content -->
+              <div class="profile-content">
                 <div class="products-grid">
                   <!-- Mix Chocolates (Large Box) -->
                   <div class="product-card">
@@ -164,7 +172,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- Add Notify Modal for mobile here -->
                 <notify-modal
                   :show="showNotifyModal"
                   :current-lang="currentLang"
@@ -172,6 +179,8 @@
                   @close="closeNotifyModal"
                 />
               </div>
+            </div>
+          </div>
         </div>
       </div>
       <div v-else>
@@ -463,7 +472,10 @@
     transition: color 0.3s ease;
     position: relative;
   }
-  
+  .ltr .profile-title {
+    font-family: Philosopher, serif;
+}
+
   .rtl .sidebar-item.active::after {
     content: "";
     position: absolute;
@@ -874,6 +886,79 @@
   }
   
   @media (max-width: 480px) {
+    .profile-page {
+        padding: 20px 12px;
+    }
+
+    .profile-title {
+        font-size: 30px;
+        margin-bottom: 25px;
+        top: -25px;
+    }
+
+    .title-star {
+        width: 14px;
+        height: 14px;
+        top: -8px;
+    }
+
+    .profile-layout {
+        gap: 20px;
+        top: -20px;
+    }
+
+    .mobile-profile-tabs {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 0 10px 18px 10px;
+        margin: 0 0 10px 0;
+        width: 97vw;
+        box-sizing: border-box;
+    }
+
+    .mobile-profile-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-profile-tab {
+        flex: 0 0 auto;
+        padding: 7px 22px;
+        border: 1px solid #AA8B7A;
+        border-radius: 7px;
+        background: transparent;
+        color: #AA8B7A;
+        font-size: 18px;
+        font-family: 'Philosopher', serif;
+        text-decoration: none;
+        text-align: center;
+        transition: background 0.2s, color 0.2s;
+        outline: none;
+        margin-bottom: 0;
+        margin-top: 0;
+        cursor: pointer;
+    }
+
+    .mobile-profile-tab.active {
+        background: #AA8B7A;
+        color: #ffffff;
+        font-weight: 600;
+        border: 1px solid #AA8B7A;
+    }
+
+    .mobile-profile-tab {
+        color: #ffffff !important;
+        font-weight: 400 !important;
+        border: 1px solid #AA8B7A !important;
+    }
+
+    /* Hide desktop sidebar in mobile */
+    .profile-sidebar {
+        display: none;
+    }
+
+    /* Product grid styles remain the same */
     .profile-content .products-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -912,7 +997,6 @@
       -webkit-box-orient: vertical;
       text-overflow: ellipsis;
     }
-    
     .profile-content .info-row {
       margin: 0 0 8px 0;
       flex-shrink: 0;
@@ -939,186 +1023,6 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-    }
-    .mobile-shop-boxes-wrapper {
-      width: 100vw;
-      min-height: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: #212A1E;
-      color: #AA8B7A;
-      font-family: 'Tenor Sans', serif;
-      padding: 0 0 16px 0;
-    }
-    .mobile-shop-title {
-      width: 95%;
-      text-align: left;
-      font-size: 22px;
-        font-weight: 600;
-        color: #aa8b7a;
-        padding: 15px 0 15px 0px;
-      letter-spacing: 1px;
-    }
-    .mobile-shop-title .title-star {
-      width: 22px;
-      height: 22px;
-      position: relative;
-      top: 4px;
-      margin-left: 6px;
-    }
-    .mobile-shop-columns {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-    .mobile-shop-col {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      color: #AA8B7A;
-      font-size: 15px;
-      font-family: 'Tenor Sans', serif;
-      padding: 0 8px;
-    }
-    .mobile-shop-heading {
-      font-size: 15px;
-      font-weight: 700;
-      color: #AA8B7A;
-      margin-bottom: 8px;
-      margin-top: 12px;
-      letter-spacing: 1px;
-    }
-    .mobile-shop-sub {
-      margin-top: 14px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #AA8B7A;
-    }
-    .mobile-shop-contact-info {
-      margin-bottom: 2px;
-      color: #AA8B7A;
-      font-size: 15px;
-      font-family: 'Tenor Sans', serif;
-    }
-    .mobile-shop-links-list div {
-      margin-bottom: 4px;
-      color: #AA8B7A;
-      font-size: 15px;
-      font-family: 'Tenor Sans', serif;
-    }
-    .mobile-shop-social-row {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-    .mobile-shop-follow {
-      font-size: 16px;
-      font-weight: 600;
-      color: #AA8B7A;
-      margin-right: 10px;
-      letter-spacing: 1px;
-    }
-    .mobile-shop-social-icons {
-      display: flex;
-      flex-direction: row;
-      gap: 14px;
-    }
-    .mobile-shop-social-icons .social-link img {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: transparent;
-      border: 1px solid #AA8B7A;
-      padding: 4px;
-    }
-    .mobile-shop-copyright {
-      width: 100%;
-      text-align: center;
-      color: #AA8B7A;
-      font-size: 13px;
-      margin: 18px 0 10px 0;
-      font-family: 'Tenor Sans', serif;
-    }
-    .mobile-categories-tabs {
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-      overflow-x: auto;
-      padding: 0 10px 18px 10px;
-      margin: 0 0 10px 0;
-      width: 100vw;
-      box-sizing: border-box;
-    }
-    .mobile-category-tab {
-      flex: 0 0 auto;
-      padding: 7px 22px;
-      border: 1px solid #AA8B7A;
-      border-radius: 7px;
-      background: transparent;
-      color: #AA8B7A;
-      font-size: 18px;
-      font-family: 'Tenor Sans', serif;
-      text-decoration: none;
-      text-align: center;
-      transition: background 0.2s, color 0.2s;
-      outline: none;
-      margin-bottom: 0;
-      margin-top: 0;
-      cursor: pointer;
-    }
-    .mobile-category-tab.active {
-      background: #AA8B7A;
-      color: #ffffff;
-      font-weight: 600;
-      border: 1px solid #AA8B7A;
-    }
-  
-    .mobile-category-tab {
-      color: #ffffff !important;
-      font-weight: 400 !important;
-      border: 1px solid #AA8B7A !important;
-    }
-    .mobile-category-tab.disabled {
-      opacity: 0.6;
-      pointer-events: none;
-      background: transparent;
-      color: #AA8B7A;
-      border: 1px solid #AA8B7A;
-    }
-    .mobile-categories-tabs::-webkit-scrollbar {
-      display: none;
-    }
-    .profile-title {
-      color: #aa8b7a;
-      font-size: 33px;
-      position: relative;
-      top: -45px;
-    }
-    .title-star {
-      width: 16px;
-      height: 16px;
-      position: relative;
-      top: -14px;
-    }
-    .rtl .profile-content .products-grid {
-      direction: rtl;
-    }
-    .rtl .mobile-shop-title {
-      text-align: right;
-    }
-    .ltr .mobile-shop-title {
-      text-align: left;
     }
   }
   
