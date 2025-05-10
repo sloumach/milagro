@@ -625,6 +625,11 @@ export default {
         font-size: 14px;
     }
 
+    .rtl .form-group input,
+    .rtl .form-group textarea {
+        direction: rtl;
+    }
+
     .phone-input {
         width: 100%;
     }

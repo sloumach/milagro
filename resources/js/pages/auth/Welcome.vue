@@ -90,10 +90,11 @@ export default {
 
 .auth-title {
     color: #AA8B7A;
-    font-size: 42px;
+    font-size: 55px;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 2px;
+    margin-block-end: 7px;
 }
 
 .title-star {
@@ -108,13 +109,15 @@ export default {
 
 .primary-text {
     color: #FFFFFF;
-    font-size: 18px;
-    margin-bottom: 8px;
+    font-size: 30px;
+    margin-bottom: 5px;
+    margin-block-start: 14px;
 }
 
 .secondary-text {
-    color: #AA8B7A;
-    font-size: 16px;
+    color: white;
+    font-size: 22px;
+
     margin: 0;
 }
 

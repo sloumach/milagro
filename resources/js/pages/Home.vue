@@ -1275,14 +1275,48 @@ export default {
   }
 
   .primary .img-oval {
-    width: 260px !important;
+    width: 200px !important;
     height: 330px !important;
   }
 
   .secondary .img-oval {
-    width: 240px !important;
-    height: 310px !important;
+    width: 184px !important;
+        height: 301px !important;
+        margin-top: -57px !important;
   }
+  .rtl .primary .img-oval{
+        width: 200px !important;
+        height: 330px !important;
+    }
+    .rtl .secondary .img-oval {
+    width: 184px !important;
+        height: 301px !important;
+        margin-top: -57px !important;
+  }
+  .star.star-bottom {
+        top: auto !important;
+        bottom: 61px !important;
+        width: 23px !important;
+        right: 31vh !important;
+        left: 92% !important;
+        height: 23px !important;
+    }
+    .rtl .oval-container {
+        padding: 6px !important;
+    }
+    .rtl .star.star-top{
+        right: 36px !important;
+        top: 0 !important;
+    }
+    .rtl .star.star-bottom {
+        bottom: 61px !important;
+        left: 5% !important;
+    }
+    .milagro-desc-row {
+
+        width: 80% !important;
+    }
+   
 }
 
 @media only screen and (max-width: 375px) {
