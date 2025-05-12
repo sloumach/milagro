@@ -1,17 +1,27 @@
 <template>
-    <section class="luxury-moments-section" :class="currentLang === 'en' ? 'ltr' : 'rtl'">
+    <section
+        class="luxury-moments-section"
+        :class="currentLang === 'en' ? 'ltr' : 'rtl'"
+    >
         <div class="content-container">
             <h1 class="section-title">
-                <span v-if="currentLang === 'en'">Add a Touch of Luxury to Your Celebrations</span>
+                <span v-if="currentLang === 'en'"
+                    >Add a Touch of Luxury to Your Celebrations</span
+                >
                 <span v-else>أضف لمسة من الفخامة إلى احتفالاتك</span>
             </h1>
             <div class="description-container" v-if="!isMobile">
                 <p class="section-description">
-                    <span v-if="currentLang === 'en'" >
-                        Make your special occasions unforgettable with our elegant silver trays. Now available in-store. Perfect for serving your guests in style and making every moment memorable.
+                    <span v-if="currentLang === 'en'">
+                        Make your special occasions unforgettable with our
+                        elegant silver trays. Now available in-store. Perfect
+                        for serving your guests in style and making every moment
+                        memorable.
                     </span>
                     <span v-else>
-                        . اجعل مناسباتك الخاصة لا تُنسى مع موادنا الفضية الأنيقة متوفرة الآن في المتجر. مثالية لتقديم الضيافة لزوارك بأناقة وجعل كل لحظة مميزة
+                        . اجعل مناسباتك الخاصة لا تُنسى مع موادنا الفضية الأنيقة
+                        متوفرة الآن في المتجر. مثالية لتقديم الضيافة لزوارك
+                        بأناقة وجعل كل لحظة مميزة
                     </span>
                 </p>
             </div>
@@ -40,84 +50,94 @@
                 </template>
             </template>
             <template v-else>
-                <img src="../../../../public/assets/img/chocolate-collection.png" alt="Milagro Chocolate Collection" class="full-width-image" />
+                <img
+                    src="../../../../public/assets/img/chocolate-collection.png"
+                    alt="Milagro Chocolate Collection"
+                    class="full-width-image"
+                />
             </template>
         </div>
         <div class="description-container" v-if="isMobile">
-                <p class="section-description">
-                    <span v-if="currentLang === 'en'" >
-                        Make your special occasions unforgettable with our elegant silver trays. Now available in-store. Perfect for serving your guests in style and making every moment memorable.
-                    </span>
-                    <span v-else>
-                        . اجعل مناسباتك الخاصة لا تُنسى مع موادنا الفضية الأنيقة متوفرة الآن في المتجر. مثالية لتقديم الضيافة لزوارك بأناقة وجعل كل لحظة مميزة
-                    </span>
-                </p>
-            </div>
+            <p class="section-description">
+                <span v-if="currentLang === 'en'">
+                    Make your special occasions unforgettable with our elegant
+                    silver trays. Now available in-store. Perfect for serving
+                    your guests in style and making every moment memorable.
+                </span>
+                <span v-else>
+                    . اجعل مناسباتك الخاصة لا تُنسى مع موادنا الفضية الأنيقة
+                    متوفرة الآن في المتجر. مثالية لتقديم الضيافة لزوارك بأناقة
+                    وجعل كل لحظة مميزة
+                </span>
+            </p>
+        </div>
     </section>
 </template>
 
 <script>
 export default {
-    name: 'LuxuryMoments',
+    name: "LuxuryMoments",
     props: {
         currentLang: {
             type: String,
             required: true,
-            default: 'ar'
+            default: "ar",
         },
         videoUrl: {
             type: String,
-            default: 'https://www.youtube.com/watch?v=LFZ-ntPA5co'
-        }
+            default: "https://www.youtube.com/watch?v=LFZ-ntPA5co",
+        },
     },
     data() {
         return {
             isMobile: false,
-            videoUrl: 'https://www.youtube.com/watch?v=LFZ-ntPA5co' // Set your video URL here, e.g. 'https://www.w3schools.com/html/mov_bbb.mp4'
-        }
+        };
     },
     methods: {
         checkMobile() {
             this.isMobile = window.innerWidth <= 445;
         },
         isYouTube(url) {
-            return url.includes('youtube.com') || url.includes('youtu.be');
+            return url.includes("youtube.com") || url.includes("youtu.be");
         },
         youtubeEmbedUrl(url) {
             // Convert normal YouTube URL to embed URL
-            let videoId = '';
-            if (url.includes('youtu.be/')) {
-                videoId = url.split('youtu.be/')[1];
+            let videoId = "";
+            if (url.includes("youtu.be/")) {
+                videoId = url.split("youtu.be/")[1];
             } else {
                 const match = url.match(/[?&]v=([^&]+)/);
-                videoId = match ? match[1] : '';
+                videoId = match ? match[1] : "";
             }
             return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}`;
-        }
+        },
     },
     mounted() {
         this.checkMobile();
-        window.addEventListener('resize', this.checkMobile);
+        window.addEventListener("resize", this.checkMobile);
     },
     beforeDestroy() {
-        window.removeEventListener('resize', this.checkMobile);
-    }
-}
+        window.removeEventListener("resize", this.checkMobile);
+    },
+};
 </script>
 
 <style scoped>
 .luxury-moments-section {
-    background: #212A1E;
-    padding: 60px 0 0 0; /* Remove bottom padding to allow full-width image */
+    background: #212a1e;
     color: #aa8b7a;
     position: relative;
+    width: 100% !important;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 .content-container {
-    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     text-align: center;
-    padding: 0 20px;
+    padding: 40px 0 0 0;
 }
 
 .section-title {
@@ -125,30 +145,22 @@ export default {
     margin-bottom: 20px;
     font-weight: 600;
     color: #aa8b7a;
-    font-family: 'TheSansArabic', sans-serif;
+    font-family: "TheSansArabic", sans-serif;
 }
 
 .ltr .section-title {
-    font-family: 'Philosopher', serif;
+    font-family: "Philosopher", serif;
 }
 
 .description-container {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto 40px;
     padding: 0 40px;
-}
-
-.milagro-desc-line {
-    display: inline-block;
-    width: 60px;
-    height: 2px;
-    background: #aa8b7a;
-    border-radius: 2px;
-    margin-top: 18px;
-    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .section-description {
@@ -156,19 +168,24 @@ export default {
     font-size: 25px;
     line-height: 1.6;
     margin: 0;
-    color: #FFFFFF;
-    font-family: 'TheSansArabic', sans-serif;
+    color: #ffffff;
+    font-family: "TheSansArabic", sans-serif;
 }
 
 .ltr .section-description {
-    font-family: 'Philosopher', serif;
+    font-family: "Philosopher", serif;
 }
 
 .full-width-image-container {
     position: relative;
-    width: 100%;
+    width: 100vw;
     height: 612px;
-    margin-top: 40px;
+    margin: 0;
+    padding: 0;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     overflow: hidden;
 }
 
@@ -209,7 +226,6 @@ export default {
 
 .rtl .section-title {
     text-align: center;
-    padding-right: 40px;
 }
 
 /* LTR (English) Specific Styles */
@@ -225,11 +241,14 @@ export default {
 
 .ltr .section-title {
     text-align: center;
-    padding-left: 40px;
 }
 
 @media (max-width: 768px) {
     .luxury-moments-section {
+        padding-top: 0;
+    }
+
+    .content-container {
         padding-top: 40px;
     }
 
@@ -242,9 +261,10 @@ export default {
 }
 
 @media only screen and (max-width: 445px) {
-    .luxury-moments-section {
+    .content-container {
         padding-top: 49px;
     }
+
     .section-title {
         font-size: 22px !important;
         margin-bottom: 10px !important;
@@ -256,23 +276,25 @@ export default {
         font-size: 15px !important;
         padding: 20px 5px !important;
         color: #aa8b7a;
-        font-family: 'Tenor Sans', serif !important;
+        font-family: "Tenor Sans", serif !important;
     }
 
-    .ltr .section-title{
-    text-align: center;
-    color: #ffffff;
-    font-size: 25px;
-    font-weight: 400;
+    .ltr .section-title {
+        text-align: center;
+        color: #ffffff;
+        font-size: 25px;
+        font-weight: 400;
     }
+
     .rtl .section-title {
-    text-align: center;
-    padding-right: 40px;
-    color: #ffffff;
-}
+        text-align: center;
+        color: #ffffff;
+    }
+
     .full-width-image-container {
         height: 180px !important;
-        margin-top: 10px !important;
+        width: 100vw !important;
+        margin-top: 0 !important;
     }
 }
 
@@ -280,9 +302,11 @@ export default {
     .section-title {
         font-size: 18px !important;
     }
+
     .section-description {
         font-size: 13px !important;
     }
+
     .full-width-image-container {
         height: 140px !important;
     }
@@ -292,9 +316,11 @@ export default {
     .section-title {
         font-size: 16px !important;
     }
+
     .section-description {
         font-size: 12px !important;
     }
+
     .full-width-image-container {
         height: 120px !important;
     }
@@ -302,13 +328,8 @@ export default {
 
 /* Tablet Specific Styles */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-    .luxury-moments-section {
-        padding-top: 40px;
-    }
-
     .content-container {
-        max-width: 100%;
-        padding: 0 30px;
+        padding-top: 0;
     }
 
     .section-title {
@@ -320,7 +341,6 @@ export default {
     .rtl .section-title,
     .ltr .section-title {
         text-align: center;
-        padding: 0 20px;
     }
 
     .description-container {
@@ -341,7 +361,7 @@ export default {
 
     .full-width-image-container {
         height: 400px;
-        margin-top: 30px;
+        margin-top: 0;
     }
 
     .play-button {

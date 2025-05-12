@@ -399,8 +399,6 @@ export default {
 
 .product-image-container {
     position: relative;
-    width: 98%;
-    height: 280px;
     overflow: hidden;
     border-radius: 11px;
     border: 2px solid #aa8b7a;
@@ -782,7 +780,7 @@ export default {
     }
 
     .product-image-container {
-        height: 220px;
+        height: 350px;
     }
 
     .product-title {
