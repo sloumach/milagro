@@ -5,11 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MyFatoorahController;
 use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserOrderController;
+use App\Http\Controllers\User\UserReviewController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminStatsController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\User\UserPaymentController;
+use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\AdminClientController;
 use App\Http\Controllers\Admin\AdminCouponController;
 use App\Http\Controllers\Admin\AdminCampaignController;
@@ -56,6 +58,8 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 //user routes
 Route::middleware(['auth:sanctum', 'role:user'])->prefix('user')->group(function () {
     Route::apiResource('orders', UserOrderController::class)->only(['index', 'store', 'show']);
+    Route::get('/products/{product}/reviews', [UserReviewController::class, 'index']);
+    Route::post('/products/{product}/reviews', [UserReviewController::class, 'store']);
 });
 Route::middleware(['auth:sanctum', 'role:user'])->group(function () {
 
@@ -88,7 +92,10 @@ Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(functio
     Route::post('/campaigns', [AdminCampaignController::class, 'store']);
     // Envoyer une campagne immédiatement
     Route::post('/campaigns/{id}/send', [AdminCampaignController::class, 'sendNow']);
-
+    //  reviews routes
+    Route::get('/reviews', [AdminReviewController::class, 'index']);
+    Route::patch('/reviews/{review}/approve', [AdminReviewController::class, 'approve']);
+    Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy']);
 
 });
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin/stats')->group(function () {

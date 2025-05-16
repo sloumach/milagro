@@ -19,8 +19,10 @@ class AdminProductsController extends Controller
 
     public function index(): JsonResponse
     {
+        $products = $this->productService->getAll();
+
         return response()->json([
-            'products' => $this->productService->getAll(),
+            'products' => ProductResource::collection($products),
         ]);
     }
 
@@ -41,8 +43,10 @@ class AdminProductsController extends Controller
 
     public function show(int $id): JsonResponse
     {
+        $product = $this->productService->find($id);
+
         return response()->json([
-            'product' => $this->productService->find($id),
+            'product' => new ProductResource($product),
         ]);
     }
 
