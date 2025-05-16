@@ -45,9 +45,9 @@ class AdminCampaignController extends Controller
     {
         $campaign = Campaign::findOrFail($id);
 
-        /* if ($campaign->status === 'sent') {
+        if ($campaign->status === 'sent') {
             return response()->json(['message' => 'Campaign already sent.'], 422);
-        } */
+        }
 
         $this->campaignService->sendCampaign($campaign);
 
